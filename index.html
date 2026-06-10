@@ -2,47 +2,49 @@
 <html lang="pt-br">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EDZHK8SL8"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-0EDZHK8SL8');
-    </script>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "w32g841pzr");
-    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Desenvolvedor Freelancer especialista em criação de sites responsivos e automações com Python. Transformo suas necessidades em código funcional e eficiente.">
+    <meta name="description"
+        content="Desenvolvedor Freelancer especialista em criação de sites responsivos e automações com Python. Transformo suas necessidades em código funcional e eficiente.">
+    <meta name="theme-color" content="#050505">
     <link rel="icon" href="https://img.icons8.com/fluency/48/backend-development.png">
     <title>IgorDev - Portfolio</title>
 
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 
-    <!-- Styling CSS -->
-    <link rel="stylesheet" id="themeStylesheet" href="./assets/css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EDZHK8SL8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-0EDZHK8SL8');
+    </script>
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "w32g841pzr");
+    </script>
 </head>
 
 <body>
 
+    <div class="scroll-progress"></div>
+
     <header>
         <div class="header-container">
             <a href="./index.html" class="logo">Igor<span>Dev</span></a>
-            
+
             <button class="menu-toggle" aria-label="Abrir menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
@@ -63,44 +65,59 @@
 
         <!-- Hero Section -->
         <section class="hero-section" id="home">
-            <div class="hero-content reveal">
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-bg-gradient"></div>
+
+            <div class="hero-content">
                 <div class="hero-text">
+                    <span class="hero-greeting reveal">DISPONÍVEL PARA PROJETOS</span>
                     <h2 class="hero-title">Inovação em cada <span>Pixel.</span></h2>
-                    <p class="hero-tagline">Igor Laurindo – Especialista em Desenvolvimento Web e Automações Inteligentes</p>
-                    <p class="hero-description">Transformo ideias em realidade através de código limpo, interfaces modernas e soluções automatizadas que geram valor para o seu negócio.</p>
-                    
+                    <p class="hero-tagline">Igor Laurindo – Especialista em Desenvolvimento Web e Automações
+                        Inteligentes</p>
+                    <p class="hero-description">Transformo ideias em realidade através de código limpo, interfaces
+                        modernas e soluções automatizadas que geram valor para o seu negócio.</p>
+
                     <div class="hero-buttons">
                         <a href="#projects" class="btn btn-primary">Explorar Projetos</a>
-                        <a href="https://wa.me/5524998190280?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre%20um%20projeto..." class="btn btn-secondary" target="_blank"><i class="fa-brands fa-whatsapp"></i> Conversar agora</a>
+                        <a href="https://wa.me/5524998190280?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre%20um%20projeto..."
+                            class="btn btn-secondary" target="_blank"><i class="fa-brands fa-whatsapp"></i> Conversar
+                            agora</a>
                     </div>
                 </div>
 
                 <div class="hero-img">
-                    <img src="assets/img/perfil.png" alt="IgorDev Avatar">
+                    <div class="hero-img-wrapper">
+                        <img src="assets/img/perfil.webp" alt="IgorDev Avatar">
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- WhatsApp Floating Button -->
-        <a href="https://wa.me/5524998190280?text=Oi%20IgorDev!%20Vi%20seu%20portfolio%20e%20gostaria%20de%20falar%20com%20você." class="whatsapp-float" target="_blank" aria-label="Fale conosco pelo WhatsApp">
+        <a href="https://wa.me/5524998190280?text=Oi%20IgorDev!%20Vi%20seu%20portfolio%20e%20gostaria%20de%20falar%20com%20você."
+            class="whatsapp-float" target="_blank" aria-label="Fale conosco pelo WhatsApp">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
 
-        <!-- About Section  -->
+        <!-- About Section -->
         <section class="about-section" id="about">
-            <div class="section-container reveal">
+            <div class="section-container">
                 <div class="about-grid">
-                    <div class="about-img">
+                    <div class="about-img reveal-left">
                         <img src="assets/img/trabalho.svg" alt="Ilustração digital de trabalho">
                     </div>
 
-                    <div class="about-content">
+                    <div class="about-content reveal-right">
                         <h4>Quem é o IgorDev?</h4>
-                        <h2>Focado em <span>Resultados Reais</span></h2>
-                        <p>Sou Igor Laurindo, um desenvolvedor movido pela curiosidade e pela busca constante de eficiência. Minha missão é simplificar processos complexos através da tecnologia.</p>
-                        <p>Domino ferramentas como Python, JavaScript e WordPress para criar desde landing pages de alta conversão até automações robustas que integram APIs, planilhas e bots para WhatsApp. Se você busca produtividade e uma presença digital impactante, você está no lugar certo.</p>
+                        <h2 class="text-reveal">Focado em <span>*Resultados*</span> <span>*Reais*</span></h2>
+                        <p>Sou Igor Laurindo, um desenvolvedor movido pela curiosidade e pela busca constante de
+                            eficiência. Minha missão é simplificar processos complexos através da tecnologia.</p>
+                        <p>Domino ferramentas como Python, JavaScript e WordPress para criar desde landing pages de alta
+                            conversão até automações robustas que integram APIs, planilhas e bots para WhatsApp. Se você
+                            busca produtividade e uma presença digital impactante, você está no lugar certo.</p>
                         <br>
-                        <a href="./assets/my resume/IgorLaurindoResumo.pdf" class="btn btn-secondary" target="_blank">Currículo Completo</a>
+                        <a href="./assets/my resume/IgorLaurindoResumo.pdf" class="btn btn-secondary"
+                            target="_blank">Currículo Completo</a>
                     </div>
                 </div>
             </div>
@@ -109,24 +126,24 @@
         <!-- Skills Section -->
         <section class="skills-section" id="skills">
             <div class="section-container">
-                <h2 class="section-title reveal">Habilidades <span>Estratégicas</span></h2>
+                <h2 class="section-title">Habilidades <span>Estratégicas</span></h2>
                 <div class="skills-grid">
-                    <div class="skill-item reveal">
+                    <div class="skill-item reveal reveal-d1">
                         <i class="fa-brands fa-html5"></i>
                         <h4>Web Dev</h4>
                         <p>Sites dinâmicos, responsivos e otimizados para SEO.</p>
                     </div>
-                    <div class="skill-item reveal">
+                    <div class="skill-item reveal reveal-d2">
                         <i class="fa-brands fa-python"></i>
                         <h4>Automação</h4>
                         <p>Scripts inteligentes e integração de sistemas.</p>
                     </div>
-                    <div class="skill-item reveal">
+                    <div class="skill-item reveal reveal-d3">
                         <i class="fa-brands fa-whatsapp"></i>
                         <h4>Chatbots</h4>
                         <p>Fluxos automáticos para atendimento via WhatsApp.</p>
                     </div>
-                    <div class="skill-item reveal">
+                    <div class="skill-item reveal reveal-d4">
                         <i class="fa-solid fa-cloud"></i>
                         <h4>APIs & Cloud</h4>
                         <p>Integração com Google Cloud, Gemini e mais.</p>
@@ -138,10 +155,10 @@
         <!-- Projects Section -->
         <section class="projects-section" id="projects">
             <div class="section-container">
-                <h2 class="section-title reveal">Projetos <span>em Destaque</span></h2>
-                
+                <h2 class="section-title">Projetos <span>em Destaque</span></h2>
+
                 <div class="projects-grid">
-                    <div class="project-card reveal">
+                    <div class="project-card reveal reveal-d1">
                         <div class="project-icon"><i class="fa-brands fa-wordpress"></i></div>
                         <h4>Rápido & Seguro</h4>
                         <p>Landing Page otimizada para logística, focada em performance e conversão direta.</p>
@@ -151,11 +168,12 @@
                             <span>Astra</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/rapido-seguro" class="btn-link" target="_blank">Ver Case <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <a href="https://github.com/Igorls34/rapido-seguro" class="btn-link" target="_blank">Ver Case
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
 
-                    <div class="project-card reveal">
+                    <div class="project-card reveal reveal-d2">
                         <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
                         <h4>WhatsApp Auto-Bot</h4>
                         <p>Automação de agendamentos com integração direta ao Google Calendar.</p>
@@ -165,11 +183,12 @@
                             <span>API</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link" target="_blank">Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link"
+                                target="_blank">Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
 
-                    <div class="project-card reveal">
+                    <div class="project-card reveal reveal-d3">
                         <div class="project-icon"><i class="fa-solid fa-folder-tree"></i></div>
                         <h4>Navegação Otimizada</h4>
                         <p>Extensão que acelera o acesso a servidores de rede em ambientes escolares.</p>
@@ -178,7 +197,8 @@
                             <span>Chrome API</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link" target="_blank">Ver Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link"
+                                target="_blank">Ver Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
                 </div>
@@ -187,13 +207,15 @@
 
         <!-- Contact Section -->
         <section id="contact">
-            <div class="contact-container reveal">
-                <div class="contact-info">
-                    <h2>Vamos <span>Conectar?</span></h2>
-                    <p>Tem um projeto em mente ou precisa automatizar processos? Vamos transformar seu desafio em solução.</p>
+            <div class="contact-container">
+                <div class="contact-info reveal-left">
+                    <h2 class="text-reveal">Vamos <span>*Conectar?*</span></h2>
+                    <p>Tem um projeto em mente ou precisa automatizar processos? Vamos transformar seu desafio em
+                        solução.</p>
 
                     <div class="direct-channels">
-                        <a href="https://wa.me/5524998190280?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre..." class="channel-item" target="_blank">
+                        <a href="https://wa.me/5524998190280?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre..."
+                            class="channel-item" target="_blank">
                             <div class="icon-box whatsapp">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </div>
@@ -205,13 +227,16 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="https://github.com/Igorls34" class="social-icon" target="_blank"><i class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/igor-laurindo-5135aa246/" class="social-icon" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="https://www.instagram.com/igor_devofc/" class="social-icon" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://github.com/Igorls34" class="social-icon" target="_blank"><i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/igor-laurindo-5135aa246/" class="social-icon"
+                            target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/igor_devofc/" class="social-icon" target="_blank"><i
+                                class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
 
-                <form id="contact-form" class="contact-form">
+                <form id="contact-form" class="contact-form reveal-right">
                     <div class="form-group">
                         <label for="name">Nome Completo</label>
                         <input type="text" id="name" name="name" placeholder="Seu nome aqui" required>
@@ -224,7 +249,8 @@
 
                     <div class="form-group">
                         <label for="message">Mensagem</label>
-                        <textarea id="message" name="message" rows="5" placeholder="Descreva brevemente o seu projeto..." required></textarea>
+                        <textarea id="message" name="message" rows="5"
+                            placeholder="Descreva brevemente o seu projeto..." required></textarea>
                     </div>
 
                     <button type="submit" id="submit-btn" class="btn-submit">Enviar Proposta</button>
@@ -237,12 +263,11 @@
     </main>
 
     <footer>
-        <div class="section-container">
+        <div class="section-container" style="padding: 40px 20px;">
             <p>&copy; 2026 IgorDev – Desenvolvido com foco em performance.</p>
         </div>
     </footer>
 
-    <!-- JS -->
     <script src="./assets/js/script.js"></script>
 
 </body>
