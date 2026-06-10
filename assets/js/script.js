@@ -470,16 +470,22 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
             try {
                 const response = await fetch(BACKEND_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode: 'cors',
                     body: JSON.stringify(formData),
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'text/plain;charset=utf-8',
                     }
                 });
 
-                messageDiv.style.display = 'block';
-                messageDiv.innerHTML = '<p style="color:#22c55e; background:rgba(34,197,94,0.08); padding:16px; border-radius:12px; border:1px solid rgba(34,197,94,0.3);">Mensagem enviada com sucesso! Em breve entrarei em contato.</p>';
-                contactForm.reset();
+                const result = await response.json();
+
+                if (result.success) {
+                    messageDiv.style.display = 'block';
+                    messageDiv.innerHTML = '<p style="color:#22c55e; background:rgba(34,197,94,0.08); padding:16px; border-radius:12px; border:1px solid rgba(34,197,94,0.3);">Mensagem enviada com sucesso! Em breve entrarei em contato.</p>';
+                    contactForm.reset();
+                } else {
+                    throw new Error(result.error || 'Erro no servidor');
+                }
             } catch (err) {
                 messageDiv.style.display = 'block';
                 messageDiv.innerHTML = '<p style="color:#ef4444; background:rgba(239,68,68,0.08); padding:16px; border-radius:12px; border:1px solid rgba(239,68,68,0.3);">Erro ao enviar. Por favor, use o WhatsApp como alternativa.</p>';
