@@ -15,8 +15,9 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
         document.body.appendChild(cursor);
         document.body.appendChild(dot);
 
-        let cursorX = 0, cursorY = 0;
-        let dotX = 0, dotY = 0;
+        let cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
+        let dotX = cursorX, dotY = cursorY;
+        let circleX = cursorX, circleY = cursorY;
 
         document.addEventListener('mousemove', (e) => {
             cursorX = e.clientX;
@@ -40,15 +41,15 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
         });
 
         function animate() {
-            dotX += (cursorX - dotX) * 0.2;
-            dotY += (cursorY - dotY) * 0.2;
+            dotX += (cursorX - dotX) * 0.35;
+            dotY += (cursorY - dotY) * 0.35;
             dot.style.left = dotX + 'px';
             dot.style.top = dotY + 'px';
 
-            const cursorLagX = cursorX + (cursorX - dotX) * 3;
-            const cursorLagY = cursorY + (cursorY - dotY) * 3;
-            cursor.style.left = cursorLagX + 'px';
-            cursor.style.top = cursorLagY + 'px';
+            circleX += (dotX - circleX) * 0.12;
+            circleY += (dotY - circleY) * 0.12;
+            cursor.style.left = circleX + 'px';
+            cursor.style.top = circleY + 'px';
 
             requestAnimationFrame(animate);
         }
