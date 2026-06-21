@@ -1,6 +1,5 @@
 const BOT_WHATSAPP = "http://2.24.124.93:3000";
 const BOT_EMAIL = "http://2.24.124.93:3001";
-const OWNER_PHONE = "5524998574876";
 
 (function () {
     'use strict';
@@ -471,17 +470,12 @@ const OWNER_PHONE = "5524998574876";
             const emailHtml = `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #f9fafb; border-radius: 16px; overflow: hidden; border: 1px solid #1f1f1f;">
                     <div style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 40px 30px; text-align: center;">
-                        <h1 style="margin: 0; font-size: 24px; font-weight: 800;">Obrigado pelo contato, ${escapeHtml(name)}!</h1>
-                        <p style="margin: 10px 0 0; opacity: 0.9; font-size: 16px;">Recebi sua mensagem e vou responder em breve.</p>
+                        <h1 style="margin: 0; font-size: 24px; font-weight: 800;">Olá, ${escapeHtml(name)}!</h1>
                     </div>
                     <div style="padding: 30px;">
-                        <p style="font-size: 16px; line-height: 1.6; color: #9ca3af;">Olá <strong style="color: #f9fafb;">${escapeHtml(name)}</strong>,</p>
-                        <p style="font-size: 16px; line-height: 1.6; color: #9ca3af;">Obrigado por entrar em contato! Sua mensagem foi recebida com sucesso. Em breve analisarei seu projeto e retornarei o contato.</p>
-                        <div style="background: #111; border: 1px solid #1f1f1f; border-radius: 12px; padding: 20px; margin: 25px 0;">
-                            <p style="margin: 0 0 8px; font-size: 14px; color: #6b7280;">SUA MENSAGEM:</p>
-                            <p style="margin: 0; font-size: 15px; color: #d1d5db; font-style: italic;">"${escapeHtml(message)}"</p>
-                        </div>
-                        <p style="font-size: 14px; color: #6b7280;">Atenciosamente,<br><strong style="color: #3b82f6;">Igor Laurindo</strong><br>IgorDev</p>
+                        <p style="font-size: 16px; line-height: 1.7; color: #9ca3af;">Recebi sua mensagem aqui no meu portfolio e vou analisar seu projeto com calma. Assim que possível te retorno pelo WhatsApp ou por aqui mesmo, beleza?</p>
+                        <p style="font-size: 16px; line-height: 1.7; color: #9ca3af;">Obrigado pela confiança!</p>
+                        <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">Abraço,<br><strong style="color: #3b82f6;">Igor Laurindo</strong><br>IgorDev</p>
                         <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #1f1f1f; text-align: center;">
                             <a href="https://igordev.netlify.app" style="color: #3b82f6; text-decoration: none; font-weight: 600;">igordev.netlify.app</a>
                         </div>
@@ -489,15 +483,12 @@ const OWNER_PHONE = "5524998574876";
                 </div>
             `;
 
-            const whatsappMsg = `Olá *${name}*! 👋\n\nRecebi sua mensagem no meu portfolio e vou analisar seu projeto: *"${message}"*\n\nEm breve entro em contato com você. Obrigado pela confiança!\n\n— Igor Laurindo | IgorDev`;
+            const whatsappMsg = `Olá *${name}*! Tudo bem?\n\nRecebi sua mensagem aqui no meu portfolio. Vou analisar seu projeto com calma e assim que possível te retorno por aqui mesmo no WhatsApp ou por e-mail, beleza?\n\nObrigado pela confiança! 🙌\n\n— Igor Laurindo | IgorDev`;
 
-            const ownerMsg = `📩 *Novo contato no Portfolio!*\n\n👤 Nome: *${name}*\n📧 Email: ${email}\n📱 WhatsApp: ${phone}\n💬 Mensagem: "${message}"`;
-
-            let success = true;
             let results = [];
 
-            if (whatsappNumber) {
-                try {
+            try {
+                if (whatsappNumber) {
                     const res = await fetch(`${BOT_WHATSAPP}/api/enviar-mensagem`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -505,32 +496,22 @@ const OWNER_PHONE = "5524998574876";
                     });
                     const data = await res.json();
                     if (data.success) results.push('WhatsApp');
-                } catch (err) {
-                    results.push('WhatsApp (falhou)');
-                    success = false;
                 }
+            } catch (err) {
+                results.push('WhatsApp (falhou)');
             }
 
             try {
                 const res = await fetch(`${BOT_EMAIL}/api/enviar-email`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ para: email, assunto: `Obrigado pelo contato, ${name}! - IgorDev`, html: emailHtml })
+                    body: JSON.stringify({ para: email, assunto: `Recebi sua mensagem! - IgorDev`, html: emailHtml })
                 });
                 const data = await res.json();
                 if (data.success) results.push('E-mail');
             } catch (err) {
                 results.push('E-mail (falhou)');
-                success = false;
             }
-
-            try {
-                await fetch(`${BOT_WHATSAPP}/api/enviar-mensagem`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ numero: OWNER_PHONE, mensagem: ownerMsg })
-                });
-            } catch (err) { /* notifica o dono em segundo plano */ }
 
             button.textContent = 'Enviar Proposta';
             button.disabled = false;
