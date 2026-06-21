@@ -1,4 +1,4 @@
-const { describe, it, beforeEach, afterEach } = require('node:test');
+const { describe, it } = require('node:test');
 const assert = require('node:assert');
 
 describe('Contact Form', () => {
@@ -16,6 +16,12 @@ describe('Contact Form', () => {
       assert.strictEqual(isValid, false);
     });
 
+    it('should validate required phone field', () => {
+      const phone = '';
+      const isValid = phone.trim().length > 0;
+      assert.strictEqual(isValid, false);
+    });
+
     it('should validate required message field', () => {
       const message = '';
       const isValid = message.trim().length > 0;
@@ -26,38 +32,69 @@ describe('Contact Form', () => {
       const formData = {
         name: 'Igor',
         email: 'igor@example.com',
+        phone: '(24) 99999-8888',
         message: 'Quero um orcamento'
       };
       const isValid = formData.name.trim().length > 0
         && formData.email.trim().length > 0
+        && formData.phone.trim().length > 0
         && formData.message.trim().length > 0;
       assert.strictEqual(isValid, true);
     });
   });
 
-  describe('BACKEND_URL configuration', () => {
-    it('BACKEND_URL should be a non-empty string', () => {
-      const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbBJhK33K7hl4Um1gEXWEP9b9JzIHY6MYsD24OSPhARRunUdBJr/exec';
-      assert.ok(typeof BACKEND_URL === 'string');
-      assert.ok(BACKEND_URL.length > 0);
+  describe('Phone number formatting', () => {
+    it('should strip non-digits from phone', () => {
+      const phone = '(24) 99999-8888';
+      const digits = phone.replace(/\D/g, '');
+      assert.strictEqual(digits, '24999998888');
     });
 
-    it('BACKEND_URL should start with https', () => {
-      const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbBJhK33K7hl4Um1gEXWEP9b9JzIHY6MYsD24OSPhARRunUdBJr/exec';
-      assert.ok(BACKEND_URL.startsWith('https://'));
+    it('should add +55 prefix for 10-digit numbers', () => {
+      const digits = '2498887777';
+      const whatsappNumber = digits.length <= 11 ? '55' + digits : digits;
+      assert.strictEqual(whatsappNumber, '552498887777');
+    });
+
+    it('should add +55 prefix for 11-digit numbers', () => {
+      const digits = '24999998888';
+      const whatsappNumber = digits.length <= 11 ? '55' + digits : digits;
+      assert.strictEqual(whatsappNumber, '5524999998888');
     });
   });
 
-  describe('Response handling', () => {
-    it('should detect success response', () => {
-      const response = { success: true };
-      assert.strictEqual(response.success, true);
+  describe('HTML escaping', () => {
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    it('should escape HTML special chars', () => {
+      const result = escapeHtml('<script>alert("xss")</script>');
+      assert.ok(!result.includes('<script>'));
+      assert.ok(result.includes('&lt;script&gt;'));
     });
 
-    it('should detect failure response', () => {
-      const response = { success: false, error: 'Server error' };
-      assert.strictEqual(response.success, false);
-      assert.ok(typeof response.error === 'string');
+    it('should preserve normal text', () => {
+      const result = escapeHtml('Igor Laurindo');
+      assert.strictEqual(result, 'Igor Laurindo');
+    });
+  });
+
+  describe('Bot endpoints configuration', () => {
+    it('BOT_WHATSAPP should be a valid URL', () => {
+      const url = 'http://2.24.124.93:3000';
+      assert.ok(url.startsWith('http://'));
+      assert.ok(url.includes('.'));
+    });
+
+    it('BOT_EMAIL should be a valid URL', () => {
+      const url = 'http://2.24.124.93:3001';
+      assert.ok(url.startsWith('http://'));
+      assert.ok(url.includes('.'));
     });
   });
 });

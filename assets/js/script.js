@@ -1,4 +1,6 @@
-const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbBJhK33K7hl4Um1gEXWEP9b9JzIHY6MYsD24OSPhARRunUdBJr/exec";
+const BOT_WHATSAPP = "http://2.24.124.93:3000";
+const BOT_EMAIL = "http://2.24.124.93:3001";
+const OWNER_PHONE = "5524998574876";
 
 (function () {
     'use strict';
@@ -440,7 +442,7 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
         });
     }
 
-    /* ========== FORM HANDLER (FIXED) ========== */
+    /* ========== FORM HANDLER ========== */
     function initForm() {
         const contactForm = document.getElementById('contact-form');
         if (!contactForm) return;
@@ -456,40 +458,98 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
             messageDiv.innerHTML = '';
             messageDiv.style.display = 'none';
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                message: document.getElementById('message').value
-            };
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            const phoneDigits = phone.replace(/\D/g, '');
+            const whatsappNumber = phoneDigits.length >= 10 && phoneDigits.length <= 13
+                ? (phoneDigits.length <= 11 ? '55' + phoneDigits : phoneDigits)
+                : null;
+
+            const emailHtml = `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #f9fafb; border-radius: 16px; overflow: hidden; border: 1px solid #1f1f1f;">
+                    <div style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 40px 30px; text-align: center;">
+                        <h1 style="margin: 0; font-size: 24px; font-weight: 800;">Obrigado pelo contato, ${escapeHtml(name)}!</h1>
+                        <p style="margin: 10px 0 0; opacity: 0.9; font-size: 16px;">Recebi sua mensagem e vou responder em breve.</p>
+                    </div>
+                    <div style="padding: 30px;">
+                        <p style="font-size: 16px; line-height: 1.6; color: #9ca3af;">Olá <strong style="color: #f9fafb;">${escapeHtml(name)}</strong>,</p>
+                        <p style="font-size: 16px; line-height: 1.6; color: #9ca3af;">Obrigado por entrar em contato! Sua mensagem foi recebida com sucesso. Em breve analisarei seu projeto e retornarei o contato.</p>
+                        <div style="background: #111; border: 1px solid #1f1f1f; border-radius: 12px; padding: 20px; margin: 25px 0;">
+                            <p style="margin: 0 0 8px; font-size: 14px; color: #6b7280;">SUA MENSAGEM:</p>
+                            <p style="margin: 0; font-size: 15px; color: #d1d5db; font-style: italic;">"${escapeHtml(message)}"</p>
+                        </div>
+                        <p style="font-size: 14px; color: #6b7280;">Atenciosamente,<br><strong style="color: #3b82f6;">Igor Laurindo</strong><br>IgorDev</p>
+                        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #1f1f1f; text-align: center;">
+                            <a href="https://igordev.netlify.app" style="color: #3b82f6; text-decoration: none; font-weight: 600;">igordev.netlify.app</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const whatsappMsg = `Olá *${name}*! 👋\n\nRecebi sua mensagem no meu portfolio e vou analisar seu projeto: *"${message}"*\n\nEm breve entro em contato com você. Obrigado pela confiança!\n\n— Igor Laurindo | IgorDev`;
+
+            const ownerMsg = `📩 *Novo contato no Portfolio!*\n\n👤 Nome: *${name}*\n📧 Email: ${email}\n📱 WhatsApp: ${phone}\n💬 Mensagem: "${message}"`;
+
+            let success = true;
+            let results = [];
+
+            if (whatsappNumber) {
+                try {
+                    const res = await fetch(`${BOT_WHATSAPP}/api/enviar-mensagem`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ numero: whatsappNumber, mensagem: whatsappMsg })
+                    });
+                    const data = await res.json();
+                    if (data.success) results.push('WhatsApp');
+                } catch (err) {
+                    results.push('WhatsApp (falhou)');
+                    success = false;
+                }
+            }
 
             try {
-                const response = await fetch(BACKEND_URL, {
+                const res = await fetch(`${BOT_EMAIL}/api/enviar-email`, {
                     method: 'POST',
-                    mode: 'cors',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    }
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ para: email, assunto: `Obrigado pelo contato, ${name}! - IgorDev`, html: emailHtml })
                 });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    messageDiv.style.display = 'block';
-                    messageDiv.innerHTML = '<p style="color:#22c55e; background:rgba(34,197,94,0.08); padding:16px; border-radius:12px; border:1px solid rgba(34,197,94,0.3);">Mensagem enviada com sucesso! Em breve entrarei em contato.</p>';
-                    contactForm.reset();
-                } else {
-                    throw new Error(result.error || 'Erro no servidor');
-                }
+                const data = await res.json();
+                if (data.success) results.push('E-mail');
             } catch (err) {
+                results.push('E-mail (falhou)');
+                success = false;
+            }
+
+            try {
+                await fetch(`${BOT_WHATSAPP}/api/enviar-mensagem`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ numero: OWNER_PHONE, mensagem: ownerMsg })
+                });
+            } catch (err) { /* notifica o dono em segundo plano */ }
+
+            button.textContent = 'Enviar Proposta';
+            button.disabled = false;
+
+            if (results.length > 0) {
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = `<p style="color:#22c55e; background:rgba(34,197,94,0.08); padding:16px; border-radius:12px; border:1px solid rgba(34,197,94,0.3);">Mensagem enviada! ${results.join(' e ')} enviados com sucesso. Em breve entro em contato.</p>`;
+                contactForm.reset();
+            } else {
                 messageDiv.style.display = 'block';
                 messageDiv.innerHTML = '<p style="color:#ef4444; background:rgba(239,68,68,0.08); padding:16px; border-radius:12px; border:1px solid rgba(239,68,68,0.3);">Erro ao enviar. Por favor, use o WhatsApp como alternativa.</p>';
-                console.error('Erro:', err);
-            } finally {
-                button.textContent = 'Enviar Proposta';
-                button.disabled = false;
             }
         });
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     /* ========== INIT ALL ========== */
