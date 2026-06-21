@@ -86,15 +86,15 @@ describe('Contact Form', () => {
 
   describe('Bot endpoints configuration', () => {
     it('BOT_WHATSAPP should be a valid URL', () => {
-      const url = 'http://2.24.124.93:3000';
-      assert.ok(url.startsWith('http://'));
-      assert.ok(url.includes('.'));
+      const url = 'https://api.thessarasemijoias.com.br/wpp';
+      assert.ok(url.startsWith('https://'));
+      assert.ok(url.includes('api'));
     });
 
     it('BOT_EMAIL should be a valid URL', () => {
-      const url = 'http://2.24.124.93:3001';
-      assert.ok(url.startsWith('http://'));
-      assert.ok(url.includes('.'));
+      const url = 'https://api.thessarasemijoias.com.br/email';
+      assert.ok(url.startsWith('https://'));
+      assert.ok(url.includes('api'));
     });
   });
 });

@@ -1,5 +1,5 @@
-const BOT_WHATSAPP = "http://2.24.124.93:3000";
-const BOT_EMAIL = "http://2.24.124.93:3001";
+const BOT_WHATSAPP = "https://api.thessarasemijoias.com.br/wpp";
+const BOT_EMAIL = "https://api.thessarasemijoias.com.br/email";
 
 (function () {
     'use strict';
