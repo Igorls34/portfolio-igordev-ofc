@@ -13,7 +13,7 @@ Este é o portfólio profissional de **Igor Laurindo (IgorDev)**, focado em dese
 - **Sobre:** História e foco profissional de Igor Laurindo.
 - **Habilidades:** Principais tecnologias dominadas (Python, Web Dev, Automações).
 - **Projetos:** Exemplos de soluções em sites, bots e scripts.
-- **Contato:** Formulário integrado via Formspree e links sociais.
+- **Contato:** Formulário integrado via Google Apps Script e links sociais.
 
 ## Autor
 **Igor Laurindo** - IgorDev

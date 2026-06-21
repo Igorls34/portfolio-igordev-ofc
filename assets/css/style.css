@@ -35,7 +35,6 @@ body {
     line-height: 1.6;
     background-color: var(--bg-dark);
     overflow-x: hidden;
-    cursor: none;
 }
 
 a {
@@ -116,6 +115,25 @@ ul {
 @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+}
+
+/* ============ SKIP TO CONTENT ============ */
+.skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    background: var(--gradient-2);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    z-index: 10001;
+    transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+    top: 16px;
 }
 
 /* ============ CONTAINERS ============ */

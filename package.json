@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-igordev",
+  "version": "1.0.0",
+  "description": "Portfolio profissional de Igor Laurindo (IgorDev)",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve .",
+    "lint:css": "npx stylelint \"assets/css/**/*.css\"",
+    "lint:js": "npx eslint \"assets/js/**/*.js\"",
+    "lint": "npm run lint:css && npm run lint:js",
+    "test": "node --test tests/*.test.js"
+  },
+  "keywords": ["portfolio", "freelancer", "web-development"],
+  "author": "Igor Laurindo",
+  "license": "MIT"
+}

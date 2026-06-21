@@ -374,19 +374,9 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
     function initParallax() {
         if (window.matchMedia('(max-width: 768px)').matches) return;
 
-        const sections = document.querySelectorAll('.about-section, .skills-section, .projects-section');
         const heroImg = document.querySelector('.hero-img-wrapper');
 
         window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-
-            sections.forEach(section => {
-                const speed = 0.03;
-                const rect = section.getBoundingClientRect();
-                const offset = (rect.top + rect.height / 2 - window.innerHeight / 2) * speed;
-                const gradient = section.querySelector('::before');
-            });
-
             if (heroImg) {
                 const heroRect = document.querySelector('.hero-section').getBoundingClientRect();
                 const progress = Math.max(0, Math.min(1, -heroRect.top / heroRect.height));
@@ -425,8 +415,11 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
 
         menuToggle.addEventListener('click', () => {
             navMenu.classList.toggle('active');
+            const expanded = navMenu.classList.contains('active');
+            menuToggle.setAttribute('aria-expanded', expanded);
+            menuToggle.setAttribute('aria-label', expanded ? 'Fechar menu' : 'Abrir menu');
             const icon = menuToggle.querySelector('i');
-            if (navMenu.classList.contains('active')) {
+            if (expanded) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-xmark');
             } else {
@@ -438,6 +431,8 @@ const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTUAx9ctYqkeIIBNbB
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                menuToggle.setAttribute('aria-label', 'Abrir menu');
                 const icon = menuToggle.querySelector('i');
                 icon.classList.remove('fa-xmark');
                 icon.classList.add('fa-bars');
