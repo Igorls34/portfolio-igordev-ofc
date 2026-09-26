@@ -29,6 +29,12 @@ html {
     scrollbar-color: #1f1f1f #050505;
 }
 
+/* Compensa o header fixo ao navegar por ancora, senao o titulo da
+   secao fica escondido atras dele. */
+section[id] {
+    scroll-margin-top: 90px;
+}
+
 body {
     font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
     color: var(--text-white);
@@ -1111,46 +1117,52 @@ footer p {
 }
 
 /* ============ REVEAL ANIMATIONS ============ */
-.reveal {
+/* Tudo abaixo so vale quando ha JS. Sem JS (ou se o script falhar) os
+   elementos permanecem visiveis em vez de fic presos em opacity: 0. */
+.js .reveal {
     opacity: 0;
     transform: translateY(50px);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.active {
+.js .reveal.active {
     opacity: 1;
     transform: translateY(0);
 }
 
-.reveal-left {
+.js .reveal-left {
     opacity: 0;
     transform: translateX(-60px);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-left.active {
+.js .reveal-left.active {
     opacity: 1;
     transform: translateX(0);
 }
 
-.reveal-right {
+.js .reveal-right {
     opacity: 0;
     transform: translateX(60px);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-right.active {
+.js .reveal-right.active {
     opacity: 1;
     transform: translateX(0);
 }
 
-.reveal-scale {
+.js .reveal-scale {
     opacity: 0;
     transform: scale(0.9);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-scale.active {
+.js .reveal-scale.active {
     opacity: 1;
     transform: scale(1);
 }
