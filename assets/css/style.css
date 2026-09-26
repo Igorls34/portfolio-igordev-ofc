@@ -858,11 +858,6 @@ nav ul li a:hover::after {
     display: block;
     width: 100%;
     height: auto;
-    /* O certificado e paisagem (1120x793). Declarar a proporcao reserva o
-     * espaco antes da imagem chegar: sem isso as 49 imagens empurrariam o
-     * rodape a cada carga e a pagina daria um salto. */
-    aspect-ratio: 1120 / 793;
-    object-fit: cover;
 }
 
 /* So entra em cena se a certificacao tiver url. Sem link, o figcaption nem

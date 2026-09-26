@@ -37,6 +37,7 @@ const PUBLICADOS = [
     'robots.txt',
     'sitemap.xml',
     'assets',
+    'certificados_webp',
     'relatorio'
 ];
 

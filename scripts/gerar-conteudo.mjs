@@ -1,4 +1,5 @@
-/* Gera o HTML das secoes de habilidades e projetos a partir do JSON.
+/* Gera o HTML das secoes de habilidades e projetos a partir do JSON, e a
+ * galeria de certificados a partir dos WebP convertidos localmente.
  *
  * Por que gerar em vez de buscar no navegador: o conteudo continua no HTML
  * entregue, que e o que o Google le. Um fetch feito pelo cliente tiraria
@@ -11,7 +12,7 @@
  * usa, para os dois lados escaparem do mesmo jeito.
  */
 
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, readdir, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -26,6 +27,7 @@ const require = createRequire(import.meta.url);
 const { escapeHtml } = require(path.join(RAIZ, 'assets', 'js', 'core.js'));
 
 const JSON_PATH = path.join(RAIZ, 'data', 'portfolio.json');
+const CERTS_WEBP_DIR = path.join(RAIZ, 'certificados_webp');
 
 /* O atraso da animacao de entrada vai ate d4 no CSS. Um quinto card receberia
  * uma classe sem estilo e apareceria sem o atraso, destoando dos outros. */
@@ -65,7 +67,6 @@ function renderCert(cert, indice) {
     const alt = cert.issuer
         ? `Certificado de ${cert.issuer}: ${cert.name}`
         : `Certificado: ${cert.name}`;
-
     const linhas = [
         `                    <figure class="cert-card ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
         `                        <img class="cert-img" src="${escapeHtml(cert.image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">`
@@ -151,6 +152,44 @@ function conferirCertificacoes(certificacoes) {
     });
 }
 
+export function descobrirCertificacoes(certificacoes, arquivosWebp) {
+    const metadados = new Map();
+    certificacoes.forEach(cert => {
+        const nomeImagem = cert.image ? path.parse(cert.image).name : '';
+        const id = String(cert.id || '').toLowerCase();
+        if (id) metadados.set(id, cert);
+        if (nomeImagem) metadados.set(nomeImagem.toLowerCase(), cert);
+    });
+    return arquivosWebp
+        .filter(arquivo => path.posix.extname(arquivo).toLowerCase() === '.webp')
+        .sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }))
+        .map(arquivo => {
+            const nome = path.posix.parse(arquivo).name;
+            const pastaCertificado = path.posix.basename(path.posix.dirname(arquivo));
+            const existente = metadados.get(pastaCertificado.toLowerCase())
+                || metadados.get(nome.toLowerCase());
+            const id = nome.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+
+            return {
+                ...(existente || {}),
+                id,
+                name: existente?.name || `Certificado ${pastaCertificado}`,
+                image: `certificados_webp/${arquivo}`
+            };
+        });
+}
+
+async function listarWebp(diretorio, relativo = '') {
+    const entradas = await readdir(path.join(diretorio, relativo), { withFileTypes: true });
+    const arquivos = await Promise.all(entradas.map(entrada => {
+        const caminho = path.posix.join(relativo, entrada.name);
+        return entrada.isDirectory()
+            ? listarWebp(diretorio, caminho)
+            : path.extname(entrada.name).toLowerCase() === '.webp' ? [caminho] : [];
+    }));
+    return arquivos.flat();
+}
+
 export function gerarHtml(dados) {
     const skills = Array.isArray(dados.skills) ? dados.skills : [];
     const projetos = Array.isArray(dados.projects) ? dados.projects : [];
@@ -220,7 +259,14 @@ async function main() {
     }
 
     const dados = JSON.parse(await readFile(JSON_PATH, 'utf8'));
-    const { skills, projects, certifications, temCertificacoes } = gerarHtml(dados);
+    const certificacoes = descobrirCertificacoes(
+        Array.isArray(dados.certifications) ? dados.certifications : [],
+        await listarWebp(CERTS_WEBP_DIR)
+    );
+    const { skills, projects, certifications, temCertificacoes } = gerarHtml({
+        ...dados,
+        certifications: certificacoes
+    });
 
     const indexPath = path.join(RAIZ, 'index.html');
     const original = await readFile(indexPath, 'utf8');
@@ -239,7 +285,7 @@ async function main() {
     await writeFile(indexPath, final, 'utf8');
     console.log(`[conteudo] index.html atualizado: ${dados.skills.length} habilidade(s), `
         + `${dados.projects.length} projeto(s), `
-        + `${temCertificacoes ? dados.certifications.length : 0} certificacao(oes)`);
+        + `${certificacoes.length} certificacao(oes)`);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {

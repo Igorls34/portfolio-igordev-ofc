@@ -12,6 +12,18 @@ const INDEX = path.join(ROOT, 'index.html');
 
 const dados = JSON.parse(fs.readFileSync(JSON_PATH, 'utf8'));
 const html = fs.readFileSync(INDEX, 'utf8');
+function listarWebp(diretorio, relativo = '') {
+    return fs.readdirSync(path.join(diretorio, relativo), { withFileTypes: true })
+        .flatMap(entrada => {
+            const caminho = path.join(relativo, entrada.name);
+            return entrada.isDirectory()
+                ? listarWebp(diretorio, caminho)
+                : /\.webp$/i.test(entrada.name) ? [caminho] : [];
+        });
+}
+
+const certificadosWebp = listarWebp(path.join(ROOT, 'certificados_webp'))
+    .map(arquivo => arquivo.split(path.sep).join('/'));
 
 /* O gerador e .mjs e o package.json nao declara "type": "module" -- os testes
  * de browser sao CommonJS de proposito. Importar por URL resolve os dois.
@@ -20,10 +32,12 @@ const html = fs.readFileSync(INDEX, 'utf8');
  * ele so roda a escrita quando o processo e o proprio script. Sem esse guard,
  * o simples import reescreveria o index.html no meio da suite. */
 let gerarHtml;
+let descobrirCertificacoes;
 before(async () => {
     const mod = await import(
         url.pathToFileURL(path.join(ROOT, 'scripts', 'gerar-conteudo.mjs')).href);
     gerarHtml = mod.gerarHtml;
+    descobrirCertificacoes = mod.descobrirCertificacoes;
 });
 
 /* ---------- O JSON e uma fonte valida ---------- */
@@ -79,6 +93,28 @@ describe('data/portfolio.json', () => {
             assert.ok(/^fa-(solid|brands|regular) fa-[a-z0-9-]+$/.test(p.icon),
                 p.id + ' com icone fora do padrao: ' + p.icon);
         });
+    });
+});
+
+describe('descoberta das imagens de certificacao', () => {
+    it('itera WebPs em subpastas e associa metadados pelo nome da pasta', () => {
+        const certificados = descobrirCertificacoes([
+            { id: 'alpha', image: 'assets/certs/alpha.webp', name: 'Certificado Alpha', issuer: 'DIO' }
+        ], ['alpha/alpha_pagina_001.webp', 'novo/novo_pagina_001.webp', 'ignorado/arquivo.png']);
+
+        assert.deepStrictEqual(certificados, [
+            {
+                id: 'alpha_pagina_001',
+                image: 'certificados_webp/alpha/alpha_pagina_001.webp',
+                name: 'Certificado Alpha',
+                issuer: 'DIO'
+            },
+            {
+                id: 'novo_pagina_001',
+                name: 'Certificado novo',
+                image: 'certificados_webp/novo/novo_pagina_001.webp'
+            }
+        ]);
     });
 });
 
@@ -141,15 +177,15 @@ describe('HTML gerado a partir do JSON', () => {
 
     it('cada certificacao do JSON vira um card no HTML', () => {
         const cards = html.match(/<figure class="cert-card[^"]*"/g) || [];
-        assert.strictEqual(cards.length, dados.certifications.length,
-            'JSON tem ' + dados.certifications.length + ' e o HTML tem ' + cards.length);
+        assert.strictEqual(cards.length, certificadosWebp.length,
+            'WebPs encontrados: ' + certificadosWebp.length + ' e cards no HTML: ' + cards.length);
     });
 
     it('o card da certificacao e so a imagem, sem texto repetido', () => {
         /* Titulo, emissor e sigla ja estao impressos no certificado. Se o card
          * volta a ter <h3> ou <p>, o mesmo texto aparece duas vezes na tela. */
         const cards = html.split('<figure class="cert-card').slice(1);
-        assert.strictEqual(cards.length, dados.certifications.length);
+        assert.strictEqual(cards.length, certificadosWebp.length);
         cards.forEach(card => {
             const corpo = card.split('</figure>')[0];
             assert.ok(!/<h[1-6]/.test(corpo), 'card de certificacao com titulo visivel');
@@ -160,35 +196,28 @@ describe('HTML gerado a partir do JSON', () => {
     });
 
     it('cada imagem de certificacao aponta para o arquivo do projeto', () => {
-        dados.certifications.forEach(c => {
-            assert.ok(c.image, 'certificacao sem image: ' + c.id);
-            assert.ok(!/^([a-z]+:)?\/\//i.test(c.image) && !c.image.startsWith('/'),
-                c.id + ' com image fora do site: ' + c.image);
-            const existe = existsSync(path.join(ROOT, c.image));
-            assert.ok(existe, 'imagem inexistente: ' + c.image);
+        certificadosWebp.forEach(arquivo => {
+            const src = `certificados_webp/${arquivo}`;
+            assert.ok(html.includes(`src="${src}"`), 'WebP ausente na galeria: ' + src);
+            assert.ok(existsSync(path.join(ROOT, src)), 'WebP inexistente: ' + src);
         });
     });
 
     it('toda imagem tem alt, que e o texto que sobra do certificado', () => {
         /* A imagem e o card inteiro, entao o alt nao e enfeite: e o unico texto
          * que um leitor de tela anuncia e o que o Google le. */
-        const semAlt = dados.certifications.filter(c => !c.name);
-        assert.strictEqual(semAlt.length, 0,
-            'certificacao sem nome para montar o alt: ' + semAlt.map(c => c.id).join(', '));
-        const alts = html.match(/<img [^>]*class="cert-img"[^>]*>/g) || [];
-        assert.strictEqual(alts.length, dados.certifications.length,
-            'JSON tem ' + dados.certifications.length + ' e o HTML tem ' + alts.length);
+        const alts = html.match(/<img [^>]*class="cert-img[^>]*>/g) || [];
+        assert.strictEqual(alts.length, certificadosWebp.length,
+            'WebPs encontrados: ' + certificadosWebp.length + ' e imagens no HTML: ' + alts.length);
         alts.forEach(tag => {
             const alt = /alt="([^"]*)"/.exec(tag);
-            assert.ok(alt, 'img de certificacao sem alt: ' + tag);
+            assert.ok(alt, 'imagem de certificacao sem alt: ' + tag);
             assert.ok(alt[1].trim().length > 0, 'alt vazio: ' + tag);
         });
     });
 
-    it('as 49 imagens nao sao carregadas de uma vez', () => {
-        /* Sem loading="lazy" o navegador abre as 49 conexoes assim que a pagina
-         * carrega, mesmo com a secao bem abaixo da dobra. */
-        const imgs = html.match(/<img [^>]*cert[^>]*>/g) || [];
+    it('as imagens da galeria usam carregamento lazy', () => {
+        const imgs = html.match(/<img [^>]*class="cert-img"[^>]*>/g) || [];
         imgs.forEach(tag => {
             assert.ok(/loading="lazy"/.test(tag), 'imagem sem loading lazy: ' + tag);
         });

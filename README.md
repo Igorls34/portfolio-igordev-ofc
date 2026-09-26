@@ -103,6 +103,13 @@ Push na `main` dispara o GitHub Actions, que publica na Netlify. Precisa dos
 secrets `NETLIFY_AUTH_TOKEN` e `NETLIFY_SITE_ID` no repositório. O passo a
 passo está em `DEPLOY_CHECKLIST.md`.
 
+### Certificados
+
+Para adicionar um certificado, coloque o PDF em `certificados/` e rode
+`python conversor.py`. A galeria percorre automaticamente os WebPs em
+`certificados_webp/` na próxima geração/publicação; não é necessário editar o
+HTML ou o JSON. Cada imagem mantém a proporção original do WebP.
+
 ## Acessibilidade e desempenho
 
 - `prefers-reduced-motion` respeitado no CSS **e** no JS (partículas, cursor,
