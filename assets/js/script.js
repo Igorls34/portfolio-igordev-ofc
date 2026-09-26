@@ -17,6 +17,7 @@ function toWhatsAppNumber(phone) {
     function initCursor() {
         if (window.matchMedia('(max-width: 992px)').matches) return;
         if (window.matchMedia('(pointer: coarse)').matches) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const cursor = document.createElement('div');
         cursor.className = 'cursor';
@@ -28,10 +29,41 @@ function toWhatsAppNumber(phone) {
         let cursorX = window.innerWidth / 2, cursorY = window.innerHeight / 2;
         let dotX = cursorX, dotY = cursorY;
         let circleX = cursorX, circleY = cursorY;
+        let frameId = null;
+
+        // O loop so roda enquanto o cursor esta em movimento. Sem isso o
+        // requestAnimationFrame ficava ativo o tempo todo, mesmo com a
+        // aba em segundo plano, gastando bateria.
+        function tick() {
+            dotX += (cursorX - dotX) * 0.35;
+            dotY += (cursorY - dotY) * 0.35;
+            circleX += (dotX - circleX) * 0.12;
+            circleY += (dotY - circleY) * 0.12;
+            dot.style.left = dotX + 'px';
+            dot.style.top = dotY + 'px';
+            cursor.style.left = circleX + 'px';
+            cursor.style.top = circleY + 'px';
+
+            const settled = Math.abs(cursorX - circleX) < 0.1
+                && Math.abs(cursorY - circleY) < 0.1
+                && Math.abs(cursorX - dotX) < 0.1
+                && Math.abs(cursorY - dotY) < 0.1;
+
+            if (settled) {
+                frameId = null;
+                return;
+            }
+            frameId = requestAnimationFrame(tick);
+        }
+
+        function start() {
+            if (frameId === null) frameId = requestAnimationFrame(tick);
+        }
 
         document.addEventListener('mousemove', (e) => {
             cursorX = e.clientX;
             cursorY = e.clientY;
+            start();
         });
 
         document.addEventListener('mouseleave', () => {
@@ -50,20 +82,10 @@ function toWhatsAppNumber(phone) {
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
 
-        function animate() {
-            dotX += (cursorX - dotX) * 0.35;
-            dotY += (cursorY - dotY) * 0.35;
-            dot.style.left = dotX + 'px';
-            dot.style.top = dotY + 'px';
-
-            circleX += (dotX - circleX) * 0.12;
-            circleY += (dotY - circleY) * 0.12;
-            cursor.style.left = circleX + 'px';
-            cursor.style.top = circleY + 'px';
-
-            requestAnimationFrame(animate);
-        }
-        animate();
+        // Ao voltar para a aba, o cursor pode estar deslocado do ultimo ponto.
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) start();
+        });
     }
 
     /* ========== SCROLL PROGRESS BAR ========== */
@@ -91,20 +113,25 @@ function toWhatsAppNumber(phone) {
         });
     }
 
-    /* ========== PARTICLES CANVAS ========== */
+    /* ========== PARTICLES CANVAS ============ */
     function initParticles() {
         const canvas = document.getElementById('hero-canvas');
         if (!canvas) return;
+        const hero = canvas.parentElement;
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        let animationId;
 
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
         const particleCount = isMobile ? 40 : 90;
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const LINK_DISTANCE = 100;
+
+        let particles = [];
+        let frameId = null;
+        let inView = true;
 
         function resize() {
-            canvas.width = canvas.parentElement.offsetWidth;
-            canvas.height = canvas.parentElement.offsetHeight;
+            canvas.width = hero.offsetWidth;
+            canvas.height = hero.offsetHeight;
         }
 
         class Particle {
@@ -150,7 +177,7 @@ function toWhatsAppNumber(phone) {
             }
         }
 
-        function animate() {
+        function drawFrame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(p => {
@@ -164,28 +191,67 @@ function toWhatsAppNumber(phone) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 100) {
+                    if (dist < LINK_DISTANCE) {
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        const lineOpacity = (1 - dist / 100) * 0.08;
+                        const lineOpacity = (1 - dist / LINK_DISTANCE) * 0.08;
                         ctx.strokeStyle = `rgba(59, 130, 246, ${lineOpacity})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
                 }
             }
+        }
 
-            animationId = requestAnimationFrame(animate);
+        function loop() {
+            drawFrame();
+            frameId = requestAnimationFrame(loop);
+        }
+
+        // Antes o rAF rodava para sempre, mesmo com o hero fora da tela ou a
+        // aba oculta. Sao ~4000 comparacoes de distancia por frame.
+        function start() {
+            if (reducedMotion) return;
+            if (frameId === null && inView && !document.hidden) {
+                frameId = requestAnimationFrame(loop);
+            }
+        }
+
+        function stop() {
+            if (frameId !== null) {
+                cancelAnimationFrame(frameId);
+                frameId = null;
+            }
         }
 
         resize();
         init();
-        animate();
 
+        // Com movimento reduzido o usuario recebe um quadro estatico, sem loop.
+        if (reducedMotion) {
+            drawFrame();
+        } else {
+            new IntersectionObserver((entries) => {
+                inView = entries[0].isIntersecting;
+                if (inView) start(); else stop();
+            }, { threshold: 0 }).observe(hero);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stop(); else start();
+            });
+
+            start();
+        }
+
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            resize();
-            init();
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                resize();
+                init();
+                if (reducedMotion) drawFrame();
+            }, 200);
         });
     }
 
@@ -339,6 +405,7 @@ function toWhatsAppNumber(phone) {
     /* ========== 3D TILT ON CARDS ========== */
     function initTiltCards() {
         if (window.matchMedia('(max-width: 992px)').matches) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const cards = document.querySelectorAll('.project-card, .skill-item');
 
@@ -398,6 +465,7 @@ function toWhatsAppNumber(phone) {
     /* ========== MAGNETIC BUTTONS ========== */
     function initMagneticButtons() {
         if (window.matchMedia('(max-width: 992px)').matches) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const buttons = document.querySelectorAll('.btn-primary, .btn-submit');
 
