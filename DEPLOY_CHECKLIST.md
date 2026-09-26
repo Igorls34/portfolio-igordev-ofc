@@ -14,10 +14,18 @@ netlify sites:create
 ```
 Anote o **Site ID** que aparece (ex: `abc123-def456-...`).
 
-O domínio já existente é `https://igordev.netlify.app` e é o que está
-referenciado no `canonical`, no Open Graph, no `robots.txt` e no
-`sitemap.xml`. Se você criar outro site, atualize esses quatro arquivos — ou
-melhor, compre um domínio próprio e aponte para ele.
+O domínio de produção é `https://igordev-portfolio-ofc.netlify.app`, e é o que
+está no `canonical`, no Open Graph, no `robots.txt` e no `sitemap.xml`.
+
+> **Atenção:** existe um `igordev.netlify.app` que responde 200, mas é **outro
+> site** — não é este portfolio. Ele já foi confundido com o de produção porque
+> todo mundo só olhava o status 200 e não o conteúdo. Confira sempre o título da
+> página, não só se ela abre. A URL real sai no log do deploy:
+> `Published on https://... as production`.
+>
+> Se você trocar de site, atualize os quatro arquivos acima. O teste
+> `dominio de producao` em `tests/core.test.js` falha se algum deles ficar
+> fora de sincronia, então o CI avisa antes de publicar.
 
 ### 3. Adicionar secrets no GitHub
 No repositório GitHub, vá em **Settings > Secrets and variables > Actions**:
@@ -72,13 +80,22 @@ com a home em qualquer URL errada, o que confunde buscadores (soft 404).
 ## Depois do deploy, confira
 
 ```bash
-curl -I https://igordev.netlify.app/                  # esperado: 200
-curl -I https://igordev.netlify.app/privacidade.html  # esperado: 200
-curl -I https://igordev.netlify.app/rota-que-nao-existe  # esperado: 404
+curl -I https://igordev-portfolio-ofc.netlify.app/                  # esperado: 200
+curl -I https://igordev-portfolio-ofc.netlify.app/privacidade.html  # esperado: 200
+curl -I https://igordev-portfolio-ofc.netlify.app/rota-que-nao-existe  # esperado: 404
 ```
 
 O último é o que garante que o `404.html` está de pé e que a URL inválida não
 volta a devolver 200.
+
+E confira o **conteúdo**, não só o status:
+
+```bash
+curl -s https://igordev-portfolio-ofc.netlify.app/ | grep -c "consent-banner"
+```
+
+Tem que vir `1`. Se vier `0`, você está olhando outro site — foi assim que o
+domínio errado entrou no `canonical` uma vez.
 
 Confira também, no navegador: aba **Network** recarregando a home com o
 `localStorage` limpo, e confirme que **nenhuma** requisição para

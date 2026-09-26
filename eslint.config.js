@@ -57,7 +57,11 @@ module.exports = [
             globals: {
                 require: 'readonly',
                 module: 'writable',
-                __dirname: 'readonly'
+                __dirname: 'readonly',
+                __filename: 'readonly',
+                URL: 'readonly',
+                TextDecoder: 'readonly',
+                process: 'readonly'
             }
         },
         rules: {

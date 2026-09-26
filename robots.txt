@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://igordev.netlify.app/sitemap.xml
+Sitemap: https://igordev-portfolio-ofc.netlify.app/sitemap.xml

@@ -1,6 +1,6 @@
 const BOT_WHATSAPP = "https://api.thessarasemijoias.com.br/wpp";
 const BOT_EMAIL = "https://api.thessarasemijoias.com.br/email";
-const SITE_URL = "https://igordev.netlify.app";
+const SITE_URL = "https://igordev-portfolio-ofc.netlify.app";
 
 const {
     escapeHtml,

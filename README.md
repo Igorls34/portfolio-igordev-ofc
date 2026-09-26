@@ -6,7 +6,7 @@ focado em sites responsivos, chatbots e automações.
 Site estático, sem framework e sem build. O que você edita é o que vai para
 produção.
 
-**Produção:** <https://igordev.netlify.app>
+**Produção:** <https://igordev-portfolio-ofc.netlify.app>
 
 ## Stack
 

@@ -1,7 +1,12 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const core = require('../assets/js/core.js');
+
+const ROOT = path.join(__dirname, '..');
+const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
 
 /* Estes testes exercitam o codigo que a pagina executa, via core.js.
  * A versao antiga reimplementava a logica aqui dentro e testava a copia,
@@ -395,5 +400,120 @@ describe('shouldLoadAnalytics', () => {
 
     it('nao deixa valor TRUE genérico passar como concessao', () => {
         assert.strictEqual(core.shouldLoadAnalytics(true), false);
+    });
+});
+
+/* ---------- Dominio de producao ----------
+ *
+ * O dominio vivia hardcoded em 8 arquivos. Um deles estava errado: o
+ * canonical apontava para igordev.netlify.app, que responde 200 mas e um
+ * OUTRO site, nao este portfolio. Como todo mundo so checava o status, o
+ * erro passou. A url de producao real vem do log do deploy da Netlify.
+ *
+ * Estes testes existem para o dominio nao voltar a divergir entre arquivos:
+ * o canonical, o og:url, o robots.txt, o sitemap e o rodape do e-mail
+ * precisam apontar para o mesmo lugar, e esse lugar precisa ser o site real.
+ */
+const SITE_ORIGIN = 'https://igordev-portfolio-ofc.netlify.app';
+
+/* Qualquer *.netlify.app que apareca em um arquivo de site tem que ser o
+ * de producao. Antes o grep achava dois hosts diferentes ao mesmo tempo. */
+const SITE_FILES = [
+    'index.html',
+    '404.html',
+    'privacidade.html',
+    'robots.txt',
+    'sitemap.xml',
+    'assets/js/script.js',
+    'README.md',
+    'DEPLOY_CHECKLIST.md'
+];
+
+describe('dominio de producao', () => {
+    it('nenhum arquivo de site cita um netlify.app diferente do real', () => {
+        SITE_FILES.forEach(file => {
+            const found = read(file).match(/https?:\/\/[\w-]+\.netlify\.app/g) || [];
+            const errados = [...new Set(found)].filter(url => url !== SITE_ORIGIN);
+            assert.deepStrictEqual(errados, [],
+                file + ' cita dominio que nao e o de producao: ' + errados.join(', '));
+        });
+    });
+
+    it('o canonical da home aponta para o site de producao', () => {
+        const html = read('index.html');
+        const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
+        assert.ok(canonical, 'index.html sem canonical');
+        assert.strictEqual(canonical[1], SITE_ORIGIN + '/');
+    });
+
+    it('o og:url da home bate com o canonical', () => {
+        const html = read('index.html');
+        const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)[1];
+        const ogUrl = html.match(/<meta property="og:url" content="([^"]+)"/);
+        assert.ok(ogUrl, 'index.html sem og:url');
+        // og:url e canonical divergindo e a causa classica de indexacao errada.
+        assert.strictEqual(ogUrl[1], canonical);
+    });
+
+    it('as imagens de compartilhamento ficam no mesmo host do canonical', () => {
+        const html = read('index.html');
+        const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)[1];
+        const origin = new URL(canonical).origin;
+        ['og:image', 'twitter:image'].forEach(prop => {
+            const re = prop === 'og:image'
+                ? /<meta property="og:image" content="([^"]+)"/
+                : /<meta name="twitter:image" content="([^"]+)"/;
+            const m = html.match(re);
+            assert.ok(m, 'index.html sem ' + prop);
+            assert.strictEqual(new URL(m[1]).origin, origin,
+                prop + ' aponta para outro host que o canonical');
+        });
+    });
+
+    it('o canonical da pagina de privacidade fica sob o mesmo host', () => {
+        const html = read('privacidade.html');
+        const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
+        assert.ok(canonical, 'privacidade.html sem canonical');
+        assert.ok(canonical[1].startsWith(SITE_ORIGIN + '/'),
+            'canonical da politica fora do site de producao: ' + canonical[1]);
+    });
+
+    it('o SITE_URL do rodape do e-mail e o site de producao', () => {
+        // O e-mail que o visitante recebe tem o link do portfolio no rodape.
+        const js = read('assets/js/script.js');
+        const site = js.match(/const SITE_URL = "([^"]+)"/);
+        assert.ok(site, 'SITE_URL nao encontrado em script.js');
+        assert.strictEqual(site[1], SITE_ORIGIN);
+    });
+
+    it('o robots.txt aponta o sitemap para o site de producao', () => {
+        const robots = read('robots.txt');
+        const sitemap = robots.match(/^Sitemap:\s*(\S+)/m);
+        assert.ok(sitemap, 'robots.txt sem linha Sitemap');
+        assert.strictEqual(sitemap[1], SITE_ORIGIN + '/sitemap.xml');
+    });
+
+    it('todas as URLs do sitemap sao do site de producao', () => {
+        const xml = read('sitemap.xml');
+        const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+        assert.ok(locs.length > 0, 'sitemap vazio');
+        locs.forEach(loc => {
+            assert.ok(loc.startsWith(SITE_ORIGIN + '/'),
+                'URL do sitemap fora do site de producao: ' + loc);
+        });
+    });
+
+    it('o sitemap lista a home e a politica de privacidade', () => {
+        const xml = read('sitemap.xml');
+        assert.ok(xml.includes(SITE_ORIGIN + '/</loc>'), 'home ausente do sitemap');
+        assert.ok(xml.includes('privacidade.html'), 'politica ausente do sitemap');
+    });
+
+    it('o lastmod do sitemap nao esta no futuro', () => {
+        const xml = read('sitemap.xml');
+        const hoje = new Date().toISOString().slice(0, 10);
+        [...xml.matchAll(/<lastmod>([\d-]+)<\/lastmod>/g)].forEach(m => {
+            assert.ok(m[1] <= hoje, 'lastmod no futuro: ' + m[1] + ' > ' + hoje);
+        });
     });
 });
