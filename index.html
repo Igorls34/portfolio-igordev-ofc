@@ -266,6 +266,12 @@
                             placeholder="Descreva brevemente o seu projeto..." required></textarea>
                     </div>
 
+                    <!-- Campo isento: humano nunca ve, bot preenche. -->
+                    <div class="hp-field" aria-hidden="true">
+                        <label for="website">Nao preencha este campo</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <button type="submit" id="submit-btn" class="btn-submit">Enviar Proposta</button>
 
                     <div id="form-message" style="margin-top: 20px; font-weight: 500;"></div>

@@ -1097,6 +1097,20 @@ nav ul li a:hover::after {
     box-shadow: 0 15px 40px var(--primary-glow);
 }
 
+/* Honeypot: fora da tela, mas nao com display:none -- varios bots
+   pulam campos com display:none e ainda assim preenchem os posicionados. */
+.hp-field {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .btn-submit:disabled {
     opacity: 0.6;
     cursor: not-allowed;
