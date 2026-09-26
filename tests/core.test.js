@@ -188,7 +188,7 @@ describe('summarizeDeliveries', () => {
 
 describe('parseHighlightTitle', () => {
     it('separa antes, destaque e depois', () => {
-        const parts = core.parseHighlightTitle('Habilidades <em>Estrategicas</em>');
+        const parts = core.parseHighlightTitle('Habilidades <em class=""hl"">Estrategicas</em>');
         assert.deepStrictEqual(parts, [
             { text: 'Habilidades ', highlight: false },
             { text: 'Estrategicas', highlight: true }
@@ -196,14 +196,14 @@ describe('parseHighlightTitle', () => {
     });
 
     it('trata varios destaques, que a regex gulosa antiga engolia', () => {
-        const parts = core.parseHighlightTitle('Focado em <em>Resultados</em> <em>Reais</em>');
+        const parts = core.parseHighlightTitle('Focado em <em class=""hl"">Resultados</em> <em class=""hl"">Reais</em>');
         const highlights = parts.filter(p => p.highlight);
         assert.strictEqual(highlights.length, 2);
         assert.deepStrictEqual(highlights.map(p => p.text), ['Resultados', 'Reais']);
     });
 
     it('aceita destaque com varias palavras dentro', () => {
-        const parts = core.parseHighlightTitle('Projetos <em>em Destaque</em>');
+        const parts = core.parseHighlightTitle('Projetos <em class=""hl"">em Destaque</em>');
         const highlight = parts.find(p => p.highlight);
         assert.strictEqual(highlight.text, 'em Destaque');
     });
@@ -214,26 +214,26 @@ describe('parseHighlightTitle', () => {
     });
 
     it('comeca com destaque, sem texto antes', () => {
-        const parts = core.parseHighlightTitle('<em>Oi</em> mundo');
+        const parts = core.parseHighlightTitle('<em class=""hl"">Oi</em> mundo');
         assert.strictEqual(parts[0].highlight, true);
         assert.strictEqual(parts[0].text, 'Oi');
     });
 
     it('termina com destaque, sem texto depois', () => {
-        const parts = core.parseHighlightTitle('Vamos <em>Conectar?</em>');
+        const parts = core.parseHighlightTitle('Vamos <em class=""hl"">Conectar?</em>');
         assert.strictEqual(parts[parts.length - 1].highlight, true);
     });
 });
 
 describe('buildRevealWords', () => {
     it('achata as partes em palavras na ordem', () => {
-        const parts = core.parseHighlightTitle('Projetos <em>em Destaque</em>');
+        const parts = core.parseHighlightTitle('Projetos <em class=""hl"">em Destaque</em>');
         const words = core.buildRevealWords(parts);
         assert.deepStrictEqual(words.map(w => w.word), ['Projetos', 'em', 'Destaque']);
     });
 
     it('marca apenas as palavras em destaque', () => {
-        const parts = core.parseHighlightTitle('Projetos <em>em Destaque</em>');
+        const parts = core.parseHighlightTitle('Projetos <em class=""hl"">em Destaque</em>');
         const words = core.buildRevealWords(parts);
         assert.deepStrictEqual(words.map(w => w.highlight), [false, true, true]);
     });

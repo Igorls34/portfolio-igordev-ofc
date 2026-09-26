@@ -142,32 +142,52 @@
     /* ---------- Animacao de titulos ---------- */
 
     /* Quebra o innerHTML de um titulo em partes, marcando quais vao para o
-     * destaque. Aceita zero, um ou varios <em> -- o parser antigo com regex
-     * gulosa tratava "A <em>B</em> <em>C</em>" como um unico destaque. */
+     * destaque. Aceita <em> e <span>, com ou sem atributos, e zero, um ou
+     * varios destaques -- um parser guloso tratava
+     * "A <em>B</em> <em>C</em>" como um unico destaque.
+     *
+     * O atributo importa: o HTML do site usa <em class="hl">. Um padrao que
+     * exigia "<em>" exato nao casava, o texto do tag inteiro vazava para a
+     * tela e o titulo aparecia com o HTML escrito a que. */
+    const ANY_TAG_RE = /<\/?[a-z][^>]*>/gi;
+
     function parseHighlightTitle(html) {
+        // Nasce dentro da funcao de proposito: um regex com flag /g guarda
+        // lastIndex, e um unico objeto compartilhado entre chamadas carrega
+        // estado de uma execucao para a seguinte.
+        const tagRe = /<(em|span)(\s[^>]*)?>([\s\S]*?)<\/\1\s*>/gi;
         const parts = [];
-        const re = /<em>([\s\S]*?)<\/em>/g;
+        const source = String(html == null ? '' : html);
+        // As tags inner do titulo viram texto puro: a animacao reconstroi o
+        // conteudo com textContent, e qualquer tag que sobrasse apareceria
+        // escrita na tela.
         let last = 0;
         let match;
 
-        while ((match = re.exec(html)) !== null) {
+        while ((match = tagRe.exec(source)) !== null) {
             if (match.index > last) {
-                parts.push({ text: html.slice(last, match.index), highlight: false });
+                parts.push({ text: source.slice(last, match.index), highlight: false });
             }
-            parts.push({ text: match[1], highlight: true });
-            last = re.lastIndex;
+            parts.push({ text: match[3], highlight: true });
+            last = tagRe.lastIndex;
         }
 
-        if (last < html.length) {
-            parts.push({ text: html.slice(last), highlight: false });
+        if (last < source.length) {
+            parts.push({ text: source.slice(last), highlight: false });
         }
 
-        return parts;
+        return parts
+            .filter(function (p) { return p.text.replace(ANY_TAG_RE, '').trim() !== ''; })
+            .map(function (p) {
+                return { text: p.text.replace(ANY_TAG_RE, ''), highlight: p.highlight };
+            });
     }
 
     /* Achata as partes em palavras, ja com o atraso incremental de cada uma.
-     * O espacamento fica no margin-right do .word, entao separadores vazios
-     * entre tags podem ser descartados. */
+     * O espacamento entre as palavras vem do margin-right do .word, no CSS, e
+     * nao de um espaco no texto: um no-break space travaria a quebra de linha
+     * do titulo no celular. */
+
     function buildRevealWords(parts, delayStep) {
         const step = typeof delayStep === 'number' ? delayStep : 0.06;
         const words = [];
