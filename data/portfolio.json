@@ -531,6 +531,29 @@
           "track": "repo_whatsapp_ai_agent"
         }
       ]
+    },
+    {
+      "id": "calistenia_notebooklm",
+      "icon": "fa-solid fa-dumbbell",
+      "title": "Guia de Calistenia com IA",
+      "description": "Base de conhecimento especializada para consultar e relacionar referências de calistenia, força, periodização e nutrição usando o NotebookLM.",
+      "techs": [
+        "Google NotebookLM",
+        "Engenharia de prompts",
+        "Curadoria de conhecimento"
+      ],
+      "links": [
+        {
+          "label": "Ver Projeto",
+          "href": "https://github.com/Igorls34/mini-guia-calistenia-notebooklm",
+          "track": "repo_calistenia_notebooklm"
+        },
+        {
+          "label": "Abrir NotebookLM",
+          "href": "https://notebook.google.com/notebook/ae09828b-b1b3-4acc-9c2a-1848e71c7639",
+          "track": "notebook_calistenia_notebooklm"
+        }
+      ]
     }
   ]
 }
