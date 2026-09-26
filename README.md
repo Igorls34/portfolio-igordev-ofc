@@ -22,18 +22,25 @@ index.html              página única (hero, sobre, habilidades, projetos, cont
 404.html                página de erro, servida pela Netlify em URL inexistente
 privacidade.html        política de privacidade (LGPD)
 assets/
-  css/style.css         estilos, design tokens em :root, responsivo
+  css/                  estilos divididos em base, navegação, seções e responsivo
   js/core.js            funções puras, sem DOM (testáveis no Node)
-  js/script.js          efeitos de interface, consentimento e envio do formulário
+  js/visual-effects.js  efeitos visuais, canvas e animações de entrada
+  js/navigation.js     comportamento do menu móvel
+  js/script.js          envio e validação do formulário de contato
   img/                  favicon, avatar e ilustração
   my-resume/            PDF do currículo
 tests/core.test.js      testes unitários do core.js
 netlify.toml            headers de cache e config de publicação
 ```
 
-`core.js` carrega antes de `script.js` e é o que os testes importam. Regra da
-casa: lógica que dá para escrever sem DOM vai para lá, porque só assim dá para
-testar de verdade.
+As páginas carregam os módulos CSS na ordem `base`, `navigation`, `hero`,
+`sections`, `contact`, `pages` e `responsive`, mantendo a cascata previsível.
+Na home, o JavaScript carrega `core.js` antes dos efeitos visuais, navegação e
+formulário; a camada de analytics permanece no fim e isolada.
+
+`core.js` concentra a lógica pura que pode ser testada sem DOM. Os módulos da
+interface ficam separados por responsabilidade e usam essa camada quando
+precisam de validação ou formatação compartilhada.
 
 ## Comandos
 

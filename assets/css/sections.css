@@ -1,0 +1,375 @@
+/* ============ ABOUT SECTION ============ */
+.about-section {
+    background-color: var(--bg-dark);
+    position: relative;
+    overflow: hidden;
+}
+
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.about-grid {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    position: relative;
+    z-index: 1;
+}
+
+.about-img {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.about-img img {
+    width: 400px;
+    height: auto;
+    border-radius: 24px;
+    filter: grayscale(0.2);
+    transition: filter 0.5s ease;
+}
+
+.about-img:hover img {
+    filter: grayscale(0);
+}
+
+/* Era um h4 acima do h2, o que invertia a hierarquia de headings. Como
+ * eyebrow e so um rotulo visual, um p resolve sem quebrar o outline. */
+.about-content .eyebrow {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.about-content h2 {
+    font-size: 2.8rem;
+    margin-bottom: 25px;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.about-content p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.75;
+}
+
+/* ============ SKILLS SECTION ============ */
+.skills-section {
+    background-color: #030303;
+    position: relative;
+}
+
+.skills-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.skill-item {
+    background: linear-gradient(145deg, var(--bg-card), #0d0d0d);
+    padding: 45px 35px;
+    text-align: center;
+    border-radius: 24px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.skill-item:hover {
+    transform: translateY(-14px);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59, 130, 246, 0.15);
+}
+
+.skill-item:hover::before {
+    opacity: 1;
+}
+
+.skill-item i {
+    font-size: 3rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 22px;
+    display: inline-block;
+    transition: transform 0.5s ease;
+}
+
+.skill-item:hover i {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+.skill-item h3 {
+    margin-bottom: 14px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.skill-item p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+    line-height: 1.6;
+}
+
+/* ============ PROJECTS SECTION ============ */
+.projects-section {
+    background-color: var(--bg-dark);
+    position: relative;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background: linear-gradient(145deg, var(--bg-card), #0d0d0d);
+    border: 1px solid var(--border-color);
+    padding: 45px 35px;
+    border-radius: 24px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 24px;
+    background: var(--gradient-1);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+.project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    background: linear-gradient(145deg, var(--bg-card), #0d0d0d);
+    z-index: -1;
+}
+
+.project-card:hover {
+    border-color: transparent;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.project-icon {
+    font-size: 2.5rem;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 25px;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.project-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.project-card p {
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    font-size: 1.05rem;
+    flex-grow: 1;
+    line-height: 1.65;
+}
+
+.project-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.project-techs span {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-white);
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.project-card:hover .project-techs span {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.project-links {
+    display: flex;
+    gap: 20px;
+    margin-top: 5px;
+}
+
+.btn-link {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+    position: relative;
+}
+
+.btn-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-link:hover::after {
+    transform: scaleX(1);
+}
+
+.btn-link:hover {
+    color: var(--text-white);
+}
+
+/* ============ CERTIFICATIONS SECTION ============ */
+.certs-section {
+    padding: 120px 20px;
+    position: relative;
+}
+
+.certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* O card e a imagem do certificado, sem texto: titulo, emissor e sigla ja
+ * estao impressos na propria imagem, e repetir os tres ao lado so duplicaria
+ * o que a pessoa ja le. O texto continua no alt, que e o que um leitor de
+ * tela anuncia e o que o Google le. */
+.cert-card {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    background: var(--bg-card);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cert-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-glow);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.cert-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* So entra em cena se a certificacao tiver url. Sem link, o figcaption nem
+ * existe no HTML. */
+.cert-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cert-card:hover .cert-overlay,
+.cert-card:focus-within .cert-overlay {
+    opacity: 1;
+}
+
+.cert-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.cert-link:hover {
+    transform: scale(1.1);
+}

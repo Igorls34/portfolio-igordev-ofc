@@ -1,0 +1,161 @@
+/* ============ RESET & GLOBAIS ============ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-glow: rgba(59, 130, 246, 0.4);
+    --accent: #8b5cf6;
+    --accent-glow: rgba(139, 92, 246, 0.3);
+    --bg-dark: #050505;
+    --bg-card: #0a0a0a;
+    --bg-card-hover: #111111;
+    --text-white: #f9fafb;
+    --text-muted: #9ca3af;
+    --border-color: #1f1f1f;
+    --border-glow: rgba(59, 130, 246, 0.15);
+    --gradient-1: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+    --gradient-2: linear-gradient(135deg, #3b82f6, #06b6d4);
+    --gradient-3: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
+}
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #1f1f1f #050505;
+}
+
+/* Compensa o header fixo ao navegar por ancora, senao o titulo da
+   secao fica escondido atras dele. */
+section[id] {
+    scroll-margin-top: 90px;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+    color: var(--text-white);
+    line-height: 1.6;
+    background-color: var(--bg-dark);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+ul {
+    list-style: none;
+}
+
+/* ============ CUSTOM SCROLLBAR ============ */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1f1f1f;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+/* ============ CUSTOM CURSOR ============ */
+.cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: width 0.3s, height 0.3s, border-color 0.3s;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.cursor.hover {
+    width: 50px;
+    height: 50px;
+    border-color: var(--accent);
+    background: rgba(139, 92, 246, 0.1);
+}
+
+/* ============ SCROLL PROGRESS BAR ============ */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--gradient-3);
+    background-size: 200% 100%;
+    animation: gradientShift 4s ease infinite;
+    z-index: 10000;
+    border-radius: 0 2px 2px 0;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ============ SKIP TO CONTENT ============ */
+.skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    background: var(--gradient-2);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    z-index: 10001;
+    transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+    top: 16px;
+}
+
+/* ============ CONTAINERS ============ */
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 20px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 70px;
+    font-weight: 800;
+    position: relative;
+}

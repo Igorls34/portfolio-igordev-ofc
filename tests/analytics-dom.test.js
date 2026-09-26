@@ -8,6 +8,8 @@ const { JSDOM } = require('jsdom');
 const ROOT = path.join(__dirname, '..');
 const INDEX = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 const CORE_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'core.js'), 'utf8');
+const VISUAL_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'visual-effects.js'), 'utf8');
+const NAV_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'navigation.js'), 'utf8');
 const CORE_ANALYTICS_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'analytics-core.js'), 'utf8');
 const ANALYTICS_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'analytics.js'), 'utf8');
 const SCRIPT_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'script.js'), 'utf8');
@@ -82,7 +84,11 @@ function montar(opcoes) {
     };
 
     w.eval(CORE_SRC);
-    w.eval(opts.comRodape === false ? '' : SCRIPT_SRC);
+    if (opts.comRodape !== false) {
+        w.eval(VISUAL_SRC);
+        w.eval(NAV_SRC);
+        w.eval(SCRIPT_SRC);
+    }
     w.eval(CORE_ANALYTICS_SRC);
     w.eval(ANALYTICS_SRC);
     w.document.dispatchEvent(new w.Event('DOMContentLoaded', { bubbles: true }));
@@ -128,6 +134,8 @@ describe('a camada de analytics nao interfere no site', () => {
         w.fetch = () => Promise.resolve({ ok: true, json: () => ({}) });
 
         w.eval(fs.readFileSync(path.join(ROOT, 'assets', 'js', 'core.js'), 'utf8'));
+        w.eval(VISUAL_SRC);
+        w.eval(NAV_SRC);
         w.eval(SCRIPT_SRC);
         w.document.dispatchEvent(new w.Event('DOMContentLoaded', { bubbles: true }));
 

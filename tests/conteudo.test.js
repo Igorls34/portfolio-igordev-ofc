@@ -12,6 +12,10 @@ const INDEX = path.join(ROOT, 'index.html');
 
 const dados = JSON.parse(fs.readFileSync(JSON_PATH, 'utf8'));
 const html = fs.readFileSync(INDEX, 'utf8');
+const MODULOS_CSS = [
+    'base.css', 'navigation.css', 'hero.css', 'sections.css',
+    'contact.css', 'pages.css', 'responsive.css'
+];
 function listarWebp(diretorio, relativo = '') {
     return fs.readdirSync(path.join(diretorio, relativo), { withFileTypes: true })
         .flatMap(entrada => {
@@ -97,22 +101,22 @@ describe('data/portfolio.json', () => {
 });
 
 describe('descoberta das imagens de certificacao', () => {
-    it('itera WebPs em subpastas e associa metadados pelo nome da pasta', () => {
+    it('itera WebPs convertidos e associa metadados pelo nome original do PDF', () => {
         const certificados = descobrirCertificacoes([
             { id: 'alpha', image: 'assets/certs/alpha.webp', name: 'Certificado Alpha', issuer: 'DIO' }
-        ], ['alpha/alpha_pagina_001.webp', 'novo/novo_pagina_001.webp', 'ignorado/arquivo.png']);
+        ], ['alpha_pagina_001.webp', 'novo_pagina_001.webp', 'ignorado.png']);
 
         assert.deepStrictEqual(certificados, [
             {
                 id: 'alpha_pagina_001',
-                image: 'certificados_webp/alpha/alpha_pagina_001.webp',
+                image: 'certificados_webp/alpha_pagina_001.webp',
                 name: 'Certificado Alpha',
                 issuer: 'DIO'
             },
             {
                 id: 'novo_pagina_001',
                 name: 'Certificado novo',
-                image: 'certificados_webp/novo/novo_pagina_001.webp'
+                image: 'certificados_webp/novo_pagina_001.webp'
             }
         ]);
     });
@@ -121,6 +125,29 @@ describe('descoberta das imagens de certificacao', () => {
 /* ---------- O HTML gerado ---------- */
 
 describe('HTML gerado a partir do JSON', () => {
+    it('todas as paginas carregam os modulos CSS na mesma ordem', () => {
+        [
+            html,
+            fs.readFileSync(path.join(ROOT, '404.html'), 'utf8'),
+            fs.readFileSync(path.join(ROOT, 'privacidade.html'), 'utf8')
+        ].forEach(pagina => {
+            const carregados = [...pagina.matchAll(
+                /<link rel="stylesheet" href="(?:\.\/|\/)assets\/css\/([^\"]+)"/g
+            )].map(match => match[1]);
+            assert.deepStrictEqual(carregados, MODULOS_CSS);
+        });
+    });
+
+    it('a home carrega os modulos JS na ordem de dependencia', () => {
+        const carregados = [...html.matchAll(
+            /<script src="\.\/assets\/js\/([^\"]+)"/g
+        )].map(match => match[1]);
+        assert.deepStrictEqual(carregados, [
+            'core.js', 'visual-effects.js', 'navigation.js', 'script.js',
+            'analytics-core.js', 'analytics.js'
+        ]);
+    });
+
     it('o index.html tem um card por habilidade do JSON', () => {
         /* Este e o teste que amarra as duas pontas: se o JSON ganhar uma
          * habilidade e o HTML nao ganhar o card, o site mente sobre o que

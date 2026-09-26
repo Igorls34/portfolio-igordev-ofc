@@ -165,15 +165,15 @@ export function descobrirCertificacoes(certificacoes, arquivosWebp) {
         .sort((a, b) => a.localeCompare(b, 'pt-BR', { sensitivity: 'base' }))
         .map(arquivo => {
             const nome = path.posix.parse(arquivo).name;
-            const pastaCertificado = path.posix.basename(path.posix.dirname(arquivo));
-            const existente = metadados.get(pastaCertificado.toLowerCase())
+            const nomeCertificado = /^(.*)_pagina_\d+$/i.exec(nome)?.[1] || nome;
+            const existente = metadados.get(nomeCertificado.toLowerCase())
                 || metadados.get(nome.toLowerCase());
             const id = nome.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
 
             return {
                 ...(existente || {}),
                 id,
-                name: existente?.name || `Certificado ${pastaCertificado}`,
+                name: existente?.name || `Certificado ${nomeCertificado}`,
                 image: `certificados_webp/${arquivo}`
             };
         });
