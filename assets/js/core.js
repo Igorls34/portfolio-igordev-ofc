@@ -16,9 +16,9 @@
 }(typeof self !== 'undefined' ? self : this, function () {
     'use strict';
 
-    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    var MIN_PHONE_DIGITS = 10;
-    var MAX_PHONE_DIGITS = 13;
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const MIN_PHONE_DIGITS = 10;
+    const MAX_PHONE_DIGITS = 13;
 
     /* ---------- Seguranca ---------- */
 
@@ -34,19 +34,19 @@
     /* ---------- Contato ---------- */
 
     function toWhatsAppNumber(phone) {
-        var digits = String(phone).replace(/\D/g, '');
+        const digits = String(phone).replace(/\D/g, '');
         if (digits.length < MIN_PHONE_DIGITS || digits.length > MAX_PHONE_DIGITS) return null;
         return digits.length <= 11 ? '55' + digits : digits;
     }
 
     function validateContact(data) {
         data = data || {};
-        var errors = [];
+        const errors = [];
 
-        var name = String(data.name || '').trim();
-        var email = String(data.email || '').trim();
-        var phone = String(data.phone || '').trim();
-        var message = String(data.message || '').trim();
+        const name = String(data.name || '').trim();
+        const email = String(data.email || '').trim();
+        const phone = String(data.phone || '').trim();
+        const message = String(data.message || '').trim();
 
         if (!name) errors.push('name');
         if (!message) errors.push('message');
@@ -73,8 +73,8 @@
      * um "Mensagem enviada!". */
     function summarizeDeliveries(results) {
         results = results || [];
-        var succeeded = results.filter(function (r) { return r.ok; });
-        var failed = results.filter(function (r) { return !r.ok; });
+        const succeeded = results.filter(function (r) { return r.ok; });
+        const failed = results.filter(function (r) { return !r.ok; });
 
         if (succeeded.length === 0) {
             return {
@@ -84,7 +84,7 @@
             };
         }
 
-        var sent = succeeded.map(function (r) { return r.label; }).join(' e ');
+        const sent = succeeded.map(function (r) { return r.label; }).join(' e ');
 
         if (failed.length === 0) {
             return {
@@ -94,7 +94,7 @@
             };
         }
 
-        var notSent = failed.map(function (r) { return r.label; }).join(' e ');
+        const notSent = failed.map(function (r) { return r.label; }).join(' e ');
         return {
             tone: 'warn',
             success: true,
@@ -110,10 +110,10 @@
      * destaque. Aceita zero, um ou varios <em> -- o parser antigo com regex
      * gulosa tratava "A <em>B</em> <em>C</em>" como um unico destaque. */
     function parseHighlightTitle(html) {
-        var parts = [];
-        var re = /<em>([\s\S]*?)<\/em>/g;
-        var last = 0;
-        var match;
+        const parts = [];
+        const re = /<em>([\s\S]*?)<\/em>/g;
+        let last = 0;
+        let match;
 
         while ((match = re.exec(html)) !== null) {
             if (match.index > last) {
@@ -134,12 +134,12 @@
      * O espacamento fica no margin-right do .word, entao separadores vazios
      * entre tags podem ser descartados. */
     function buildRevealWords(parts, delayStep) {
-        var step = typeof delayStep === 'number' ? delayStep : 0.06;
-        var words = [];
+        const step = typeof delayStep === 'number' ? delayStep : 0.06;
+        const words = [];
 
         (parts || []).forEach(function (part) {
             String(part.text).split(/\s+/).forEach(function (raw) {
-                var word = raw.trim();
+                const word = raw.trim();
                 if (!word) return;
                 words.push({
                     word: word,

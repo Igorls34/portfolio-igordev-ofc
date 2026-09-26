@@ -300,7 +300,10 @@ const {
         if (window.matchMedia('(max-width: 992px)').matches) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        const cards = document.querySelectorAll('.project-card, .skill-item');
+        // Só nos cards de projeto. Nos .skill-item o tilt escrevia transform
+        // inline por cima do translateY(-14px) do hover, cancelando o
+        // destaque que o CSS desenhava.
+        const cards = document.querySelectorAll('.project-card');
 
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -316,7 +319,7 @@ const {
             });
 
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                card.style.transform = '';
             });
 
             card.addEventListener('mouseenter', () => {
@@ -367,11 +370,13 @@ const {
                 const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                // O -3px preserva o translateY do :hover do CSS, que o
+                // transform inline descartaria.
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3 - 3}px)`;
             });
 
             btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
+                btn.style.transform = '';
             });
         });
     }

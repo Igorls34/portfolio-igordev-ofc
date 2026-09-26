@@ -563,7 +563,9 @@ nav ul li a:hover::after {
     filter: grayscale(0);
 }
 
-.about-content h4 {
+/* Era um h4 acima do h2, o que invertia a hierarquia de headings. Como
+ * eyebrow e so um rotulo visual, um p resolve sem quebrar o outline. */
+.about-content .eyebrow {
     color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -698,8 +700,6 @@ nav ul li a:hover::after {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    transform-style: preserve-3d;
-    perspective: 1000px;
 }
 
 .project-card::before {
