@@ -29,6 +29,12 @@ html {
     scrollbar-color: #1f1f1f #050505;
 }
 
+/* Compensa o header fixo ao navegar por ancora, senao o titulo da
+   secao fica escondido atras dele. */
+section[id] {
+    scroll-margin-top: 90px;
+}
+
 body {
     font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
     color: var(--text-white);
@@ -39,7 +45,10 @@ body {
 
 a {
     text-decoration: none;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ul {
@@ -151,32 +160,6 @@ ul {
     position: relative;
 }
 
-.section-title .word {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
-    margin-right: 0.25em;
-}
-
-.section-title .word-inner {
-    display: inline-block;
-    transform: translateY(100%);
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.section-title.revealed .word-inner {
-    transform: translateY(0);
-}
-
-.section-title .word.highlight .word-inner {
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-}
-
 /* ============ HEADER ============ */
 header {
     background-color: rgba(5, 5, 5, 0.75);
@@ -188,7 +171,7 @@ header {
     width: 100%;
     z-index: 1000;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.4s ease;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 header.scrolled {
@@ -231,7 +214,7 @@ header.scrolled {
     font-size: 1.5rem;
     cursor: pointer;
     z-index: 1001;
-    transition: 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
     width: 44px;
     height: 44px;
     border-radius: 12px;
@@ -255,7 +238,7 @@ nav ul li a {
     padding: 8px 16px;
     border-radius: 8px;
     position: relative;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 nav ul li a::after {
@@ -357,32 +340,7 @@ nav ul li a:hover::after {
 }
 
 .hero-title .word {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
     margin-right: 0.18em;
-}
-
-.hero-title .word-inner {
-    display: inline-block;
-    animation: revealWord 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--delay);
-    transform: translateY(100%);
-}
-
-.hero-title .word.highlight .word-inner {
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: revealWord 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards, gradientShift 4s ease infinite;
-    animation-delay: var(--delay);
-}
-
-@keyframes revealWord {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
 }
 
 .hero-tagline {
@@ -477,7 +435,10 @@ nav ul li a:hover::after {
     border-radius: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     font-size: 1rem;
     text-align: center;
@@ -544,7 +505,7 @@ nav ul li a:hover::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     animation: floatPulse 3s ease-in-out infinite;
 }
 
@@ -595,14 +556,16 @@ nav ul li a:hover::after {
     height: auto;
     border-radius: 24px;
     filter: grayscale(0.2);
-    transition: all 0.5s ease;
+    transition: filter 0.5s ease;
 }
 
 .about-img:hover img {
     filter: grayscale(0);
 }
 
-.about-content h4 {
+/* Era um h4 acima do h2, o que invertia a hierarquia de headings. Como
+ * eyebrow e so um rotulo visual, um p resolve sem quebrar o outline. */
+.about-content .eyebrow {
     color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -616,15 +579,6 @@ nav ul li a:hover::after {
     margin-bottom: 25px;
     font-weight: 800;
     line-height: 1.15;
-}
-
-.about-content h2 .word.highlight .word-inner {
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
 }
 
 .about-content p {
@@ -661,7 +615,9 @@ nav ul li a:hover::after {
     padding: 45px 35px;
     text-align: center;
     border-radius: 24px;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
@@ -704,7 +660,7 @@ nav ul li a:hover::after {
     transform: scale(1.15) rotate(-5deg);
 }
 
-.skill-item h4 {
+.skill-item h3 {
     margin-bottom: 14px;
     font-size: 1.25rem;
     font-weight: 700;
@@ -737,13 +693,13 @@ nav ul li a:hover::after {
     border: 1px solid var(--border-color);
     padding: 45px 35px;
     border-radius: 24px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    transform-style: preserve-3d;
-    perspective: 1000px;
 }
 
 .project-card::before {
@@ -789,7 +745,7 @@ nav ul li a:hover::after {
     transform: scale(1.1) rotate(-5deg);
 }
 
-.project-card h4 {
+.project-card h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
     font-weight: 700;
@@ -818,7 +774,7 @@ nav ul li a:hover::after {
     font-size: 0.85rem;
     font-weight: 500;
     border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .project-card:hover .project-techs span {
@@ -905,15 +861,6 @@ nav ul li a:hover::after {
     line-height: 1.15;
 }
 
-.contact-info h2 .word.highlight .word-inner {
-    background: var(--gradient-1);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: gradientShift 4s ease infinite;
-}
-
 .contact-info p {
     font-size: 1.15rem;
     color: var(--text-muted);
@@ -935,7 +882,9 @@ nav ul li a:hover::after {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    transition: all 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--text-white);
 }
 
@@ -958,7 +907,7 @@ nav ul li a:hover::after {
     margin-right: 22px;
     border: 1px solid var(--border-color);
     flex-shrink: 0;
-    transition: all 0.35s ease;
+    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
 }
 
 .channel-item:hover .icon-box {
@@ -998,7 +947,11 @@ nav ul li a:hover::after {
     border-radius: 14px;
     color: var(--text-muted);
     font-size: 1.1rem;
-    transition: all 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .social-icon:hover {
@@ -1036,7 +989,7 @@ nav ul li a:hover::after {
     color: white;
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
-    transition: all 0.35s ease;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
     resize: vertical;
 }
 
@@ -1062,7 +1015,7 @@ nav ul li a:hover::after {
     font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.35s ease;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
     letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
@@ -1091,10 +1044,272 @@ nav ul li a:hover::after {
     box-shadow: 0 15px 40px var(--primary-glow);
 }
 
+/* Honeypot: fora da tela, mas nao com display:none -- varios bots
+   pulam campos com display:none e ainda assim preenchem os posicionados. */
+.hp-field {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .btn-submit:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+}
+
+.form-legal {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.form-legal a,
+.footer-legal a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-legal {
+    margin-top: 10px;
+    font-size: 0.88rem;
+}
+
+/* ============ BANNER DE CONSENTIMENTO (LGPD) ============ */
+/* display:none por padrao: o JS so adiciona .visible quando ainda nao ha
+   decisao salva. Quem ja aceitou ou recusou nao ve o banner passar. */
+.consent-banner {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px 24px calc(22px + env(safe-area-inset-bottom));
+    background-color: var(--bg-dark);
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.consent-banner.visible {
+    display: flex;
+    animation: consent-slide-up 0.35s ease-out both;
+}
+
+.consent-banner__body {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* O titulo do banner e um <p>, nao um heading: e um dialog, e o
+   aria-labelledby do proprio dialog ja anuncia esse texto. Usar h2 aqui
+   colocaria um h2 antes do h1 da pagina no outline. */
+.consent-banner__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-white);
+}
+
+.consent-banner__body p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.consent-banner__link-wrap {
+    margin-top: 6px;
+    font-size: 0.85rem;
+}
+
+.consent-banner__link-wrap a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.consent-banner__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-consent {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 11px 26px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-consent--solid {
+    background: var(--gradient-2);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.btn-consent--solid:hover {
+    transform: translateY(-2px);
+}
+
+.btn-consent--ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 2px solid var(--border-color);
+}
+
+.btn-consent--ghost:hover {
+    color: var(--text-white);
+    border-color: var(--primary);
+}
+
+.btn-consent:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+@keyframes consent-slide-up {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .consent-banner {
+        padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+    }
+
+    .btn-consent {
+        flex: 1 1 auto;
+        min-width: 130px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .consent-banner.visible {
+        animation: none;
+    }
+
+    .btn-consent:hover {
+        transform: none;
+    }
+}
+
+/* ========== PAGINA DE POLITICA DE PRIVACIDADE ========== */
+.legal-page {
+    padding: 100px 0 60px;
+}
+
+.legal-page__inner {
+    max-width: 760px;
+}
+
+.legal-page__back {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: var(--primary);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.legal-page__back:hover {
+    transform: translateX(-4px);
+}
+
+.legal-page h1 {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+}
+
+.legal-page__updated {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 34px;
+}
+
+.legal-page h2 {
+    font-size: 1.3rem;
+    margin: 38px 0 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.legal-page h3 {
+    font-size: 1.05rem;
+    margin: 24px 0 10px;
+    color: var(--text-white);
+}
+
+.legal-page p,
+.legal-page li {
+    color: var(--text-muted);
+    font-size: 0.97rem;
+    line-height: 1.75;
+    margin-bottom: 12px;
+}
+
+.legal-page ul {
+    padding-left: 22px;
+    margin-bottom: 16px;
+}
+
+.legal-page li {
+    margin-bottom: 6px;
+}
+
+.legal-page strong {
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.legal-page a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.legal-page code {
+    font-size: 0.88em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    word-break: break-all;
+}
+
+.legal-page em {
+    font-style: italic;
+    color: var(--text-white);
+}
+
+@media (max-width: 640px) {
+    .legal-page {
+        padding: 90px 0 40px;
+    }
+
+    .legal-page h1 {
+        font-size: 1.8rem;
+    }
 }
 
 /* ============ FOOTER ============ */
@@ -1111,46 +1326,72 @@ footer p {
 }
 
 /* ============ REVEAL ANIMATIONS ============ */
-.reveal {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+/* Tudo abaixo so vale quando ha JS. Sem JS (ou se o script falhar) os
+   elementos permanecem visiveis em vez de ficarem presos em opacity: 0.
+
+   O .no-io cobre o outro caso: ha JS, mas o navegador nao tem
+   IntersectionObserver, que e o que dispara as classes .active/.revealed.
+   Sem isso o conteudo ficaria invisivel para sempre. O JS adiciona .no-io
+   no <html> e tambem adiciona .active/.revealed direto, mas a regra abaixo
+   garante a visibilidade mesmo se ele falhar no meio do caminho. */
+.no-io .reveal,
+.no-io .reveal-left,
+.no-io .reveal-right,
+.no-io .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
 }
 
-.reveal.active {
+.no-io .word-inner {
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+.js .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.js .reveal.active {
     opacity: 1;
     transform: translateY(0);
 }
 
-.reveal-left {
+.js .reveal-left {
     opacity: 0;
     transform: translateX(-60px);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-left.active {
+.js .reveal-left.active {
     opacity: 1;
     transform: translateX(0);
 }
 
-.reveal-right {
+.js .reveal-right {
     opacity: 0;
     transform: translateX(60px);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-right.active {
+.js .reveal-right.active {
     opacity: 1;
     transform: translateX(0);
 }
 
-.reveal-scale {
+.js .reveal-scale {
     opacity: 0;
     transform: scale(0.9);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal-scale.active {
+.js .reveal-scale.active {
     opacity: 1;
     transform: scale(1);
 }
@@ -1163,7 +1404,10 @@ footer p {
 .reveal-d5 { transition-delay: 0.5s; }
 .reveal-d6 { transition-delay: 0.6s; }
 
-/* ============ TEXT REVEAL ============ */
+/* ============ REVEAL DE TITULOS (palavra a palavra) ============
+ * Regras unicas para .hero-title, .section-title e .text-reveal. O JS
+ * reescreve o innerHTML de cada titulo em .word > .word-inner e comanda o
+ * atraso via a variavel --word-delay. */
 .word {
     display: inline-block;
     overflow: hidden;
@@ -1175,10 +1419,84 @@ footer p {
     display: inline-block;
     transform: translateY(100%);
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--word-delay, 0s);
 }
 
-.text-reveal.revealed .word-inner {
+.revealed .word-inner {
     transform: translateY(0);
+}
+
+.word.highlight .word-inner {
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+}
+
+/* Estado sem JS: o <em class="hl"> original continua no lugar e precisa
+ * da mesma aparencia, senao os titulos aparecem com texto simples. */
+em.hl {
+    font-style: normal;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+}
+
+/* ============ PAGINA 404 ============ */
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    gap: 8px;
+    background: radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+}
+
+.error-code {
+    font-size: clamp(5rem, 18vw, 11rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -4px;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+}
+
+.error-page h1 {
+    font-size: clamp(1.5rem, 5vw, 2.4rem);
+    font-weight: 800;
+    margin-top: 10px;
+}
+
+.error-text {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    max-width: 420px;
+}
+
+.error-buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+@media (max-width: 576px) {
+    .error-code {
+        letter-spacing: -2px;
+    }
 }
 
 /* ============ REDUCED MOTION ============ */

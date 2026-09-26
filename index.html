@@ -1,16 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="no-js">
 
 <head>
+    <script>
+        /* Troca no-js por js antes da primeira paint: assim os elementos com
+           .reveal so ficam ocultos quando existe JS para reativa-los. */
+        document.documentElement.className = 'js';
+    </script>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Igor Laurindo | Desenvolvedor Web e Automações — IgorDev</title>
     <meta name="description"
-        content="Desenvolvedor Freelancer especialista em criação de sites responsivos e automações com Python. Transformo suas necessidades em código funcional e eficiente.">
+        content="Desenvolvedor freelancer especialista em sites responsivos, chatbots e automações com Python. Transformo suas necessidades em código funcional e eficiente.">
+    <meta name="author" content="Igor Laurindo">
     <meta name="theme-color" content="#050505">
+    <link rel="canonical" href="https://igordev.netlify.app/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="IgorDev">
+    <meta property="og:url" content="https://igordev.netlify.app/">
+    <meta property="og:title" content="Igor Laurindo | Desenvolvedor Web e Automações">
+    <meta property="og:description"
+        content="Sites responsivos, chatbots e automações com Python. Transformo suas necessidades em código funcional e eficiente.">
+    <meta property="og:image" content="https://igordev.netlify.app/assets/img/perfil.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="380">
+    <meta property="og:image:height" content="380">
+    <meta property="og:image:alt" content="Retrato de Igor Laurindo, o IgorDev">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Igor Laurindo | Desenvolvedor Web e Automações">
+    <meta name="twitter:description"
+        content="Sites responsivos, chatbots e automações com Python. Transformo suas necessidades em código funcional e eficiente.">
+    <meta name="twitter:image" content="https://igordev.netlify.app/assets/img/perfil.webp">
+
     <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-    <link rel="alternate icon" href="https://img.icons8.com/fluency/48/backend-development.png">
-    <title>IgorDev - Portfolio</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,27 +46,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EDZHK8SL8"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-0EDZHK8SL8');
-    </script>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "w32g841pzr");
-    </script>
+    <!-- Google Analytics e Microsoft Clarity NAO sao carregados aqui de proposito.
+         Carregar no head dispara coleta antes de qualquer consentimento, o que
+         contraria a LGPD. O carregamento sob demanda fica em assets/js/script.js
+         (initConsent / loadAnalytics) e so acontece apos aceite. -->
 </head>
 
 <body>
 
     <a href="#main-content" class="skip-to-content">Pular para o conteúdo</a>
+
+    <!-- Banner de consentimento.
+         Fica no inicio do DOM de proposito: visualmente ele e position:fixed no
+         rodape, entao a ordem no HTML nao muda o lugar na tela, mas faz o
+         primeiro Tab cair nos botoes em vez de obrigar quem usa teclado a
+         atravessar a pagina inteira. Nao roubo foco para nao atrapalhar quem
+         so queria ler a pagina.
+         display:none por padrao; o JS so adiciona .visible quando ainda nao ha
+         decisao salva, para nao piscar na tela de quem ja respondeu. -->
+    <div id="consent-banner" class="consent-banner" role="dialog" aria-modal="false"
+        aria-labelledby="consent-banner-title" aria-describedby="consent-banner-desc">
+        <div class="consent-banner__body">
+            <p id="consent-banner-title" class="consent-banner__title">Cookies de medição</p>
+            <p id="consent-banner-desc">
+                Usamos Google Analytics e Microsoft Clarity para entender quais
+                partes do portfolio interessam. Esses cookies gravam páginas
+                visitadas, origem do acesso e dados técnicos do navegador.
+                Nada disso é enviado se você recusar.
+            </p>
+            <p class="consent-banner__link-wrap">
+                <a href="./privacidade.html">Ler a Política de Privacidade</a>
+            </p>
+        </div>
+        <div class="consent-banner__actions">
+            <button type="button" class="btn-consent btn-consent--ghost" data-consent="denied">
+                Recusar
+            </button>
+            <button type="button" class="btn-consent btn-consent--solid" data-consent="granted">
+                Aceitar
+            </button>
+        </div>
+    </div>
 
     <div class="scroll-progress"></div>
 
@@ -74,7 +120,7 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <span class="hero-greeting reveal">DISPONÍVEL PARA PROJETOS</span>
-                    <h2 class="hero-title">Inovação em cada <span>Pixel.</span></h2>
+                    <h1 class="hero-title">Inovação em cada <em class="hl">Pixel.</em></h1>
                     <p class="hero-tagline">Igor Laurindo – Especialista em Desenvolvimento Web e Automações
                         Inteligentes</p>
                     <p class="hero-description">Transformo ideias em realidade através de código limpo, interfaces
@@ -83,7 +129,7 @@
                     <div class="hero-buttons">
                         <a href="#projects" class="btn btn-primary">Explorar Projetos</a>
                         <a href="https://wa.me/5524998574876?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre%20um%20projeto..."
-                            class="btn btn-secondary" target="_blank"><i class="fa-brands fa-whatsapp"></i> Conversar
+                            class="btn btn-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Conversar
                             agora</a>
                     </div>
                 </div>
@@ -98,7 +144,7 @@
 
         <!-- WhatsApp Floating Button -->
         <a href="https://wa.me/5524998574876?text=Oi%20IgorDev!%20Vi%20seu%20portfolio%20e%20gostaria%20de%20falar%20com%20você."
-            class="whatsapp-float" target="_blank" aria-label="Fale conosco pelo WhatsApp">
+            class="whatsapp-float" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
 
@@ -111,16 +157,16 @@
                     </div>
 
                     <div class="about-content reveal-right">
-                        <h4>Quem é o IgorDev?</h4>
-                        <h2 class="text-reveal">Focado em <span>*Resultados*</span> <span>*Reais*</span></h2>
+                        <p class="eyebrow">Quem é o IgorDev?</p>
+                        <h2 class="text-reveal">Focado em <em class="hl">Resultados</em> <em class="hl">Reais</em></h2>
                         <p>Sou Igor Laurindo, um desenvolvedor movido pela curiosidade e pela busca constante de
                             eficiência. Minha missão é simplificar processos complexos através da tecnologia.</p>
                         <p>Domino ferramentas como Python, JavaScript e WordPress para criar desde landing pages de alta
                             conversão até automações robustas que integram APIs, planilhas e bots para WhatsApp. Se você
                             busca produtividade e uma presença digital impactante, você está no lugar certo.</p>
                         <br>
-                        <a href="./assets/my resume/IgorLaurindoResumo.pdf" class="btn btn-secondary"
-                            target="_blank">Currículo Completo</a>
+                        <a href="./assets/my-resume/IgorLaurindoResumo.pdf" class="btn btn-secondary"
+                            target="_blank" rel="noopener">Currículo Completo</a>
                     </div>
                 </div>
             </div>
@@ -129,26 +175,26 @@
         <!-- Skills Section -->
         <section class="skills-section" id="skills" aria-label="Habilidades">
             <div class="section-container">
-                <h2 class="section-title">Habilidades <span>Estratégicas</span></h2>
+                <h2 class="section-title">Habilidades <em class="hl">Estratégicas</em></h2>
                 <div class="skills-grid">
                     <div class="skill-item reveal reveal-d1">
                         <i class="fa-brands fa-html5"></i>
-                        <h4>Web Dev</h4>
+                        <h3>Web Dev</h3>
                         <p>Sites dinâmicos, responsivos e otimizados para SEO.</p>
                     </div>
                     <div class="skill-item reveal reveal-d2">
                         <i class="fa-brands fa-python"></i>
-                        <h4>Automação</h4>
+                        <h3>Automação</h3>
                         <p>Scripts inteligentes e integração de sistemas.</p>
                     </div>
                     <div class="skill-item reveal reveal-d3">
                         <i class="fa-brands fa-whatsapp"></i>
-                        <h4>Chatbots</h4>
+                        <h3>Chatbots</h3>
                         <p>Fluxos automáticos para atendimento via WhatsApp.</p>
                     </div>
                     <div class="skill-item reveal reveal-d4">
                         <i class="fa-solid fa-cloud"></i>
-                        <h4>APIs & Cloud</h4>
+                        <h3>APIs & Cloud</h3>
                         <p>Integração com Google Cloud, Gemini e mais.</p>
                     </div>
                 </div>
@@ -158,12 +204,12 @@
         <!-- Projects Section -->
         <section class="projects-section" id="projects" aria-label="Projetos">
             <div class="section-container">
-                <h2 class="section-title">Projetos <span>em Destaque</span></h2>
+                <h2 class="section-title">Projetos <em class="hl">em Destaque</em></h2>
 
                 <div class="projects-grid">
                     <div class="project-card reveal reveal-d1">
                         <div class="project-icon"><i class="fa-brands fa-wordpress"></i></div>
-                        <h4>Rápido & Seguro</h4>
+                        <h3>Rápido & Seguro</h3>
                         <p>Landing Page otimizada para logística, focada em performance e conversão direta.</p>
                         <div class="project-techs">
                             <span>WordPress</span>
@@ -171,14 +217,14 @@
                             <span>Astra</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/rapido-seguro" class="btn-link" target="_blank">Ver Case
+                            <a href="https://github.com/Igorls34/rapido-seguro" class="btn-link" target="_blank" rel="noopener">Ver Case
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
 
                     <div class="project-card reveal reveal-d2">
                         <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
-                        <h4>WhatsApp Auto-Bot</h4>
+                        <h3>WhatsApp Auto-Bot</h3>
                         <p>Automação de agendamentos com integração direta ao Google Calendar.</p>
                         <div class="project-techs">
                             <span>Python</span>
@@ -187,13 +233,13 @@
                         </div>
                         <div class="project-links">
                             <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link"
-                                target="_blank">Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                target="_blank" rel="noopener">Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
 
                     <div class="project-card reveal reveal-d3">
                         <div class="project-icon"><i class="fa-solid fa-folder-tree"></i></div>
-                        <h4>Navegação Otimizada</h4>
+                        <h3>Navegação Otimizada</h3>
                         <p>Extensão que acelera o acesso a servidores de rede em ambientes escolares.</p>
                         <div class="project-techs">
                             <span>JavaScript</span>
@@ -201,7 +247,7 @@
                         </div>
                         <div class="project-links">
                             <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link"
-                                target="_blank">Ver Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                target="_blank" rel="noopener">Ver Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
                 </div>
@@ -212,13 +258,13 @@
         <section id="contact" aria-label="Contato">
             <div class="contact-container">
                 <div class="contact-info reveal-left">
-                    <h2 class="text-reveal">Vamos <span>*Conectar?*</span></h2>
+                    <h2 class="text-reveal">Vamos <em class="hl">Conectar?</em></h2>
                     <p>Tem um projeto em mente ou precisa automatizar processos? Vamos transformar seu desafio em
                         solução.</p>
 
                     <div class="direct-channels">
                         <a href="https://wa.me/5524998574876?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre..."
-                            class="channel-item" target="_blank">
+                            class="channel-item" target="_blank" rel="noopener">
                             <div class="icon-box whatsapp">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </div>
@@ -230,11 +276,11 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="https://github.com/Igorls34" class="social-icon" target="_blank"><i
+                        <a href="https://github.com/Igorls34" class="social-icon" target="_blank" rel="noopener"><i
                                 class="fa-brands fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/igor-laurindo-5135aa246/" class="social-icon"
-                            target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="https://www.instagram.com/igor_devofc/" class="social-icon" target="_blank"><i
+                            target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/igor_devofc/" class="social-icon" target="_blank" rel="noopener"><i
                                 class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
@@ -261,7 +307,19 @@
                             placeholder="Descreva brevemente o seu projeto..." required></textarea>
                     </div>
 
+                    <!-- Campo isento: humano nunca ve, bot preenche. -->
+                    <div class="hp-field" aria-hidden="true">
+                        <label for="website">Nao preencha este campo</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <button type="submit" id="submit-btn" class="btn-submit">Enviar Proposta</button>
+
+                    <p class="form-legal">
+                        Ao enviar, você concorda com a
+                        <a href="./privacidade.html">Política de Privacidade</a>
+                        e com o uso dos dados para retorno deste contato.
+                    </p>
 
                     <div id="form-message" style="margin-top: 20px; font-weight: 500;"></div>
                 </form>
@@ -273,9 +331,13 @@
     <footer>
         <div class="section-container" style="padding: 40px 20px;">
             <p>&copy; 2026 IgorDev – Desenvolvido com foco em performance.</p>
+            <p class="footer-legal">
+                <a href="./privacidade.html">Política de Privacidade</a>
+            </p>
         </div>
     </footer>
 
+    <script src="./assets/js/core.js"></script>
     <script src="./assets/js/script.js"></script>
 
 </body>

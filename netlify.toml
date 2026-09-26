@@ -1,17 +1,30 @@
 [build]
   publish = "."
 
-[[redirects]]
-  from = "/robots.txt"
-  to = "/robots.txt"
-  status = 200
+# Sem um catch-all "/* -> /index.html" de proposito: qualquer URL errada
+# devolvia 200 com a home (soft 404), o que confunde buscadores. O site e
+# estatico e usa ancoras, entao nao ha rotas que precisem ser reescritas.
+# Uma URL inexistente agora devolve 404 de verdade (ver 404.html).
 
-[[redirects]]
-  from = "/sitemap.xml"
-  to = "/sitemap.xml"
-  status = 200
+# Imagens mudam pouco, entao podem ficar em cache por uma semana.
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# CSS e JS nao tem hash no nome, entao precisam revalidar a cada visita --
+# com immutable, o cliente nunca pegaria uma atualizacao nova.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
