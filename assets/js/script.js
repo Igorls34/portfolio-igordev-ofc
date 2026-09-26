@@ -8,7 +8,10 @@ const {
     validateContact,
     summarizeDeliveries,
     parseHighlightTitle,
-    buildRevealWords
+    buildRevealWords,
+    getConsent,
+    setConsent,
+    shouldLoadAnalytics
 } = PortfolioCore;
 
 (function () {
@@ -561,6 +564,59 @@ const {
         });
     }
 
+    /* ========== LGPD: CONSENTIMENTO E ANALYTICS ========== */
+    /* GA e Clarity ficaram fora do <head> de proposito: carregados ali eles
+       comecam a coletar antes de qualquer aceite. Aqui so entram no DOM depois
+       que a pessoa aceita, e apenas uma vez. */
+
+    const GA_ID = 'G-0EDZHK8SL8';
+    const CLARITY_ID = 'w32g841pzr';
+    let analyticsLoaded = false;
+
+    function loadAnalytics() {
+        if (analyticsLoaded) return;
+        analyticsLoaded = true;
+
+        const gaScript = document.createElement('script');
+        gaScript.async = true;
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+        document.head.appendChild(gaScript);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { window.dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', GA_ID);
+
+        const clarityScript = document.createElement('script');
+        clarityScript.async = true;
+        clarityScript.src = 'https://www.clarity.ms/tag/' + CLARITY_ID;
+        document.head.appendChild(clarityScript);
+    }
+
+    function initConsent() {
+        const banner = document.getElementById('consent-banner');
+
+        // Ja respondeu antes: reaproveita e nao mostra nada.
+        const stored = getConsent(window.localStorage);
+        if (stored !== null) {
+            if (banner) banner.remove();
+            if (shouldLoadAnalytics(stored)) loadAnalytics();
+            return;
+        }
+
+        if (!banner) return;
+        banner.classList.add('visible');
+
+        banner.querySelectorAll('[data-consent]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const choice = btn.getAttribute('data-consent');
+                setConsent(window.localStorage, choice);
+                banner.remove();
+                if (shouldLoadAnalytics(choice)) loadAnalytics();
+            });
+        });
+    }
+
     /* ========== INIT ALL ========== */
     document.addEventListener('DOMContentLoaded', () => {
         initCursor();
@@ -574,6 +630,7 @@ const {
         initMagneticButtons();
         initMobileMenu();
         initForm();
+        initConsent();
     });
 
 })();

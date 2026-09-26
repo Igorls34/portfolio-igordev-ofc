@@ -42,7 +42,7 @@ npm install
 npm run check
 ```
 
-`npm run check` roda o lint e os 39 testes. Vale rodar sempre: a branch de
+`npm run check` roda o lint e os 53 testes. Vale rodar sempre: a branch de
 correções que consolidou o formulário foi montada com essa verificação.
 
 ---
@@ -66,6 +66,24 @@ netlify deploy --prod --dir .
 
 Não existe mais o redirecionamento `/*` para `/index.html`: ele devolvia 200
 com a home em qualquer URL errada, o que confunde buscadores (soft 404).
+
+---
+
+## Depois do deploy, confira
+
+```bash
+curl -I https://igordev.netlify.app/                  # esperado: 200
+curl -I https://igordev.netlify.app/privacidade.html  # esperado: 200
+curl -I https://igordev.netlify.app/rota-que-nao-existe  # esperado: 404
+```
+
+O último é o que garante que o `404.html` está de pé e que a URL inválida não
+volta a devolver 200.
+
+Confira também, no navegador: aba **Network** recarregando a home com o
+`localStorage` limpo, e confirme que **nenhuma** requisição para
+`googletagmanager.com` ou `clarity.ms` aparece antes de clicar em *Aceitar* no
+banner.
 
 ---
 

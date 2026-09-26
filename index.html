@@ -46,27 +46,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EDZHK8SL8"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-0EDZHK8SL8');
-    </script>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "w32g841pzr");
-    </script>
+    <!-- Google Analytics e Microsoft Clarity NAO sao carregados aqui de proposito.
+         Carregar no head dispara coleta antes de qualquer consentimento, o que
+         contraria a LGPD. O carregamento sob demanda fica em assets/js/script.js
+         (initConsent / loadAnalytics) e so acontece apos aceite. -->
 </head>
 
 <body>
 
     <a href="#main-content" class="skip-to-content">Pular para o conteúdo</a>
+
+    <!-- Banner de consentimento.
+         Fica no inicio do DOM de proposito: visualmente ele e position:fixed no
+         rodape, entao a ordem no HTML nao muda o lugar na tela, mas faz o
+         primeiro Tab cair nos botoes em vez de obrigar quem usa teclado a
+         atravessar a pagina inteira. Nao roubo foco para nao atrapalhar quem
+         so queria ler a pagina.
+         display:none por padrao; o JS so adiciona .visible quando ainda nao ha
+         decisao salva, para nao piscar na tela de quem ja respondeu. -->
+    <div id="consent-banner" class="consent-banner" role="dialog" aria-modal="false"
+        aria-labelledby="consent-banner-title" aria-describedby="consent-banner-desc">
+        <div class="consent-banner__body">
+            <p id="consent-banner-title" class="consent-banner__title">Cookies de medição</p>
+            <p id="consent-banner-desc">
+                Usamos Google Analytics e Microsoft Clarity para entender quais
+                partes do portfolio interessam. Esses cookies gravam páginas
+                visitadas, origem do acesso e dados técnicos do navegador.
+                Nada disso é enviado se você recusar.
+            </p>
+            <p class="consent-banner__link-wrap">
+                <a href="./privacidade.html">Ler a Política de Privacidade</a>
+            </p>
+        </div>
+        <div class="consent-banner__actions">
+            <button type="button" class="btn-consent btn-consent--ghost" data-consent="denied">
+                Recusar
+            </button>
+            <button type="button" class="btn-consent btn-consent--solid" data-consent="granted">
+                Aceitar
+            </button>
+        </div>
+    </div>
 
     <div class="scroll-progress"></div>
 
@@ -100,7 +120,7 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <span class="hero-greeting reveal">DISPONÍVEL PARA PROJETOS</span>
-                    <h2 class="hero-title">Inovação em cada <em class="hl">Pixel.</em></h2>
+                    <h1 class="hero-title">Inovação em cada <em class="hl">Pixel.</em></h1>
                     <p class="hero-tagline">Igor Laurindo – Especialista em Desenvolvimento Web e Automações
                         Inteligentes</p>
                     <p class="hero-description">Transformo ideias em realidade através de código limpo, interfaces
@@ -159,22 +179,22 @@
                 <div class="skills-grid">
                     <div class="skill-item reveal reveal-d1">
                         <i class="fa-brands fa-html5"></i>
-                        <h4>Web Dev</h4>
+                        <h3>Web Dev</h3>
                         <p>Sites dinâmicos, responsivos e otimizados para SEO.</p>
                     </div>
                     <div class="skill-item reveal reveal-d2">
                         <i class="fa-brands fa-python"></i>
-                        <h4>Automação</h4>
+                        <h3>Automação</h3>
                         <p>Scripts inteligentes e integração de sistemas.</p>
                     </div>
                     <div class="skill-item reveal reveal-d3">
                         <i class="fa-brands fa-whatsapp"></i>
-                        <h4>Chatbots</h4>
+                        <h3>Chatbots</h3>
                         <p>Fluxos automáticos para atendimento via WhatsApp.</p>
                     </div>
                     <div class="skill-item reveal reveal-d4">
                         <i class="fa-solid fa-cloud"></i>
-                        <h4>APIs & Cloud</h4>
+                        <h3>APIs & Cloud</h3>
                         <p>Integração com Google Cloud, Gemini e mais.</p>
                     </div>
                 </div>
@@ -189,7 +209,7 @@
                 <div class="projects-grid">
                     <div class="project-card reveal reveal-d1">
                         <div class="project-icon"><i class="fa-brands fa-wordpress"></i></div>
-                        <h4>Rápido & Seguro</h4>
+                        <h3>Rápido & Seguro</h3>
                         <p>Landing Page otimizada para logística, focada em performance e conversão direta.</p>
                         <div class="project-techs">
                             <span>WordPress</span>
@@ -204,7 +224,7 @@
 
                     <div class="project-card reveal reveal-d2">
                         <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
-                        <h4>WhatsApp Auto-Bot</h4>
+                        <h3>WhatsApp Auto-Bot</h3>
                         <p>Automação de agendamentos com integração direta ao Google Calendar.</p>
                         <div class="project-techs">
                             <span>Python</span>
@@ -219,7 +239,7 @@
 
                     <div class="project-card reveal reveal-d3">
                         <div class="project-icon"><i class="fa-solid fa-folder-tree"></i></div>
-                        <h4>Navegação Otimizada</h4>
+                        <h3>Navegação Otimizada</h3>
                         <p>Extensão que acelera o acesso a servidores de rede em ambientes escolares.</p>
                         <div class="project-techs">
                             <span>JavaScript</span>
@@ -295,6 +315,12 @@
 
                     <button type="submit" id="submit-btn" class="btn-submit">Enviar Proposta</button>
 
+                    <p class="form-legal">
+                        Ao enviar, você concorda com a
+                        <a href="./privacidade.html">Política de Privacidade</a>
+                        e com o uso dos dados para retorno deste contato.
+                    </p>
+
                     <div id="form-message" style="margin-top: 20px; font-weight: 500;"></div>
                 </form>
             </div>
@@ -305,6 +331,9 @@
     <footer>
         <div class="section-container" style="padding: 40px 20px;">
             <p>&copy; 2026 IgorDev – Desenvolvido com foco em performance.</p>
+            <p class="footer-legal">
+                <a href="./privacidade.html">Política de Privacidade</a>
+            </p>
         </div>
     </footer>
 

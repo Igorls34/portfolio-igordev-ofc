@@ -19,6 +19,36 @@
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const MIN_PHONE_DIGITS = 10;
     const MAX_PHONE_DIGITS = 13;
+    const CONSENT_KEY = 'igordev_consent';
+
+    /* ---------- Consentimento (LGPD) ---------- */
+
+    /* O storage entra como parametro para poder ser testado com um duble,
+     * e para nao estourar quando o navegador bloqueia localStorage. */
+    function getConsent(storage) {
+        if (!storage) return null;
+        try {
+            const value = storage.getItem(CONSENT_KEY);
+            return (value === 'granted' || value === 'denied') ? value : null;
+        } catch (err) {
+            return null;
+        }
+    }
+
+    function setConsent(storage, value) {
+        if (!storage) return false;
+        try {
+            storage.setItem(CONSENT_KEY, value === 'granted' ? 'granted' : 'denied');
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    /* Analytics so pode carregar com consentimento concedido. */
+    function shouldLoadAnalytics(consent) {
+        return consent === 'granted';
+    }
 
     /* ---------- Seguranca ---------- */
 
@@ -158,6 +188,9 @@
         validateContact: validateContact,
         summarizeDeliveries: summarizeDeliveries,
         parseHighlightTitle: parseHighlightTitle,
-        buildRevealWords: buildRevealWords
+        buildRevealWords: buildRevealWords,
+        getConsent: getConsent,
+        setConsent: setConsent,
+        shouldLoadAnalytics: shouldLoadAnalytics
     };
 }));

@@ -266,3 +266,110 @@ describe('configuracao dos bots', () => {
         assert.ok(!joined.includes('.br//'));
     });
 });
+
+/* Duble de localStorage. O core recebe o storage como parametro justamente
+ * para poder ser testado sem DOM e sem sujar o storage do navegador. */
+function fakeStorage(initial) {
+    const data = Object.assign({}, initial);
+    return {
+        getItem(key) {
+            return Object.prototype.hasOwnProperty.call(data, key) ? data[key] : null;
+        },
+        setItem(key, value) {
+            data[key] = String(value);
+        },
+        _data: data
+    };
+}
+
+const CONSENT_KEY = 'igordev_consent';
+
+describe('getConsent', () => {
+    it('devolve granted quando o visitante ja aceitou', () => {
+        const storage = fakeStorage({ [CONSENT_KEY]: 'granted' });
+        assert.strictEqual(core.getConsent(storage), 'granted');
+    });
+
+    it('devolve denied quando o visitante ja recusou', () => {
+        const storage = fakeStorage({ [CONSENT_KEY]: 'denied' });
+        assert.strictEqual(core.getConsent(storage), 'denied');
+    });
+
+    it('devolve null na primeira visita, para o banner aparecer', () => {
+        assert.strictEqual(core.getConsent(fakeStorage()), null);
+    });
+
+    it('ignora valor adulterado em vez de tratar como consentimento', () => {
+        // Se o valor salvo nao for exatamente granted ou denied, nao pode
+        // valer: um 'true' solto faria o script carregar analytics.
+        ['true', 'GRANTED', '1', 'aceito', '', 'granted '].forEach(bad => {
+            const storage = fakeStorage({ [CONSENT_KEY]: bad });
+            assert.strictEqual(core.getConsent(storage), null, 'aceitou valor invalido: ' + JSON.stringify(bad));
+        });
+    });
+
+    it('devolve null quando o navegador bloqueia o localStorage', () => {
+        const storage = {
+            getItem() { throw new Error('SecurityError'); }
+        };
+        assert.strictEqual(core.getConsent(storage), null);
+    });
+
+    it('devolve null quando nao ha storage', () => {
+        assert.strictEqual(core.getConsent(null), null);
+        assert.strictEqual(core.getConsent(undefined), null);
+    });
+});
+
+describe('setConsent', () => {
+    it('persiste granted e depois rele como granted', () => {
+        const storage = fakeStorage();
+        assert.strictEqual(core.setConsent(storage, 'granted'), true);
+        assert.strictEqual(core.getConsent(storage), 'granted');
+    });
+
+    it('persiste denied e depois rele como denied', () => {
+        const storage = fakeStorage();
+        assert.strictEqual(core.setConsent(storage, 'denied'), true);
+        assert.strictEqual(core.getConsent(storage), 'denied');
+    });
+
+    it('qualquer valor diferente de granted vira denied', () => {
+        // Falhar para o lado restritivo e o comportamento seguro: um valor
+        // invalido nunca pode acabar concedendo coleta.
+        const storage = fakeStorage();
+        core.setConsent(storage, 'talvez');
+        assert.strictEqual(core.getConsent(storage), 'denied');
+    });
+
+    it('sobrescreve uma decisao anterior quando a pessoa muda de ideia', () => {
+        const storage = fakeStorage({ [CONSENT_KEY]: 'denied' });
+        core.setConsent(storage, 'granted');
+        assert.strictEqual(core.getConsent(storage), 'granted');
+    });
+
+    it('reporta falha em vez de estourar quando o storage bloqueia', () => {
+        const storage = {
+            setItem() { throw new Error('QuotaExceededError'); }
+        };
+        assert.strictEqual(core.setConsent(storage, 'granted'), false);
+    });
+});
+
+describe('shouldLoadAnalytics', () => {
+    it('so carrega com consentimento concedido', () => {
+        assert.strictEqual(core.shouldLoadAnalytics('granted'), true);
+    });
+
+    it('nao carrega quando recusou, e nem quando ainda nao respondeu', () => {
+        // null e o caso mais importante: primeiro acesso, banner na tela.
+        assert.strictEqual(core.shouldLoadAnalytics('denied'), false);
+        assert.strictEqual(core.shouldLoadAnalytics(null), false);
+        assert.strictEqual(core.shouldLoadAnalytics(undefined), false);
+        assert.strictEqual(core.shouldLoadAnalytics(''), false);
+    });
+
+    it('nao deixa valor TRUE genérico passar como concessao', () => {
+        assert.strictEqual(core.shouldLoadAnalytics(true), false);
+    });
+});

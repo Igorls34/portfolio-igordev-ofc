@@ -660,7 +660,7 @@ nav ul li a:hover::after {
     transform: scale(1.15) rotate(-5deg);
 }
 
-.skill-item h4 {
+.skill-item h3 {
     margin-bottom: 14px;
     font-size: 1.25rem;
     font-weight: 700;
@@ -745,7 +745,7 @@ nav ul li a:hover::after {
     transform: scale(1.1) rotate(-5deg);
 }
 
-.project-card h4 {
+.project-card h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
     font-weight: 700;
@@ -1062,6 +1062,254 @@ nav ul li a:hover::after {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+}
+
+.form-legal {
+    margin-top: 14px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.form-legal a,
+.footer-legal a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-legal {
+    margin-top: 10px;
+    font-size: 0.88rem;
+}
+
+/* ============ BANNER DE CONSENTIMENTO (LGPD) ============ */
+/* display:none por padrao: o JS so adiciona .visible quando ainda nao ha
+   decisao salva. Quem ja aceitou ou recusou nao ve o banner passar. */
+.consent-banner {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px 24px calc(22px + env(safe-area-inset-bottom));
+    background-color: var(--bg-dark);
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.consent-banner.visible {
+    display: flex;
+    animation: consent-slide-up 0.35s ease-out both;
+}
+
+.consent-banner__body {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* O titulo do banner e um <p>, nao um heading: e um dialog, e o
+   aria-labelledby do proprio dialog ja anuncia esse texto. Usar h2 aqui
+   colocaria um h2 antes do h1 da pagina no outline. */
+.consent-banner__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-white);
+}
+
+.consent-banner__body p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.consent-banner__link-wrap {
+    margin-top: 6px;
+    font-size: 0.85rem;
+}
+
+.consent-banner__link-wrap a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.consent-banner__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-consent {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 11px 26px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-consent--solid {
+    background: var(--gradient-2);
+    color: white;
+    border: 2px solid transparent;
+}
+
+.btn-consent--solid:hover {
+    transform: translateY(-2px);
+}
+
+.btn-consent--ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 2px solid var(--border-color);
+}
+
+.btn-consent--ghost:hover {
+    color: var(--text-white);
+    border-color: var(--primary);
+}
+
+.btn-consent:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+@keyframes consent-slide-up {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 640px) {
+    .consent-banner {
+        padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+    }
+
+    .btn-consent {
+        flex: 1 1 auto;
+        min-width: 130px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .consent-banner.visible {
+        animation: none;
+    }
+
+    .btn-consent:hover {
+        transform: none;
+    }
+}
+
+/* ========== PAGINA DE POLITICA DE PRIVACIDADE ========== */
+.legal-page {
+    padding: 100px 0 60px;
+}
+
+.legal-page__inner {
+    max-width: 760px;
+}
+
+.legal-page__back {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: var(--primary);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.legal-page__back:hover {
+    transform: translateX(-4px);
+}
+
+.legal-page h1 {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+}
+
+.legal-page__updated {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 34px;
+}
+
+.legal-page h2 {
+    font-size: 1.3rem;
+    margin: 38px 0 14px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.legal-page h3 {
+    font-size: 1.05rem;
+    margin: 24px 0 10px;
+    color: var(--text-white);
+}
+
+.legal-page p,
+.legal-page li {
+    color: var(--text-muted);
+    font-size: 0.97rem;
+    line-height: 1.75;
+    margin-bottom: 12px;
+}
+
+.legal-page ul {
+    padding-left: 22px;
+    margin-bottom: 16px;
+}
+
+.legal-page li {
+    margin-bottom: 6px;
+}
+
+.legal-page strong {
+    color: var(--text-white);
+    font-weight: 600;
+}
+
+.legal-page a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.legal-page code {
+    font-size: 0.88em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    word-break: break-all;
+}
+
+.legal-page em {
+    font-style: italic;
+    color: var(--text-white);
+}
+
+@media (max-width: 640px) {
+    .legal-page {
+        padding: 90px 0 40px;
+    }
+
+    .legal-page h1 {
+        font-size: 1.8rem;
+    }
 }
 
 /* ============ FOOTER ============ */
