@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Esta pagina nao pode ser indexada. O token nao a protege de indexar:
+         o noindex e que impede. -->
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Relatorio do portfolio | IgorDev</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #050505;
+            --panel: #0d0d0d;
+            --line: #1f1f1f;
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --blue: #3b82f6;
+            --violet: #8b5cf6;
+            --good: #22c55e;
+            --warn: #eab308;
+            --bad: #ef4444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 32px 20px 80px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+        }
+
+        .wrap { max-width: 1120px; margin: 0 auto; }
+
+        header h1 {
+            margin: 0 0 4px;
+            font-size: 26px;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p { margin: 0; color: var(--muted); font-size: 14px; }
+
+        /* ---------- login ---------- */
+
+        .gate {
+            margin: 28px 0;
+            padding: 28px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            max-width: 460px;
+        }
+
+        .gate h2 { margin: 0 0 8px; font-size: 17px; }
+        .gate p { margin: 0 0 18px; color: var(--muted); font-size: 14px; }
+
+        .gate input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #050505;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .gate input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            border: 0;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .erro { color: var(--bad); font-size: 13px; min-height: 20px; margin-top: 10px; }
+
+        .aviso {
+            margin: 20px 0;
+            padding: 16px 18px;
+            background: #1a1405;
+            border: 1px solid #4d3d0a;
+            border-left: 3px solid var(--warn);
+            border-radius: 12px;
+            font-size: 14px;
+            color: #fde68a;
+        }
+
+        /* ---------- blocos ---------- */
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .toolbar select, .toolbar button {
+            padding: 9px 14px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            color: var(--text);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .card {
+            padding: 18px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+        }
+
+        .card .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .card .valor { font-size: 27px; font-weight: 800; line-height: 1.1; }
+        .card .nota { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+        h3.secao {
+            margin: 34px 0 14px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+        th, td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        th {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        tbody tr:last-child td { border-bottom: 0; }
+
+        .barra {
+            height: 6px;
+            background: var(--line);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .barra > span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--violet));
+            border-radius: 3px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tag.good { background: #052e16; color: var(--good); }
+        .tag.ni { background: #3a2d05; color: var(--warn); }
+        .tag.poor { background: #3a0a0a; color: var(--bad); }
+        .tag.none { background: var(--line); color: var(--muted); }
+
+        .vazio { color: var(--muted); font-size: 14px; padding: 14px 0; }
+        .perdeu { color: var(--bad); }
+        .ganhou { color: var(--good); }
+
+        footer {
+            margin-top: 46px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <h1>Relatorio de comportamento</h1>
+            <p>IgorDev &middot; dados first-party coletados pelo proprio portfolio</p>
+        </header>
+
+        <!-- Token nao vai no HTML nem no JS: e digitado a cada sessao e fica
+             so na sessionStorage, que morre ao fechar o navegador. -->
+        <div class="gate" id="gate">
+            <h2>Acesso restrito</h2>
+            <p>Informe o token definido em <code>ANALYTICS_TOKEN</code> no ambiente do site.</p>
+            <input type="password" id="token" placeholder="Token" autocomplete="current-password">
+            <button class="btn" id="entrar">Abrir relatorio</button>
+            <div class="erro" id="erro"></div>
+        </div>
+
+        <div id="conteudo" hidden>
+            <div class="aviso" id="avisoStore" hidden></div>
+
+            <div class="toolbar">
+                <select id="periodo">
+                    <option value="1">Hoje</option>
+                    <option value="7" selected>7 dias</option>
+                    <option value="14">14 dias</option>
+                    <option value="30">30 dias</option>
+                </select>
+                <button id="atualizar">Atualizar</button>
+                <span id="status" style="color:var(--muted);font-size:13px"></span>
+            </div>
+
+            <div class="grid" id="cards"></div>
+
+            <h3 class="secao">Origem do acesso</h3>
+            <table id="origens"></table>
+
+            <h3 class="secao">Projetos</h3>
+            <table id="projetos"></table>
+
+            <h3 class="secao">Cliques em CTAs</h3>
+            <table id="ctas"></table>
+
+            <h3 class="secao">Navegacao e secoes vistas</h3>
+            <table id="secoes"></table>
+
+            <h3 class="secao">Profundidade de rolagem</h3>
+            <table id="rolagem"></table>
+
+            <h3 class="secao">Funil do formulario</h3>
+            <table id="funil"></table>
+
+            <h3 class="secao">Performance real (RUM)</h3>
+            <table id="vitals"></table>
+
+            <footer>
+                Fonte: eventos first-party em <code>/api/collect</code>, imunes a adblock.
+                O Clarity e o GA4 veem menos trafego que isto. Medianas e percentis,
+                nunca media -- tempo de sessao tem cauda longa e a media nao
+                representa ninguem.
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        /* Painel de leitura, sem framework. So renderiza o que /api/stats
+         * devolve -- nenhuma logica de agregacao aqui, senao o painel
+         * divergiria do que o servidor calculou. */
+        (function () {
+            'use strict';
+
+            var gate = document.getElementById('gate');
+            var conteudo = document.getElementById('conteudo');
+            var tokenInput = document.getElementById('token');
+            var erro = document.getElementById('erro');
+            var status = document.getElementById('status');
+            var avisoStore = document.getElementById('avisoStore');
+
+            function token() {
+                return sessionStorage.getItem('an_token') || '';
+            }
+
+            function esc(v) {
+                return String(v).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+
+            function ms(v) {
+                if (!v) return '0s';
+                return v < 60000 ? Math.round(v / 1000) + 's' : Math.round(v / 60000) + 'min';
+            }
+
+            /* ---------- tabelas ---------- */
+
+            function table(id, headers, rows, opts) {
+                var el = document.getElementById(id);
+                if (!rows.length) {
+                    el.innerHTML = '<tr><td colspan="' + headers.length +
+                        '" class="vazio">Sem dado no periodo.</td></tr>';
+                    return;
+                }
+                var max = Math.max.apply(null, rows.map(function (r) { return r[opts && opts.metric ? opts.metric : 1]; }));
+                var html = '<thead><tr>' + headers.map(function (h) {
+                    return '<th>' + esc(h) + '</th>';
+                }).join('') + '</tr></thead><tbody>';
+                rows.forEach(function (r) {
+                    var value = r[opts && opts.metric ? opts.metric : 1];
+                    var pct = max ? Math.round((value / max) * 100) : 0;
+                    html += '<tr>' + r.map(function (cell, i) {
+                        if (i === 0) return '<td>' + esc(cell) + '</td>';
+                        if (typeof cell === 'object' && cell.html) return '<td>' + cell.html + '</td>';
+                        return '<td>' + esc(cell) +
+                            (i === (opts && opts.metric ? opts.metric : 1)
+                                ? '<div class="barra"><span style="width:' + pct + '%"></span></div>'
+                                : '') +
+                            '</td>';
+                    }).join('') + '</tr>';
+                });
+                el.innerHTML = html + '</tbody>';
+            }
+
+            function toRows(map, label) {
+                return Object.keys(map || {})
+                    .map(function (k) { return [k, map[k]]; })
+                    .sort(function (a, b) { return b[1] - a[1]; });
+            }
+
+            function gradeTag(grade) {
+                var cls = { good: 'good', 'needs-improvement': 'ni', poor: 'poor' }[grade] || 'none';
+                var label = { good: 'bom', 'needs-improvement': 'medio', poor: 'ruim' }[grade] || '-';
+                return '<span class="tag ' + cls + '">' + label + '</span>';
+            }
+
+            /* ---------- render ---------- */
+
+            function render(r) {
+                if (!r.store) {
+                    avisoStore.hidden = false;
+                    avisoStore.textContent = 'NETLIFY_BLOBS_CONTEXT nao esta definido: ' +
+                        'os eventos estao sendo aceitos mas nao gravados. Nada aqui ' +
+                        'sera persistido ate a variavel existir no ambiente.';
+                }
+
+                var t = r.totals;
+                var eng = r.engagement;
+                var cards = [
+                    ['Visitantes', t.visitors, t.repeatVisitors + ' voltaram (' + t.repeatRate + '%)'],
+                    ['Sessoes', t.sessions, t.visitsPerVisitor + ' por visitante'],
+                    ['Eventos', t.humanEvents, t.botEvents + ' de bot descartados'],
+                    ['Tempo ativo p50', ms(eng.activeMsP50), 'mediana, nao media'],
+                    ['Rolagem p50', eng.maxScrollP50 + '%', 'p50 ' + eng.maxScrollP75 + '% no p75'],
+                    ['Chegaram ao fim', eng.reached100, 'de ' + t.sessions + ' sessoes'],
+                    ['Envios ok', t.submitOk, t.submits + ' tentados'],
+                    ['Contatos recebidos', t.registros, 'registros duraveis'],
+                    ['Copiar', t.copies, 'ctrl+c na pagina']
+                ];
+                document.getElementById('cards').innerHTML = cards.map(function (c) {
+                    return '<div class="card"><div class="label">' + esc(c[0]) + '</div>' +
+                        '<div class="valor">' + esc(c[1]) + '</div>' +
+                        '<div class="nota">' + esc(c[2]) + '</div></div>';
+                }).join('');
+
+                table('origens', ['Origem', 'Sessoes'], toRows(r.origins.source), {});
+                table('projetos', ['Projeto', 'Cliques no repo', 'Impressoes do card'],
+                    (function () {
+                        var views = r.projects.views || {};
+                        var clicks = r.projects.clicks || {};
+                        var ids = {};
+                        Object.keys(views).forEach(function (k) { ids[k.replace('card_', '')] = views[k]; });
+                        Object.keys(clicks).forEach(function (k) { ids[k.replace('repo_', '')] = clicks[k]; });
+                        return Object.keys(ids).map(function (k) {
+                            return [k, clicks['repo_' + k] || 0, views['card_' + k] || 0];
+                        }).sort(function (a, b) { return b[1] - a[1] || b[2] - a[2]; });
+                    })(), { metric: 1 });
+                table('ctas', ['CTA', 'Cliques'], toRows(r.ctas), {});
+
+                var navRows = toRows(r.nav);
+                var secRows = toRows(r.sections);
+                table('secoes', ['Item', 'Vezes'],
+                    navRows.map(function (x) { return ['nav:' + x[0], x[1]]; })
+                        .concat(secRows.map(function (x) { return ['secao:' + x[0], x[1]]; })), {});
+
+                table('rolagem', ['Marco', 'Sessoes'],
+                    [25, 50, 75, 90, 100].map(function (m) {
+                        return [m + '%', r.scrollDepth[m] || 0];
+                    }), {});
+
+                if (window.SummarizeFunnel) {
+                    var f = window.SummarizeFunnel(r.funnelRaw);
+                    document.getElementById('funil').innerHTML =
+                        '<thead><tr><th>Campo</th><th>Alcancou</th><th>Erros</th>' +
+                        '<th>Perdeu aqui</th></tr></thead><tbody>' +
+                        f.steps.map(function (s) {
+                            return '<tr><td>' + esc(s.field) + ' (' + s.step + ')</td>' +
+                                '<td>' + s.focused + '</td>' +
+                                '<td>' + s.errors + '</td>' +
+                                '<td class="' + (s.lostHere ? 'perdeu' : 'ganhou') + '">' +
+                                (s.lostHere ? 'sim' : 'nao') + '</td></tr>';
+                        }).join('') +
+                        '</tbody><tfoot><tr><td>Convertido</td><td colspan="3">' +
+                        f.completionRate + '%</td></tr></tfoot>';
+                }
+
+                var vit = r.vitals;
+                var vitRows = [];
+                ['lcp', 'inp', 'cls', 'ttfb', 'fcp'].forEach(function (m) {
+                    if (!vit[m]) return;
+                    var unit = m === 'cls' ? '' : 'ms';
+                    vitRows.push([
+                        m.toUpperCase(),
+                        vit[m].p50 + unit,
+                        vit[m].p75 + unit,
+                        vit[m].n,
+                        { html: gradeTag(vit[m].grade) }
+                    ]);
+                });
+                table('vitals', ['Metrica', 'p50', 'p75', 'Amostras', 'Veredito'], vitRows, { metric: 1 });
+            }
+
+            function load() {
+                status.textContent = 'carregando...';
+                var days = document.getElementById('periodo').value;
+                fetch('/api/stats?days=' + days, {
+                    headers: { 'x-analytics-token': token() }
+                }).then(function (res) {
+                    if (res.status === 401) throw new Error('nao-autorizado');
+                    if (res.status === 503) throw new Error('token-nao-configurado');
+                    return res.json();
+                }).then(function (data) {
+                    status.textContent = data.daysWithData + ' dia(s) com dado';
+                    gate.hidden = true;
+                    conteudo.hidden = false;
+                    render(data);
+                }).catch(function (err) {
+                    status.textContent = '';
+                    gate.hidden = false;
+                    conteudo.hidden = true;
+                    erro.textContent = err.message === 'nao-autorizado'
+                        ? 'Token invalido.'
+                        : err.message === 'token-nao-configurado'
+                            ? 'ANALYTICS_TOKEN nao esta definido no ambiente do site.'
+                            : 'Falha ao carregar.';
+                });
+            }
+
+            document.getElementById('entrar').addEventListener('click', function () {
+                sessionStorage.setItem('an_token', tokenInput.value.trim());
+                load();
+            });
+
+            tokenInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') document.getElementById('entrar').click();
+            });
+
+            document.getElementById('atualizar').addEventListener('click', load);
+            document.getElementById('periodo').addEventListener('change', load);
+
+            if (token()) load();
+        }());
+    </script>
+
+    <!-- A mesma logica pura do funil que o navegador usa, carregada aqui sem
+         duplicar a regra de "quem chegou ate onde". -->
+    <script src="../assets/js/analytics-core.js"></script>
+    <script>
+        window.SummarizeFunnel = window.AnalyticsCore.summarizeFunnel;
+    </script>
+</body>
+</html>

@@ -90,13 +90,65 @@
 
             <h3>2.2 Dados coletados automaticamente</h3>
             <p>
-                Se você <strong>aceitar</strong> os cookies de medição, Google Analytics e
-                Microsoft Clarity registram páginas visitadas, origem do acesso, endereço IP
-                aproximado, navegador, sistema operacional e interações com a página.
+                Se você <strong>aceitar</strong> os cookies de medição, este site coleta
+                automaticamente os dados abaixo. A coleta automática só ocorre após o aceite.
+            </p>
+            <ul>
+                <li>
+                    <strong>Navegação:</strong> páginas visitadas, seção que ficou visível e
+                    tempo em cada seção.
+                </li>
+                <li>
+                    <strong>Rolagem:</strong> até onde a página foi lida (25%, 50%, 75%, 90%,
+                    100%).
+                </li>
+                <li>
+                    <strong>Tempo na página:</strong> quanto tempo a aba ficou visível e em
+                    primeiro plano. Tempo com a aba escondida não é contado.
+                </li>
+                <li>
+                    <strong>Cliques:</strong> em qual botão, projeto, link de rede social ou
+                    endereço de e-mail você clicou, e se o clique abriu a página ou saiu dela.
+                    O endereço completo do link de destino não é registrado.
+                </li>
+                <li>
+                    <strong>Formulário de contato, sem o conteúdo:</strong> em qual campo a
+                    digitação começou, quanto tempo levou, se algum campo deu erro, se o
+                    envio foi concluído e por qual canal (WhatsApp ou e-mail). O texto
+                    digitado, seu nome, e-mail e telefone <strong>não</strong> são enviados
+                    para o sistema de medição.
+                </li>
+                <li>
+                    <strong>Aparelho e navegador:</strong> tipo de aparelho (celular ou
+                    desktop), resolução, sistema, navegador, idioma, fuso horário e recursos
+                    do aparelho.
+                </li>
+                <li>
+                    <strong>Origem do acesso:</strong> se a visita veio de um link direto, de
+                    uma busca (Google, Bing, DuckDuckGo e outros) ou de uma rede social
+                    (LinkedIn, Instagram, GitHub e outros), e parâmetros de campanha como
+                    <code>utm_source</code>.
+                </li>
+                <li>
+                    <strong>Desempenho real da página:</strong> tempo de resposta do servidor,
+                    tempo até a primeira pintura e deslocamentos de layout.
+                </li>
+                <li>
+                    <strong>País e estado:</strong> derivados do endereço IP no momento do
+                    recebimento do evento, e guardados apenas nessa forma. O endereço IP em
+                    si <strong>não</strong> é gravado.
+                </li>
+            </ul>
+            <p>
+                Google Analytics e Microsoft Clarity passam a registrar adicionalmente o
+                endereço IP aproximado, o mapa de calor dos cliques e a gravação de sessão,
+                sempre somente após o aceite.
             </p>
             <p>
-                Se você <strong>recusar</strong>, nenhum desses dados é transmitido. A recusa
-                não impede a navegação nem o uso do formulário.
+                Se você <strong>recusar</strong>, nenhum desses dados é transmitido aos serviços
+                de medição e nada é gravado pelo sistema de medição do próprio site. A recusa
+                não impede a navegação nem o uso do formulário: o formulário continua
+                funcionando e você continua sendo respondido normalmente.
             </p>
 
             <h2>3. Para que usamos os dados e com qual base legal</h2>
@@ -131,12 +183,18 @@
                 </li>
                 <li>
                     <strong>Microsoft Clarity</strong> — gravação de sessão e mapas de calor,
-                    somente após aceite. <strong>ATENÇÃO:</strong> o Clarity pode gravar
-                    sessões em que o campo de texto do formulário recebe conteúdo. Você pode
-                    recusar os cookies para evitar isso.
+                    somente após aceite. <strong>ATENÇÃO:</strong> a região do formulário de
+                    contato é marcada como sensível para que o conteúdo digitado não seja
+                    exibido na gravação. Você pode recusar os cookies para evitar a gravação
+                    de sessão de qualquer forma.
                 </li>
                 <li>
-                    <strong>Netlify</strong> — hospedagem do site.
+                    <strong>Netlify</strong> — hospedagem do site e processamento dos eventos
+                    de medição e dos envios do formulário. As duas funções que recebem esses
+                    dados são <code>/api/collect</code> (eventos de navegação, sem conteúdo
+                    digitado) e <code>/api/form</code> (registro do envio, sem conteúdo
+                    digitado). O relatório com esses dados é protegido por senha e não é
+                    público.
                 </li>
             </ul>
 
@@ -150,6 +208,21 @@
                 <li>
                     <strong>Registros de cookies de medição:</strong> 14 meses (padrão do
                     Google Analytics).
+                </li>
+                <li>
+                    <strong>Eventos de medição do próprio site:</strong> guardados por até
+                    <strong>24 meses</strong> a partir da visita e eliminados após esse prazo.
+                    Esses eventos não contêm o conteúdo digitado no formulário, nem nome,
+                    e-mail ou telefone. O relatório é interno e protegido por senha.
+                </li>
+                <li>
+                    <strong>Identificador de visita:</strong> um código aleatório guardado no
+                    seu navegador (<code>localStorage</code>) para reconhecer visitas
+                    repetidas e contar quantas vezes você voltou. Ele não contém nenhum dado
+                    pessoal e é apagado junto com os demais dados do site. Se você revogar o
+                    consentimento, ele deixa de ser enviado; para revogar tudo, limpe os dados
+                    do site, o que também apaga a sua preferência e faz o banner aparecer de
+                    novo.
                 </li>
                 <li>
                     <strong>Preferência de consentimento:</strong> guardada no seu navegador

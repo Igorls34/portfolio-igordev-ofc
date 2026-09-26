@@ -25,17 +25,35 @@ jobs:
         run: npm ci
 
       # Antes o workflow publicava direto. O deploy agora so acontece se o
-      # lint e os 39 testes passarem.
+      # lint e a suite de testes passarem.
       - name: Lint
         run: npm run lint
 
       - name: Test
         run: npm test
 
+      # Monta dist/ com o que o navegador deve enxergar. Sem este passo o
+      # publish-dir abaixo apontaria para um diretorio inexistente e o
+      # deploy publicaria o build anterior, ou nada.
+      - name: Build
+        run: npm run build
+
+      # Confere o resultado do passo anterior antes de enviar: um dist/
+      # incompleto falha aqui e nao em producao.
+      - name: Check dist
+        run: |
+          test -f dist/index.html
+          test -f dist/assets/js/analytics.js
+          test -f dist/relatorio/index.html
+          if [ -d dist/netlify ] || [ -d dist/tests ]; then
+            echo "::error::codigo-fonte vazou para dist/"
+            exit 1
+          fi
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3
         with:
-          publish-dir: '.'
+          publish-dir: 'dist'
           production-branch: main
           production-deploy: true
           enable-pull-request-comment: true
@@ -44,4 +62,4 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 2
+        timeout-minutes: 5

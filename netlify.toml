@@ -1,8 +1,24 @@
 [build]
-  publish = "."
+  # O passo de publicacao so copia arquivos para dist/ -- nao compila nem
+  # renomeia nada. Sem ele, publish = "." publicava a raiz inteira e deixava o
+  # codigo-fonte das functions, os testes e o package.json em URLs publicas.
+  command = "node scripts/publish.mjs"
+  publish = "dist"
+
+[functions]
+  # "functions" nao e uma chave valida de [build] -- so existem base, publish,
+  # command, environment e processing. A linha que existia em [build] era
+  # ignorada. Este e o lugar certo, e coincide com o padrao do Netlify.
+  directory = "netlify/functions"
+
+  # O store importa @netlify/blobs com import dinamico. Com o empacotador
+  # padrao (zisi) um import dinamico de dependencia pode nao entrar no
+  # pacote da function, e o resultado em producao e stored:false silencioso
+  # -- o painel vazio sem nenhum erro visivel.
+  node_bundler = "esbuild"
 
 # Sem um catch-all "/* -> /index.html" de proposito: qualquer URL errada
-# devolvia 200 com a home (soft 404), o que confunde buscadores. O site e
+# devolvia 200 com a home (soft 404), o que confuse buscadores. O site e
 # estatico e usa ancoras, entao nao ha rotas que precisem ser reescritas.
 # Uma URL inexistente agora devolve 404 de verdade (ver 404.html).
 
@@ -28,3 +44,33 @@
   for = "/index.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# ---- Camada de analytics ----
+# /api/collect e /api/form sao os canais first-party. Nao entram em cache.
+# /api/stats exige o token definido em ANALYTICS_TOKEN.
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex"
+
+# Painel de metricas: casca publica, sem dado. O dado so sai de /api/stats,
+# que exige ANALYTICS_TOKEN. Publicar a casca nao vaza nada -- sem o token a
+# pagina fica vazia.
+[[headers]]
+  for = "/relatorio/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+    X-Frame-Options = "DENY"
+
+# ==================== PROTEGINDO O PAINEL ====================
+# Duas camadas, porque nenhuma sozinha basta:
+#
+# 1. Aplica "Password protection" no painel da Netlify (plano Pro) em
+#    Deploy settings. Isso e configuracao de conta e nao cabe no netlify.toml.
+# 2. Defina ANALYTICS_TOKEN no ambiente do site. Sem ele, /api/stats devolve
+#    401 e o painel nao tem o que mostrar, mesmo que a casca esteja aberta.
+#
+# A camada 2 e a que importa, porque o endpoint e a superficie de verdade.
+# A camada 1 evita que alguem veja que existe um painel e onde ele esta.

@@ -48,8 +48,12 @@
 
     <!-- Google Analytics e Microsoft Clarity NAO sao carregados aqui de proposito.
          Carregar no head dispara coleta antes de qualquer consentimento, o que
-         contraria a LGPD. O carregamento sob demanda fica em assets/js/script.js
-         (initConsent / loadAnalytics) e so acontece apos aceite. -->
+         contraria a LGPD.
+
+         Onde isso acontece agora: assets/js/analytics.js, no fim do body. Ele
+         aplica o Consent Mode v2 com tudo "denied" e so carrega o Clarity
+         depois do aceite. Isso e proposital e nao volta para o head: a tag do
+         GA no head comecaria a coletar antes de o banner aparecer. -->
 </head>
 
 <body>
@@ -100,11 +104,11 @@
 
             <nav class="nav-menu" aria-label="Navegação principal">
                 <ul>
-                    <li><a href="#home">Início</a></li>
-                    <li><a href="#about">Sobre</a></li>
-                    <li><a href="#skills">Habilidades</a></li>
-                    <li><a href="#projects">Projetos</a></li>
-                    <li><a href="#contact">Contato</a></li>
+                    <li><a href="#home" data-track="nav_home" data-track-kind="nav">Início</a></li>
+                    <li><a href="#about" data-track="nav_about" data-track-kind="nav">Sobre</a></li>
+                    <li><a href="#skills" data-track="nav_skills" data-track-kind="nav">Habilidades</a></li>
+                    <li><a href="#projects" data-track="nav_projects" data-track-kind="nav">Projetos</a></li>
+                    <li><a href="#contact" data-track="nav_contact" data-track-kind="nav">Contato</a></li>
                 </ul>
             </nav>
         </div>
@@ -127,9 +131,9 @@
                         modernas e soluções automatizadas que geram valor para o seu negócio.</p>
 
                     <div class="hero-buttons">
-                        <a href="#projects" class="btn btn-primary">Explorar Projetos</a>
+                        <a href="#projects" class="btn btn-primary" data-track="cta_explorar_projetos" data-track-kind="cta">Explorar Projetos</a>
                         <a href="https://wa.me/5524998574876?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre%20um%20projeto..."
-                            class="btn btn-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Conversar
+                            class="btn btn-secondary" data-track="cta_whatsapp_hero" data-track-kind="whatsapp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Conversar
                             agora</a>
                     </div>
                 </div>
@@ -165,7 +169,7 @@
                             conversão até automações robustas que integram APIs, planilhas e bots para WhatsApp. Se você
                             busca produtividade e uma presença digital impactante, você está no lugar certo.</p>
                         <br>
-                        <a href="./assets/my-resume/IgorLaurindoResumo.pdf" class="btn btn-secondary"
+                        <a href="./assets/my-resume/IgorLaurindoResumo.pdf" class="btn btn-secondary" data-track="cta_curriculo" data-track-kind="download"
                             target="_blank" rel="noopener">Currículo Completo</a>
                     </div>
                 </div>
@@ -207,7 +211,7 @@
                 <h2 class="section-title">Projetos <em class="hl">em Destaque</em></h2>
 
                 <div class="projects-grid">
-                    <div class="project-card reveal reveal-d1">
+                    <div class="project-card reveal reveal-d1" data-track="card_rapido_seguro" data-track-kind="project">
                         <div class="project-icon"><i class="fa-brands fa-wordpress"></i></div>
                         <h3>Rápido & Seguro</h3>
                         <p>Landing Page otimizada para logística, focada em performance e conversão direta.</p>
@@ -217,12 +221,12 @@
                             <span>Astra</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/rapido-seguro" class="btn-link" target="_blank" rel="noopener">Ver Case
+                            <a href="https://github.com/Igorls34/rapido-seguro" class="btn-link" data-track="repo_rapido_seguro" data-track-kind="project_repo" target="_blank" rel="noopener">Ver Case
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
 
-                    <div class="project-card reveal reveal-d2">
+                    <div class="project-card reveal reveal-d2" data-track="card_waha_calendar" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
                         <h3>WhatsApp Auto-Bot</h3>
                         <p>Automação de agendamentos com integração direta ao Google Calendar.</p>
@@ -232,12 +236,12 @@
                             <span>API</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link"
+                            <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link" data-track="repo_waha_calendar" data-track-kind="project_repo"
                                 target="_blank" rel="noopener">Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
 
-                    <div class="project-card reveal reveal-d3">
+                    <div class="project-card reveal reveal-d3" data-track="card_backup_extensao" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-folder-tree"></i></div>
                         <h3>Navegação Otimizada</h3>
                         <p>Extensão que acelera o acesso a servidores de rede em ambientes escolares.</p>
@@ -246,7 +250,7 @@
                             <span>Chrome API</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link"
+                            <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link" data-track="repo_backup_extensao" data-track-kind="project_repo"
                                 target="_blank" rel="noopener">Ver Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
@@ -263,7 +267,7 @@
                         solução.</p>
 
                     <div class="direct-channels">
-                        <a href="https://wa.me/5524998574876?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre..."
+                        <a href="https://wa.me/5524998574876?text=Oi%20IgorDev!%20Gostaria%20de%20falar%20sobre..." data-track="whatsapp_contato" data-track-kind="whatsapp"
                             class="channel-item" target="_blank" rel="noopener">
                             <div class="icon-box whatsapp">
                                 <i class="fa-brands fa-whatsapp"></i>
@@ -276,11 +280,11 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="https://github.com/Igorls34" class="social-icon" target="_blank" rel="noopener"><i
+                        <a href="https://github.com/Igorls34" class="social-icon" data-track="social_github" data-track-kind="social" target="_blank" rel="noopener"><i
                                 class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/igor-laurindo-5135aa246/" class="social-icon"
+                        <a href="https://www.linkedin.com/in/igor-laurindo-5135aa246/" class="social-icon" data-track="social_linkedin" data-track-kind="social"
                             target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="https://www.instagram.com/igor_devofc/" class="social-icon" target="_blank" rel="noopener"><i
+                        <a href="https://www.instagram.com/igor_devofc/" class="social-icon" data-track="social_instagram" data-track-kind="social" target="_blank" rel="noopener"><i
                                 class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
@@ -288,22 +292,22 @@
                 <form id="contact-form" class="contact-form reveal-right">
                     <div class="form-group">
                         <label for="name">Nome Completo</label>
-                        <input type="text" id="name" name="name" placeholder="Seu nome aqui" required>
+                        <input type="text" id="name" name="name" data-track-form="name" placeholder="Seu nome aqui" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                        <input type="email" id="email" name="email" data-track-form="email" placeholder="seu@email.com" required>
                     </div>
 
                     <div class="form-group">
                         <label for="phone">WhatsApp</label>
-                        <input type="tel" id="phone" name="phone" placeholder="(24) 99999-8888" required>
+                        <input type="tel" id="phone" name="phone" data-track-form="phone" placeholder="(24) 99999-8888" required>
                     </div>
 
                     <div class="form-group">
                         <label for="message">Mensagem</label>
-                        <textarea id="message" name="message" rows="5"
+                        <textarea id="message" name="message" data-track-form="message" rows="5"
                             placeholder="Descreva brevemente o seu projeto..." required></textarea>
                     </div>
 
@@ -313,7 +317,7 @@
                         <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                     </div>
 
-                    <button type="submit" id="submit-btn" class="btn-submit">Enviar Proposta</button>
+                    <button type="submit" id="submit-btn" class="btn-submit" data-track="form_enviar">Enviar Proposta</button>
 
                     <p class="form-legal">
                         Ao enviar, você concorda com a
@@ -339,6 +343,20 @@
 
     <script src="./assets/js/core.js"></script>
     <script src="./assets/js/script.js"></script>
+
+    <!-- Camada de analytics, isolada do site. Os dois arquivos sao removiveis:
+         apagar estas duas tags e o /api/collect desliga toda a coleta sem
+         tocar em nada que o visitante enxerga.
+
+         analytics-core.js antes de analytics.js porque o segundo le a logica
+         do primeiro no load. Os dois sao classicos, sem import/export: o
+         projeto nao tem build.
+
+         A ordem em relacao ao script.js e intencional: o analytics so
+         observa o DOM, nao depende de nenhuma animacao estar pronta, e
+         carregando por ultimo ele nao atrasa a pintura do site. -->
+    <script src="./assets/js/analytics-core.js"></script>
+    <script src="./assets/js/analytics.js"></script>
 
 </body>
 

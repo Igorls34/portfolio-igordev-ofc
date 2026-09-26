@@ -8,10 +8,7 @@ const {
     validateContact,
     summarizeDeliveries,
     parseHighlightTitle,
-    buildRevealWords,
-    getConsent,
-    setConsent,
-    shouldLoadAnalytics
+    buildRevealWords
 } = PortfolioCore;
 
 (function () {
@@ -587,67 +584,30 @@ const {
             if (summary.success) {
                 contactForm.reset();
             }
+
+            /* Avisa a camada de analytics que o envio terminou. E uma
+             * dependencia opcional e de mao unica: se o arquivo de analytics
+             * nao existir, ou falhar, o formulario ja foi resolvido e a
+             * mensagem ja foi mostrada. Perder a telemetria e aceitavel;
+             * perder o envio nao. */
+            if (window.IgorAnalytics && typeof window.IgorAnalytics.reportFormResult === 'function') {
+                window.IgorAnalytics.reportFormResult(summary.success, channelsSent(results));
+            }
         });
-    }
 
-    /* ========== LGPD: CONSENTIMENTO E ANALYTICS ========== */
-    /* GA e Clarity ficaram fora do <head> de proposito: carregados ali eles
-       comecam a coletar antes de qualquer aceite. Aqui so entram no DOM depois
-       que a pessoa aceita, e apenas uma vez. */
-
-    const GA_ID = 'G-0EDZHK8SL8';
-    const CLARITY_ID = 'w32g841pzr';
-    let analyticsLoaded = false;
-
-    function loadAnalytics() {
-        if (analyticsLoaded) return;
-        analyticsLoaded = true;
-
-        const gaScript = document.createElement('script');
-        gaScript.async = true;
-        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-        document.head.appendChild(gaScript);
-
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { window.dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', GA_ID);
-
-        const clarityScript = document.createElement('script');
-        clarityScript.async = true;
-        clarityScript.src = 'https://www.clarity.ms/tag/' + CLARITY_ID;
-        document.head.appendChild(clarityScript);
-    }
-
-    function initConsent() {
-        const banner = document.getElementById('consent-banner');
-
-        // Ja respondeu antes: reaproveita e nao mostra nada.
-        const stored = getConsent(window.localStorage);
-        if (stored !== null) {
-            if (banner) banner.remove();
-            if (shouldLoadAnalytics(stored)) loadAnalytics();
-            return;
+        /* Rotulo curto do que de fato chegou, para o funil. "email" sozinho
+         * nao diz se foi WhatsApp, e-mail ou os dois. */
+        function channelsSent(results) {
+            return results
+                .filter(r => r.ok)
+                .map(r => r.label.toLowerCase().replace(/\s+/g, '-'))
+                .join('+') || 'nenhum';
         }
-
-        if (!banner) return;
-        banner.classList.add('visible');
-
-        banner.querySelectorAll('[data-consent]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const choice = btn.getAttribute('data-consent');
-                setConsent(window.localStorage, choice);
-                banner.remove();
-                if (shouldLoadAnalytics(choice)) loadAnalytics();
-            });
-        });
     }
 
     /* ========== INIT ALL ========== */
     /* Cada efeito roda isolado. Sem isso, um unico throw em um deles aborta o
-     * listener inteiro e leva junto todo o que vem depois -- inclusive o banner
-     * de consentimento, que e obrigacao legal nao pode depender de uma animacao
-     * estar funcionando. O initConsent va primeiro pelo mesmo motivo. */
+     * listener inteiro e leva junto todo o que vem depois. */
     function safely(name, fn) {
         try {
             fn();
@@ -657,7 +617,12 @@ const {
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        safely('consentimento', initConsent);
+        /* O banner de consentimento e o unico que o site nao pode perder, e
+         * ele nao mora mais aqui: foi para assets/js/analytics.js, que
+         * carrega logo abaixo. Ainda assim fica no primeiro lugar da lista,
+         * porque se o analytics falhar o resto da pagina tem de funcionar
+         * normalmente -- e o inverso seria o site inteiro cair por causa de
+         * uma tag de terceiro. */
         safely('cursor', initCursor);
         safely('scroll-progress', initScrollProgress);
         safely('header', initHeaderScroll);

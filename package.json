@@ -4,19 +4,29 @@
   "description": "Portfolio profissional de Igor Laurindo (IgorDev)",
   "private": true,
   "scripts": {
-    "dev": "npx serve .",
-    "start": "npx serve .",
+    "dev": "npx serve dist",
+    "start": "npx serve dist",
+    "publish": "node scripts/publish.mjs",
     "lint:css": "stylelint \"assets/css/**/*.css\"",
-    "lint:js": "eslint assets/js tests eslint.config.js",
+    "lint:js": "eslint assets/js tests netlify/functions scripts eslint.config.js",
     "lint": "npm run lint:css && npm run lint:js",
     "test": "node --test",
-    "check": "npm run lint && npm test"
+    "check": "npm run lint && npm test",
+    "build": "npm run publish"
   },
   "devDependencies": {
     "eslint": "^10.11.0",
+    "jsdom": "^29.1.1",
     "stylelint": "^17.15.0"
   },
-  "keywords": ["portfolio", "freelancer", "web-development"],
+  "keywords": [
+    "portfolio",
+    "freelancer",
+    "web-development"
+  ],
   "author": "Igor Laurindo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.1"
+  }
 }

@@ -208,6 +208,9 @@
     }
 
     return {
+        /* Exportado para o teste que garante que o core.js e o
+         * analytics-core.js nao usem chaves diferentes no localStorage. */
+        CONSENT_KEY: CONSENT_KEY,
         escapeHtml: escapeHtml,
         toWhatsAppNumber: toWhatsAppNumber,
         validateContact: validateContact,
