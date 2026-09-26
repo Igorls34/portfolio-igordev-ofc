@@ -117,10 +117,15 @@
         const sent = succeeded.map(function (r) { return r.label; }).join(' e ');
 
         if (failed.length === 0) {
+            // "WhatsApp enviado" (um) x "WhatsApp e E-mail enviados" (dois).
+            // Com os dois canais no total e sempre plural; o singular so entra
+            // se um dia o formulario passar a ter um canal so.
             return {
                 tone: 'ok',
                 success: true,
-                text: 'Mensagem enviada! ' + sent + ' enviado com sucesso. Em breve entro em contato.'
+                text: 'Mensagem enviada! ' + sent
+                    + (succeeded.length > 1 ? ' enviados' : ' enviado')
+                    + ' com sucesso. Em breve entro em contato.'
             };
         }
 

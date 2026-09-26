@@ -141,6 +141,30 @@ describe('summarizeDeliveries', () => {
         assert.strictEqual(r.success, false);
     });
 
+    /* Concordancia: com os dois canais delivering, "WhatsApp e E-mail
+     * enviado" fica errado. O texto vai para o usuario, entao a forma
+     * importa tanto quanto o conteudo. */
+    it('usa plural quando os dois canais entregaram', () => {
+        const r = core.summarizeDeliveries([
+            { label: 'WhatsApp', ok: true },
+            { label: 'E-mail', ok: true }
+        ]);
+        assert.ok(r.text.includes('enviados com sucesso'), r.text);
+        assert.ok(!r.text.includes('enviado com sucesso'), r.text);
+    });
+
+    it('usa o canal que chegou quando so um entregou', () => {
+        const r = core.summarizeDeliveries([
+            { label: 'WhatsApp', ok: true },
+            { label: 'E-mail', ok: false }
+        ]);
+        // Esse caso cai no ramo de aviso, nao no de sucesso: o texto precisa
+        // dizer qual chegou e qual falhou, senão o visitante acha que foi tudo.
+        assert.strictEqual(r.tone, 'warn');
+        assert.ok(r.text.includes('Mensagem enviada via WhatsApp'), r.text);
+        assert.ok(r.text.includes('Nao consegui entregar via E-mail'), r.text);
+    });
+
     it('avisa qual canal falhou quando apenas um funciona', () => {
         const r = core.summarizeDeliveries([
             { label: 'WhatsApp', ok: false },

@@ -235,12 +235,20 @@ const {
         // Com movimento reduzido o usuario recebe um quadro estatico, sem loop.
         if (reducedMotion) {
             drawFrame();
-        } else {
+        } else if (typeof IntersectionObserver === 'function') {
             new IntersectionObserver((entries) => {
                 inView = entries[0].isIntersecting;
                 if (inView) start(); else stop();
             }, { threshold: 0 }).observe(hero);
 
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stop(); else start();
+            });
+
+            start();
+        } else {
+            // Sem observer nao da para pausar o canvas quando ele sai de tela,
+            // mas melhor rodar sem pausa do que ficar sem particula nenhuma.
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) stop(); else start();
             });
@@ -270,13 +278,19 @@ const {
         const titles = document.querySelectorAll('.hero-title, .section-title, .text-reveal');
         if (!titles.length) return;
 
-        const observer = new IntersectionObserver((entries) => {
+        // O observer e o que tira os titulos de opacity:0. Navegador sem
+        // IntersectionObserver nao pode deixar a pagina em branco: nesse caso
+        // revela tudo de uma vez.
+        const canObserve = typeof IntersectionObserver === 'function';
+        if (!canObserve) document.documentElement.classList.add('no-io');
+
+        const observer = canObserve ? new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('revealed');
                 }
             });
-        }, { threshold: 0.3 });
+        }, { threshold: 0.3 }) : null;
 
         titles.forEach(title => {
             const parts = parseHighlightTitle(title.innerHTML);
@@ -294,7 +308,8 @@ const {
                 title.appendChild(word);
             });
 
-            observer.observe(title);
+            if (observer) observer.observe(title);
+            else title.classList.add('revealed');
         });
     }
 
@@ -334,6 +349,17 @@ const {
     /* ========== REVEAL ON SCROLL ========== */
     function initScrollReveal() {
         const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        if (!reveals.length) return;
+
+        // Mesmo caso do initRevealTitles: sem IntersectionObserver, todo
+        // .reveal ficaria preso em opacity:0 para sempre.
+        const canObserve = typeof IntersectionObserver === 'function';
+        if (!canObserve) document.documentElement.classList.add('no-io');
+
+        if (!canObserve) {
+            reveals.forEach(el => el.classList.add('active'));
+            return;
+        }
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -618,19 +644,31 @@ const {
     }
 
     /* ========== INIT ALL ========== */
+    /* Cada efeito roda isolado. Sem isso, um unico throw em um deles aborta o
+     * listener inteiro e leva junto todo o que vem depois -- inclusive o banner
+     * de consentimento, que e obrigacao legal nao pode depender de uma animacao
+     * estar funcionando. O initConsent va primeiro pelo mesmo motivo. */
+    function safely(name, fn) {
+        try {
+            fn();
+        } catch (err) {
+            console.warn('[IgorDev] ' + name + ' nao iniciou:', err);
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-        initCursor();
-        initScrollProgress();
-        initHeaderScroll();
-        initParticles();
-        initRevealTitles();
-        initScrollReveal();
-        initTiltCards();
-        initParallax();
-        initMagneticButtons();
-        initMobileMenu();
-        initForm();
-        initConsent();
+        safely('consentimento', initConsent);
+        safely('cursor', initCursor);
+        safely('scroll-progress', initScrollProgress);
+        safely('header', initHeaderScroll);
+        safely('particulas', initParticles);
+        safely('titulos', initRevealTitles);
+        safely('reveal', initScrollReveal);
+        safely('tilt', initTiltCards);
+        safely('parallax', initParallax);
+        safely('botoes magneticos', initMagneticButtons);
+        safely('menu', initMobileMenu);
+        safely('formulario', initForm);
     });
 
 })();

@@ -1327,13 +1327,33 @@ footer p {
 
 /* ============ REVEAL ANIMATIONS ============ */
 /* Tudo abaixo so vale quando ha JS. Sem JS (ou se o script falhar) os
-   elementos permanecem visiveis em vez de fic presos em opacity: 0. */
+   elementos permanecem visiveis em vez de ficarem presos em opacity: 0.
+
+   O .no-io cobre o outro caso: ha JS, mas o navegador nao tem
+   IntersectionObserver, que e o que dispara as classes .active/.revealed.
+   Sem isso o conteudo ficaria invisivel para sempre. O JS adiciona .no-io
+   no <html> e tambem adiciona .active/.revealed direto, mas a regra abaixo
+   garante a visibilidade mesmo se ele falhar no meio do caminho. */
+.no-io .reveal,
+.no-io .reveal-left,
+.no-io .reveal-right,
+.no-io .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.no-io .word-inner {
+    transform: none !important;
+    opacity: 1 !important;
+}
+
 .js .reveal {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
         transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 
 .js .reveal.active {
     opacity: 1;
