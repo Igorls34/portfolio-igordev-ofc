@@ -1,0 +1,226 @@
+/* Gera o HTML das secoes de habilidades e projetos a partir do JSON.
+ *
+ * Por que gerar em vez de buscar no navegador: o conteudo continua no HTML
+ * entregue, que e o que o Google le. Um fetch feito pelo cliente tiraria
+ * habilidades e projetos do HTML e, se a requisicao falhasse, a secao ficaria
+ * vazia sem aviso. Aqui o JSON e a fonte unica da verdade e o HTML e o
+ * resultado da build -- sem etapa de bundle, so um arquivo gerado.
+ *
+ * O escapeHtml nao e opcional: o JSON e um arquivo de conteudo, e um "<" num
+ * titulo passaria a valer como tag. Reaproveita a funcao que o navegador ja
+ * usa, para os dois lados escaparem do mesmo jeito.
+ */
+
+import { readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const require = createRequire(import.meta.url);
+
+/* O core.js e um UMD: no navegador vira PortfolioCore, no Node vira
+ * module.exports. Importar pelo require e o caminho que o proprio
+ * node --test usa. */
+const { escapeHtml } = require(path.join(RAIZ, 'assets', 'js', 'core.js'));
+
+const JSON_PATH = path.join(RAIZ, 'data', 'portfolio.json');
+
+/* O atraso da animacao de entrada vai ate d4 no CSS. Um quinto card receberia
+ * uma classe sem estilo e apareceria sem o atraso, destoando dos outros. */
+const MAX_REVEAL = 4;
+
+function revealClass(indice) {
+    return 'reveal reveal-d' + Math.min(indice + 1, MAX_REVEAL);
+}
+
+function renderSkill(skill, indice) {
+    return [
+        `                    <div class="skill-item ${revealClass(indice)}">`,
+        `                        <i class="${escapeHtml(skill.icon)}"></i>`,
+        `                        <h3>${escapeHtml(skill.title)}</h3>`,
+        `                        <p>${escapeHtml(skill.description)}</p>`,
+        '                    </div>'
+    ].join('\n');
+}
+
+function renderProjectLink(link) {
+    return `                            <a href="${escapeHtml(link.href)}" class="btn-link" data-track="${escapeHtml(link.track)}" data-track-kind="project_repo" target="_blank" rel="noopener">${escapeHtml(link.label)}
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
+}
+
+/* Certificacao. O link de credencial e opcional de proposito: nem toda
+ * certificado tem URL publica, e um link quebrado no meio de uma home de
+ * venda passa mais profissionalismo do que a informacao que promete. */
+function renderCert(cert, indice) {
+    const linhas = [
+        `                    <div class="cert-card ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
+        `                        <div class="cert-icon"><i class="${escapeHtml(cert.icon || 'fa-solid fa-certificate')}"></i></div>`,
+        '                        <div class="cert-body">',
+        `                            <h3>${escapeHtml(cert.name)}</h3>`
+    ];
+
+    const origem = [cert.issuer, cert.year].filter(Boolean).join(' • ');
+    if (origem) {
+        linhas.push(`                            <p class="cert-issuer">${escapeHtml(origem)}</p>`);
+    }
+    if (cert.credential_id) {
+        linhas.push(`                            <p class="cert-id">ID ${escapeHtml(cert.credential_id)}</p>`);
+    }
+
+    linhas.push('                        </div>');
+
+    if (cert.url) {
+        linhas.push(`                        <a href="${escapeHtml(cert.url)}" class="cert-link" data-track="cert_link_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification_link" target="_blank" rel="noopener" aria-label="Ver credencial de ${escapeHtml(cert.name)}">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`);
+    }
+
+    linhas.push('                    </div>');
+    return linhas.join('\n');
+}
+
+function renderProject(project, indice) {    const linhas = [
+        `                    <div class="project-card ${revealClass(indice)}" data-track="card_${escapeHtml(project.id)}" data-track-kind="project">`,
+        `                        <div class="project-icon"><i class="${escapeHtml(project.icon)}"></i></div>`,
+        `                        <h3>${escapeHtml(project.title)}</h3>`,
+        `                        <p>${escapeHtml(project.description)}</p>`
+    ];
+
+    if (project.techs && project.techs.length) {
+        linhas.push('                        <div class="project-techs">');
+        project.techs.forEach(tech => {
+            linhas.push(`                            <span>${escapeHtml(tech)}</span>`);
+        });
+        linhas.push('                        </div>');
+    }
+
+    if (project.links && project.links.length) {
+        linhas.push('                        <div class="project-links">');
+        project.links.forEach(link => linhas.push(renderProjectLink(link)));
+        linhas.push('                        </div>');
+    }
+
+    linhas.push('                    </div>');
+    return linhas.join('\n');
+}
+
+/* O data-track do card precisa ser unico: e o que separa um projeto do outro
+ * no painel. Dois ids iguais somariam as metricas de um no outro. */
+/* O id de um item precisa ser unico por lista: e o que separa as metricas de
+ * um item do outro no painel. Uma lista sem o atributo e comparada por nome. */
+function idsRepetidos(itens) {
+    const vistos = new Set();
+    const repetidos = [];
+    itens.forEach(item => {
+        const id = String(item.id || item.name || '');
+        if (vistos.has(id)) repetidos.push(id);
+        vistos.add(id);
+    });
+    return repetidos;
+}
+
+function conferirUnicos(itens, rotulo) {
+    const repetidos = idsRepetidos(itens);
+    if (repetidos.length) {
+        throw new Error(`id repetido em ${rotulo}, o painel de metricas contaria em dobro: `
+            + [...new Set(repetidos)].join(', '));
+    }
+}
+
+export function gerarHtml(dados) {
+    const skills = Array.isArray(dados.skills) ? dados.skills : [];
+    const projetos = Array.isArray(dados.projects) ? dados.projects : [];
+    /* Certificacao e opcional: quem nao tem nenhuma nao deve ver um titulo de
+     * certificacoes e um retangulo vazio. Com a lista vazia, quem decide o
+     * que aparece e quem main() escreve o atributo hidden. */
+    const certificacoes = Array.isArray(dados.certifications) ? dados.certifications : [];
+
+    if (!skills.length) throw new Error('portfolio.json sem "skills"');
+    if (!projetos.length) throw new Error('portfolio.json sem "projects"');
+
+    conferirUnicos(projetos, 'projetos');
+    conferirUnicos(certificacoes, 'certificacoes');
+
+    return {
+        skills: skills.map(renderSkill).join('\n'),
+        projects: projetos.map(renderProject).join('\n'),
+        certifications: certificacoes.map(renderCert).join('\n'),
+        /* Sinaliza para o main: o bloco fica vazio e os dois lugares que o
+         * cercam precisam do hidden. */
+        temCertificacoes: certificacoes.length > 0
+    };
+}
+
+/* Troca o conteudo entre as tags de comentario, preservando a indentacao do
+ * arquivo. Substituir por regex sobre o HTML inteiro arriscaria comer markup
+ * vizinho; o ancorador do comentario diz exatamente onde comeca e onde
+ * termina o trecho gerado. */
+function substituirBloco(html, marcador, conteudo) {
+    /* O marcador entra num padrao, e "projects:inicio" com o ':' do espaco de
+     * nome faria a regex interpretar ":inicio" como Lookbehind. E um valor
+     * fixo do codigo, mas escapar deixa a intencao explicita.
+     *
+     * A tag de inicio aceita um texto depois do nome: e onde fica a nota de
+     * qual arquivo alimenta o bloco. O ancorador do fim e exato. */
+    const id = marcador.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(
+        `(<!-- ${id}:inicio[^>]*-->)[\\s\\S]*?(<!-- ${id}:fim -->)`);
+    if (!re.test(html)) {
+        throw new Error(`marcador "${marcador}" nao encontrado no index.html`);
+    }
+    return html.replace(re, `$1\n${conteudo}\n                    $2`);
+}
+
+/* A secao de certificacoes e o item do menu sao os dois lugares que somem
+ * quando nao ha certificado. O atributo hidden e preferido a remover o
+ * elemento: o index.html continua legivel e o diff mostra o que o build
+ * fez, em vez de um bloco inteiro aparecendo e sumindo do arquivo.
+ *
+ * Casa a tag inteira em vez de "data-cert-nav hidden": a posicao do hidden
+ * dentro da tag nao e a mesma nos dois lugares, e o da section vem depois de
+ * varios atributos. */
+function alternarVisibilidadeCerts(html, visivel) {
+    return html.replace(/<[^>]*data-cert-(?:section|nav)[^>]*>/g, tag => {
+        const semHidden = tag.replace(/\s+hidden(?=[\s>])/, '');
+        if (visivel) return semHidden;
+        /* Antes do ">": a tag precisa continuar valida. */
+        return semHidden.replace(/\s*>$/, ' hidden>');
+    });
+}
+
+async function main() {
+    if (!existsSync(JSON_PATH)) {
+        console.error('[conteudo] nao encontrado:', JSON_PATH);
+        process.exit(1);
+    }
+
+    const dados = JSON.parse(await readFile(JSON_PATH, 'utf8'));
+    const { skills, projects, certifications, temCertificacoes } = gerarHtml(dados);
+
+    const indexPath = path.join(RAIZ, 'index.html');
+    const original = await readFile(indexPath, 'utf8');
+    let final = substituirBloco(original, 'skills', skills);
+    final = substituirBloco(final, 'projects', projects);
+    final = substituirBloco(final, 'certs', certifications);
+    final = alternarVisibilidadeCerts(final, temCertificacoes);
+
+    /* So escreve quando mudou: um build identico nao toca o arquivo, e o
+     * mtime preservado evita rebuild em cache. */
+    if (final === original) {
+        console.log('[conteudo] index.html ja esta em dia com o JSON');
+        return;
+    }
+
+    await writeFile(indexPath, final, 'utf8');
+    console.log(`[conteudo] index.html atualizado: ${dados.skills.length} habilidade(s), `
+        + `${dados.projects.length} projeto(s), `
+        + `${temCertificacoes ? dados.certifications.length : 0} certificacao(oes)`);
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+    main().catch(err => {
+        console.error('[conteudo] falhou:', err && err.message);
+        process.exit(1);
+    });
+}

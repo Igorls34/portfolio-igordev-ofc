@@ -1,8 +1,13 @@
 /* Prepara o diretorio de publicacao.
  *
- * O site nao tem build de verdade: os scripts sao arquivos comuns e nao sao
+ * O site nao tem build de verdade: os scripts sao arquivos comuns e nao são
  * processados. Este passo nao compila nem renomeia nada -- ele apenas copia
  * para dist/ o que o navegador deve enxergar.
+ *
+ * A excecao e o conteudo: skills e projetos vem de data/portfolio.json e sao
+ * escritos no index.html antes da copia. O conteudo continua no HTML entregue
+ * (e o que o Google le), mas editar o portfolio passa a ser editar um JSON em
+ * vez de mexer em markup.
  *
  * A razao de existir: com publish = "." a Netlify publicava a raiz inteira,
  * o que punha o codigo-fonte das functions, os testes e o package.json em
@@ -15,6 +20,7 @@
 
 import { cp, mkdir, rm, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { execFile } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,6 +43,16 @@ const PUBLICADOS = [
 /* O que nunca entra, mesmo que alguém adicione na lista acima. */
 const NUNCA = new Set(['node_modules', '.git', '.github', 'netlify', 'tests', 'dist']);
 
+/* O gerador de conteudo escreve skills e projetos no index.html. Roda aqui
+ * como processo separado porque usa createRequire: o core.js e um UMD comum ao
+ * navegador e ao Node, e o require e o caminho que o proprio node --test usa. */
+function gerarConteudo() {
+    return new Promise((resolve, reject) => {
+        execFile(process.execPath, [path.join(RAIZ, 'scripts', 'gerar-conteudo.mjs')],
+            { stdio: 'inherit' }, (err) => (err ? reject(err) : resolve()));
+    });
+}
+
 async function copiar(origem, destino) {
     const info = await stat(origem);
     if (info.isDirectory()) {
@@ -54,6 +70,10 @@ async function copiar(origem, destino) {
 }
 
 async function main() {
+    /* O conteudo primeiro: a copia vem depois, para que dist/index.html ja
+     * saia com as secoes geradas a partir do JSON. */
+    await gerarConteudo();
+
     if (!existsSync(DESTINO)) {
         /* Falhar cedo e melhor do que um deploy com metade do site: o
          * diretorio de um build anterior nao pode sobreviver e se misturar

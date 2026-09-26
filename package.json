@@ -7,6 +7,7 @@
     "dev": "npx serve dist",
     "start": "npx serve dist",
     "publish": "node scripts/publish.mjs",
+    "conteudo": "node scripts/gerar-conteudo.mjs",
     "lint:css": "stylelint \"assets/css/**/*.css\"",
     "lint:js": "eslint assets/js tests netlify/functions scripts eslint.config.js",
     "lint": "npm run lint:css && npm run lint:js",

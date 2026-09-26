@@ -108,6 +108,7 @@
                     <li><a href="#about" data-track="nav_about" data-track-kind="nav">Sobre</a></li>
                     <li><a href="#skills" data-track="nav_skills" data-track-kind="nav">Habilidades</a></li>
                     <li><a href="#projects" data-track="nav_projects" data-track-kind="nav">Projetos</a></li>
+                    <li data-cert-nav hidden><a href="#certifications" data-track="nav_certifications" data-track-kind="nav">Certificações</a></li>
                     <li><a href="#contact" data-track="nav_contact" data-track-kind="nav">Contato</a></li>
                 </ul>
             </nav>
@@ -181,6 +182,7 @@
             <div class="section-container">
                 <h2 class="section-title">Habilidades <em class="hl">Estratégicas</em></h2>
                 <div class="skills-grid">
+                    <!-- skills:inicio (gerado de data/portfolio.json) -->
                     <div class="skill-item reveal reveal-d1">
                         <i class="fa-brands fa-html5"></i>
                         <h3>Web Dev</h3>
@@ -198,9 +200,10 @@
                     </div>
                     <div class="skill-item reveal reveal-d4">
                         <i class="fa-solid fa-cloud"></i>
-                        <h3>APIs & Cloud</h3>
+                        <h3>APIs &amp; Cloud</h3>
                         <p>Integração com Google Cloud, Gemini e mais.</p>
                     </div>
+                    <!-- skills:fim -->
                 </div>
             </div>
         </section>
@@ -211,9 +214,10 @@
                 <h2 class="section-title">Projetos <em class="hl">em Destaque</em></h2>
 
                 <div class="projects-grid">
+                    <!-- projects:inicio (gerado de data/portfolio.json) -->
                     <div class="project-card reveal reveal-d1" data-track="card_rapido_seguro" data-track-kind="project">
                         <div class="project-icon"><i class="fa-brands fa-wordpress"></i></div>
-                        <h3>Rápido & Seguro</h3>
+                        <h3>Rápido &amp; Seguro</h3>
                         <p>Landing Page otimizada para logística, focada em performance e conversão direta.</p>
                         <div class="project-techs">
                             <span>WordPress</span>
@@ -225,7 +229,6 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-
                     <div class="project-card reveal reveal-d2" data-track="card_waha_calendar" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
                         <h3>WhatsApp Auto-Bot</h3>
@@ -236,11 +239,10 @@
                             <span>API</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link" data-track="repo_waha_calendar" data-track-kind="project_repo"
-                                target="_blank" rel="noopener">Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <a href="https://github.com/Igorls34/bot-waha-google-calendar" class="btn-link" data-track="repo_waha_calendar" data-track-kind="project_repo" target="_blank" rel="noopener">Código
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-
                     <div class="project-card reveal reveal-d3" data-track="card_backup_extensao" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-folder-tree"></i></div>
                         <h3>Navegação Otimizada</h3>
@@ -250,10 +252,26 @@
                             <span>Chrome API</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link" data-track="repo_backup_extensao" data-track-kind="project_repo"
-                                target="_blank" rel="noopener">Ver Código <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                            <a href="https://github.com/Igorls34/extensao-arquivos-backup" class="btn-link" data-track="repo_backup_extensao" data-track-kind="project_repo" target="_blank" rel="noopener">Ver Código
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
+                    <!-- projects:fim -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <!-- Sem "certificacoes" no portfolio.json a secao inteira fica oculta: um
+             quadro vazio no meio da home passa ideia de conteudo faltando. -->
+        <section class="certs-section" id="certifications" aria-label="Certificações" data-cert-section hidden>
+            <div class="section-container">
+                <h2 class="section-title">Certificações <em class="hl">e credenciais</em></h2>
+
+                <div class="certs-grid">
+                    <!-- certs:inicio (gerado de data/portfolio.json) -->
+
+                    <!-- certs:fim -->
                 </div>
             </div>
         </section>

@@ -820,6 +820,92 @@ nav ul li a:hover::after {
     color: var(--text-white);
 }
 
+/* ============ CERTIFICATIONS SECTION ============ */
+.certs-section {
+    padding: 120px 20px;
+    position: relative;
+}
+
+.certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* Layout em linha: selo a esquerda, texto no meio, link a direita. O min-width
+ * do grid ja quebra para uma coluna sozinho, entao o card nunca fica estreito
+ * demais para o selo e o titulo lado a lado. */
+.cert-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(145deg, var(--bg-card), #0d0d0d);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 24px 26px;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cert-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-glow);
+}
+
+.cert-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+    font-size: 1.35rem;
+}
+
+.cert-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.cert-body h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-white);
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.cert-issuer {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+}
+
+/* O ID da credencial e o que permite a pessoa conferir a titularidade num
+ * click. Por isso fica visivel e nao escondido em hover. */
+.cert-id {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-family: monospace;
+    margin-top: 4px;
+    opacity: 0.75;
+}
+
+.cert-link {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.cert-link:hover {
+    color: var(--primary);
+    transform: translate(2px, -2px);
+}
+
 /* ============ CONTACT SECTION ============ */
 #contact {
     padding: 120px 20px;
@@ -1654,6 +1740,20 @@ em.hl {
         grid-template-columns: 1fr;
         max-width: 500px;
         margin: 0 auto;
+    }
+
+    .certs-section {
+        padding: 80px 20px;
+    }
+
+    .certs-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .cert-card {
+        padding: 20px;
     }
 
     .contact-container {

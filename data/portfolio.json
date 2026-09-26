@@ -1,0 +1,69 @@
+{
+  "certifications": [],
+  "skills": [
+    {
+      "icon": "fa-brands fa-html5",
+      "title": "Web Dev",
+      "description": "Sites dinâmicos, responsivos e otimizados para SEO."
+    },
+    {
+      "icon": "fa-brands fa-python",
+      "title": "Automação",
+      "description": "Scripts inteligentes e integração de sistemas."
+    },
+    {
+      "icon": "fa-brands fa-whatsapp",
+      "title": "Chatbots",
+      "description": "Fluxos automáticos para atendimento via WhatsApp."
+    },
+    {
+      "icon": "fa-solid fa-cloud",
+      "title": "APIs & Cloud",
+      "description": "Integração com Google Cloud, Gemini e mais."
+    }
+  ],
+  "projects": [
+    {
+      "id": "rapido_seguro",
+      "icon": "fa-brands fa-wordpress",
+      "title": "Rápido & Seguro",
+      "description": "Landing Page otimizada para logística, focada em performance e conversão direta.",
+      "techs": ["WordPress", "Gutenberg", "Astra"],
+      "links": [
+        {
+          "label": "Ver Case",
+          "href": "https://github.com/Igorls34/rapido-seguro",
+          "track": "repo_rapido_seguro"
+        }
+      ]
+    },
+    {
+      "id": "waha_calendar",
+      "icon": "fa-solid fa-robot",
+      "title": "WhatsApp Auto-Bot",
+      "description": "Automação de agendamentos com integração direta ao Google Calendar.",
+      "techs": ["Python", "Flask", "API"],
+      "links": [
+        {
+          "label": "Código",
+          "href": "https://github.com/Igorls34/bot-waha-google-calendar",
+          "track": "repo_waha_calendar"
+        }
+      ]
+    },
+    {
+      "id": "backup_extensao",
+      "icon": "fa-solid fa-folder-tree",
+      "title": "Navegação Otimizada",
+      "description": "Extensão que acelera o acesso a servidores de rede em ambientes escolares.",
+      "techs": ["JavaScript", "Chrome API"],
+      "links": [
+        {
+          "label": "Ver Código",
+          "href": "https://github.com/Igorls34/extensao-arquivos-backup",
+          "track": "repo_backup_extensao"
+        }
+      ]
+    }
+  ]
+}

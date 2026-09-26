@@ -18,6 +18,7 @@ const TITULOS = [
     // Destaque com varias palavras vira varias palavras marcadas, uma por
     // palavra, que e o que a animacao precisa para escalar o atraso.
     { sel: 'section-title', partes: 'Projetos <em class="hl">em Destaque</em>', texto: 'Projetos em Destaque', destaque: ['em', 'Destaque'] },
+    { sel: 'section-title', partes: 'Certifica\u00e7\u00f5es <em class="hl">e credenciais</em>', texto: 'Certifica\u00e7\u00f5es e credenciais', destaque: ['e', 'credenciais'] },
     { sel: 'text-reveal', partes: 'Vamos <em class="hl">Conectar?</em>', texto: 'Vamos Conectar?', destaque: ['Conectar?'] }
 ];
 
@@ -108,7 +109,7 @@ describe('os titulos do index.html', () => {
         assert.ok(encontrados.length > 0, 'nenhum .hero-title/.section-title/.text-reveal no index.html');
     });
 
-    it('sao exatamente os cinco esperados', () => {
+    it('sao exatamente os seis esperados', () => {
         assert.strictEqual(encontrados.length, TITULOS.length,
             'encontrados: ' + encontrados.map(e => e.partes).join(' | '));
     });
@@ -136,6 +137,21 @@ describe('os titulos do index.html', () => {
             const temDestaque = partes.some(p => p.highlight);
             assert.strictEqual(temDestaque, temTagVisual,
                 e.partes + ' tem tag de destaque mas o parser nao marcou');
+        });
+    });
+
+    it('nenhum titulo usa entidade de HTML, que apareceria escrita', () => {
+        /* A animacao le o innerHTML, quebra em palavras e escreve cada uma com
+         * textContent. "&amp;" na fonte chega como os caracteres & a m p ;, e
+         * textContent nao interpreta: o visitante leria "Certificacoes &amp;
+         * credenciais" na tela.
+         *
+         * O titulo nao pode ter "&" nem outra entidade. Para um "&amp;" de
+         * verdade, quem escreve o HTML e o gerador de conteudo, que escapa. */
+        encontrados.forEach(e => {
+            const entidades = e.partes.match(/&(amp|lt|gt|quot|apos|nbsp|#\d+);/);
+            assert.strictEqual(entidades, null,
+                e.partes + ' usa a entidade ' + entidades + ', que apareceria escrita');
         });
     });
 });
