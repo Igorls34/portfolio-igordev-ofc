@@ -204,6 +204,21 @@ describe('HTML gerado a partir do JSON', () => {
         assert.ok(!/<b>negrito<\/b>/.test(saida.skills), 'a tag entrou crua no HTML');
     });
 
+    it('escapa o "&" do nome da certificacao, que hoje vem do portfolio', () => {
+        /* O bootcamp da Bradesco traz "GenAI, Dados & Cyber" no titulo. Sem
+         * escape, o "&" entra cru no HTML. Navegador toleraria, mas o arquivo
+         * gerado nao seria XML valido e a checagem de SEO pode recusar. */
+        const comAmp = {
+            skills: [{ icon: 'i', title: 't', description: 'd' }],
+            projects: [{ id: 'p', icon: 'i', title: 'T', description: 'd', links: [] }],
+            certifications: [{ id: 'bradesco', name: 'GenAI, Dados & Cyber' }]
+        };
+        const saida = gerarHtml(comAmp);
+        assert.ok(saida.certifications.includes('GenAI, Dados &amp; Cyber'),
+            'o "&" passou cru: ' + saida.certifications);
+        assert.ok(!/Dados & Cyber/.test(saida.certifications), 'o "&" entrou cru no HTML');
+    });
+
     it('rejeita id repetido em vez de gerar HTML que conta em dobro', () => {
         assert.throws(() => gerarHtml({
             skills: [{ icon: 'i', title: 't', description: 'd' }],

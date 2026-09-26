@@ -1,5 +1,349 @@
 {
-  "certifications": [],
+  "certifications": [
+    {
+      "id": "0h2ll5ge",
+      "name": "Fundamentos de Dados: Excel, SQL e Business Intelligence",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "0H2LL5GE"
+    },
+    {
+      "id": "0qildvep",
+      "name": "Tópicos em Engenharia Social ?",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "0QILDVEP"
+    },
+    {
+      "id": "1wk6wmo4",
+      "name": "Tendências em IA e Cibersegurança Aplicadas ao ? - Projeto Final",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "1WK6WMO4"
+    },
+    {
+      "id": "2zvsrxao",
+      "name": "Manipulando Strings com Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "2ZVSRXAO"
+    },
+    {
+      "id": "5feenhcf",
+      "name": "Bibliotecas Essenciais de Python para Análise de Dados",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "5FEENHCF"
+    },
+    {
+      "id": "89v7s6yy",
+      "name": "Introdução ao Python: Primeiros Passos e Fundamentos",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "89V7S6YY"
+    },
+    {
+      "id": "8xcqxuap",
+      "name": "Trabalhando com Microsoft Copilot",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "8XCQXUAP"
+    },
+    {
+      "id": "am7mwb76",
+      "name": "Ambiente de Desenvolvimento e Primeiros Passos com Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "AM7MWB76"
+    },
+    {
+      "id": "arwbxmxs",
+      "name": "Automação de Processos e Análises com Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "ARWBXMXS"
+    },
+    {
+      "id": "ayccw8nf",
+      "name": "Desafios de Projetos: Crie um Portfólio Vencedor",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "AYCCW8NF"
+    },
+    {
+      "id": "bxyr8dic",
+      "name": "Boas Práticas, Testes e Otimização de Código em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "BXYR8DIC"
+    },
+    {
+      "id": "ccvsgnsb",
+      "name": "Trabalhando com Arquivos e Dados Externos em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "CCVSGNSB"
+    },
+    {
+      "id": "cjc9vneo",
+      "name": "Introdução ao Excel 365",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "CJC9VNEO"
+    },
+    {
+      "id": "dbb8i7k8",
+      "name": "Detecção de Anomalias em Transações em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "DBB8I7K8"
+    },
+    {
+      "id": "deqijhn0",
+      "name": "Trabalhando com Listas em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "DEQIJHN0"
+    },
+    {
+      "id": "dqxszkye",
+      "name": "Conhecendo a Linguagem de Programacao em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "DQXSZKYE"
+    },
+    {
+      "id": "faqb4v4k",
+      "name": "Análise de Dados com Python: Da Preparação a Aplicação com Segurança",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "FAQB4V4K"
+    },
+    {
+      "id": "fhm4tybf",
+      "name": "Estruturas em Python: Dados, Coleções e Funções",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "FHM4TYBF"
+    },
+    {
+      "id": "fn9dsjd6",
+      "name": "Técnicas de Engenharia de Prompt",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "FN9DSJD6"
+    },
+    {
+      "id": "frr8dm1i",
+      "name": "Construa seu Assistente Virtual com Inteligência Artificial",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "FRR8DM1I"
+    },
+    {
+      "id": "g36ek2tk",
+      "name": "Boas-vindas ao Bootcamp Bradesco - GenAI, Dados & Cyber",
+      "issuer": "Bradesco / DIO",
+      "year": "2026",
+      "credential_id": "G36EK2TK"
+    },
+    {
+      "id": "gnral2xm",
+      "name": "Conceitos e Práticas de Sistemas Operacionais e Máquinas Virtuais",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "GNRAL2XM"
+    },
+    {
+      "id": "h8qyuxkl",
+      "name": "Conhecendo Tuplas em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "H8QYUXKL"
+    },
+    {
+      "id": "hhj5cmjn",
+      "name": "Processamento e Limpeza de Dados em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "HHJ5CMJN"
+    },
+    {
+      "id": "iegbio5i",
+      "name": "IA Generativa: Fundamentos, Prompting e Aplicações",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "IEGBIO5I"
+    },
+    {
+      "id": "k4v5es2x",
+      "name": "IA Generativa: Fundamentos, Prompting e Aplicações",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "K4V5ES2X"
+    },
+    {
+      "id": "lyh09aoh",
+      "name": "Extraindo Insights do Feedback de Clientes Bancários",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "LYH09AOH"
+    },
+    {
+      "id": "m5n4mzgn",
+      "name": "Dominando Funções Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "M5N4MZGN"
+    },
+    {
+      "id": "nbdmyahk",
+      "name": "Desafios de Código: Aperfeiçoe Sua Lógica e Pensamento Computacional",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "NBDMYAHK"
+    },
+    {
+      "id": "ngrjkeqy",
+      "name": "Projeto Final: IA e Cibersegurança para Assistentes Virtuais no Mercado Financeiro",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "NGRJKEQY"
+    },
+    {
+      "id": "qdwgonnn",
+      "name": "Cibersegurança Essencial: Bases para Seus Projetos com Dados e IA",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "QDWGONNN"
+    },
+    {
+      "id": "qkzw7xst",
+      "name": "Tipos de Operadores com Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "QKZW7XST"
+    },
+    {
+      "id": "rqurpjaj",
+      "name": "Criando um Processo de ETL com Excel e Power Query",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "RQURPJAJ"
+    },
+    {
+      "id": "rwr9jrkt",
+      "name": "Fundamentos de Modelos de Linguagem de Grande Escala",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "RWR9JRKT"
+    },
+    {
+      "id": "shbleixq",
+      "name": "Introdução a Coleta e Análise de Segurança Cibernética",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "SHBLEIXQ"
+    },
+    {
+      "id": "suff4tiw",
+      "name": "Tratamento de Exceções e Depuração de Código em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "SUFF4TIW"
+    },
+    {
+      "id": "tqsojb5v",
+      "name": "Introdução a Banco de Dados Relacionais",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "TQSOJB5V"
+    },
+    {
+      "id": "uq2frq6b",
+      "name": "Bootcamp Bradesco - GenAI, Dados & Cyber",
+      "issuer": "Bradesco / DIO",
+      "year": "2026",
+      "credential_id": "UQ2FRQ6B"
+    },
+    {
+      "id": "v7nhaxze",
+      "name": "Introdução ao DevSecOps",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "V7NHAXZE"
+    },
+    {
+      "id": "vvymdvr9",
+      "name": "Estruturas Condicionais e de Repetição em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "VVYMDVR9"
+    },
+    {
+      "id": "vzwjryhw",
+      "name": "Utilizando Microsoft Copilot para escrever consultas SQL",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "VZWJRYHW"
+    },
+    {
+      "id": "w5lfvyo8",
+      "name": "Aprendendo a Utilizar Dicionários em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "W5LFVYO8"
+    },
+    {
+      "id": "wxx4nrjl",
+      "name": "Extraindo Insights do Feedback de Clientes Bancários",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "WXX4NRJL"
+    },
+    {
+      "id": "x2a7s2xs",
+      "name": "Explorando Conjuntos em Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "X2A7S2XS"
+    },
+    {
+      "id": "ylmqikde",
+      "name": "Visualização Avançada de Dados com Python",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "YLMQIKDE"
+    },
+    {
+      "id": "ymvfvaic",
+      "name": "Fundamentos da IA Moderna: Machine Learning, LLMs, IA Generativa e Agentes",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "YMVFVAIC"
+    },
+    {
+      "id": "z21r5z2g",
+      "name": "Treinando uma IA de Aprendizagem: Explore o Poder do NotebookLM ?",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "Z21R5Z2G"
+    },
+    {
+      "id": "zeoyxabm",
+      "name": "Princípios da Cibersegurança",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "ZEOYXABM"
+    },
+    {
+      "id": "zjw06bgt",
+      "name": "Introdução a Engenharia de Prompts",
+      "issuer": "DIO",
+      "year": "2026",
+      "credential_id": "ZJW06BGT"
+    }
+  ],
   "skills": [
     {
       "icon": "fa-brands fa-html5",
@@ -28,7 +372,11 @@
       "icon": "fa-brands fa-wordpress",
       "title": "Rápido & Seguro",
       "description": "Landing Page otimizada para logística, focada em performance e conversão direta.",
-      "techs": ["WordPress", "Gutenberg", "Astra"],
+      "techs": [
+        "WordPress",
+        "Gutenberg",
+        "Astra"
+      ],
       "links": [
         {
           "label": "Ver Case",
@@ -42,7 +390,11 @@
       "icon": "fa-solid fa-robot",
       "title": "WhatsApp Auto-Bot",
       "description": "Automação de agendamentos com integração direta ao Google Calendar.",
-      "techs": ["Python", "Flask", "API"],
+      "techs": [
+        "Python",
+        "Flask",
+        "API"
+      ],
       "links": [
         {
           "label": "Código",
@@ -56,7 +408,10 @@
       "icon": "fa-solid fa-folder-tree",
       "title": "Navegação Otimizada",
       "description": "Extensão que acelera o acesso a servidores de rede em ambientes escolares.",
-      "techs": ["JavaScript", "Chrome API"],
+      "techs": [
+        "JavaScript",
+        "Chrome API"
+      ],
       "links": [
         {
           "label": "Ver Código",
