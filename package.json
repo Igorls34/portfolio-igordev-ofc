@@ -9,7 +9,7 @@
     "lint:css": "stylelint \"assets/css/**/*.css\"",
     "lint:js": "eslint assets/js tests eslint.config.js",
     "lint": "npm run lint:css && npm run lint:js",
-    "test": "node --test \"tests/**/*.test.js\"",
+    "test": "node --test",
     "check": "npm run lint && npm test"
   },
   "devDependencies": {

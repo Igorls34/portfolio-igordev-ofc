@@ -16,7 +16,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Mesma major usada no desenvolvimento local. Com Node 20 o
+          # 'node --test' recebia o glob como caminho literal e falhava.
+          node-version: '24'
           cache: npm
 
       - name: Install dependencies
