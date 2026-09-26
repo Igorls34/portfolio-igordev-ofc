@@ -6,6 +6,11 @@
 }
 
 @media (max-width: 992px) {
+    .hero-section {
+        min-height: 100svh;
+        padding: 100px 0 40px;
+    }
+
     body {
         cursor: auto;
     }
@@ -50,7 +55,8 @@
     }
 
     .section-container {
-        padding: 80px 20px;
+        padding-top: 80px;
+        padding-bottom: 80px;
     }
 
     .hero-content {
@@ -115,33 +121,24 @@
         font-size: 2.2rem;
     }
 
-    .skills-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-    }
-
     .skill-item {
-        padding: 30px 20px;
+        padding: 24px 14px;
     }
 
     .skill-item i {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
 
-    .projects-grid {
-        grid-template-columns: 1fr;
-        max-width: 500px;
-        margin: 0 auto;
+    .skill-item h3 {
+        font-size: 1.1rem;
+    }
+
+    .skill-item p {
+        font-size: 0.88rem;
     }
 
     .certs-section {
-        padding: 80px 20px;
-    }
-
-    .certs-grid {
-        grid-template-columns: 1fr;
-        max-width: 500px;
-        margin: 0 auto;
+        padding: 68px 0;
     }
 
     .contact-container {
@@ -193,12 +190,46 @@
         font-size: 1.7rem;
     }
 
-    .skills-grid {
-        grid-template-columns: 1fr;
+    .skill-item {
+        padding: 20px 12px;
+    }
+
+    .skill-item i {
+        font-size: 1.8rem;
+    }
+
+    .skill-item h3 {
+        font-size: 1rem;
+    }
+
+    .skill-item p {
+        font-size: 0.82rem;
     }
 
     .project-card {
-        padding: 30px 22px;
+        padding: 20px 12px;
+    }
+
+    .project-card h3 {
+        font-size: 1rem;
+    }
+
+    .project-card p {
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    .project-techs {
+        gap: 6px;
+    }
+
+    .project-techs span {
+        padding: 5px 8px;
+        font-size: 0.72rem;
+    }
+
+    .cert-card {
+        border-radius: 12px;
     }
 
     .btn {

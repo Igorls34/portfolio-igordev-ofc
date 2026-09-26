@@ -11,6 +11,7 @@ const PORTFOLIO = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'portfolio.
 const CORE_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'core.js'), 'utf8');
 const VISUAL_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'visual-effects.js'), 'utf8');
 const NAV_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'navigation.js'), 'utf8');
+const CERT_VIEWER_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'certificate-viewer.js'), 'utf8');
 const CORE_ANALYTICS_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'analytics-core.js'), 'utf8');
 const ANALYTICS_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'analytics.js'), 'utf8');
 const SCRIPT_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'script.js'), 'utf8');
@@ -39,6 +40,30 @@ function montar(opcoes) {
     w.HTMLCanvasElement.prototype.getContext = () => null;
     w.requestAnimationFrame = cb => { if (opts.runRaf) cb(0); return 0; };
     w.scrollTo = () => {};
+    w.bootstrap = { Modal: {} };
+    w.bootstrap.Modal.getOrCreateInstance = (element) => {
+        const instance = {
+            show() {
+                element.classList.add('show');
+                element.removeAttribute('aria-hidden');
+                w.document.body.style.overflow = 'hidden';
+                element.dispatchEvent(new w.Event('shown.bs.modal'));
+            },
+            hide() {
+                element.classList.remove('show');
+                element.setAttribute('aria-hidden', 'true');
+                w.document.body.style.overflow = '';
+                element.dispatchEvent(new w.Event('hidden.bs.modal'));
+            }
+        };
+        element.addEventListener('keydown', event => {
+            if (event.key === 'Escape') instance.hide();
+        });
+        element.addEventListener('click', event => {
+            if (event.target === element) instance.hide();
+        });
+        return instance;
+    };
 
     /* Observers que disparam na hora, para nao depender de scroll real. */
     if (opts.observe !== false) {
@@ -88,6 +113,7 @@ function montar(opcoes) {
     if (opts.comRodape !== false) {
         w.eval(VISUAL_SRC);
         w.eval(NAV_SRC);
+        w.eval(CERT_VIEWER_SRC);
         w.eval(SCRIPT_SRC);
     }
     w.eval(CORE_ANALYTICS_SRC);
@@ -120,6 +146,54 @@ function consentIn(el) {
     el.click();
 }
 
+describe('visualizador de certificados', () => {
+    it('abre ao clicar, permite zoom/reset e restaura o foco ao fechar com Escape', () => {
+        const t = montar();
+        const trigger = t.doc.querySelector('.cert-preview');
+        const modal = t.doc.querySelector('.cert-viewer');
+        trigger.focus();
+        trigger.click();
+
+        assert.ok(modal.classList.contains('show'));
+        assert.strictEqual(t.doc.activeElement.getAttribute('aria-label'), 'Reduzir zoom');
+        assert.strictEqual(t.doc.body.style.overflow, 'hidden');
+        assert.strictEqual(modal.querySelector('.cert-viewer__image').alt,
+            trigger.querySelector('.cert-img').alt);
+
+        const zoomIn = modal.querySelector('[aria-label="Ampliar zoom"]');
+        zoomIn.click();
+        assert.match(modal.querySelector('.cert-viewer__image').style.transform, /scale\(1\.5\)/);
+
+        modal.querySelector('[aria-label="Restaurar tamanho"]').click();
+        assert.match(modal.querySelector('.cert-viewer__image').style.transform, /scale\(1\)/);
+
+        modal.dispatchEvent(new t.window.KeyboardEvent('keydown', {
+            key: 'Escape', bubbles: true, cancelable: true
+        }));
+        assert.ok(!modal.classList.contains('show'));
+        assert.strictEqual(t.doc.body.style.overflow, '');
+        assert.strictEqual(t.doc.activeElement, trigger);
+        t.fechar();
+    });
+
+    it('a roda do mouse amplia e clique no fundo fecha', () => {
+        const t = montar();
+        t.doc.querySelector('.cert-preview').click();
+        const modal = t.doc.querySelector('.cert-viewer');
+        const stage = modal.querySelector('.cert-viewer__stage');
+        const wheel = new t.window.WheelEvent('wheel', {
+            deltaY: -100, bubbles: true, cancelable: true
+        });
+        stage.dispatchEvent(wheel);
+        assert.strictEqual(wheel.defaultPrevented, true);
+        assert.match(modal.querySelector('.cert-viewer__image').style.transform, /scale\(1\.25\)/);
+
+        modal.dispatchEvent(new t.window.MouseEvent('click', { bubbles: true }));
+        assert.ok(!modal.classList.contains('show'));
+        t.fechar();
+    });
+});
+
 /* ============ Isolamento ============ */
 
 describe('a camada de analytics nao interfere no site', () => {
@@ -137,6 +211,7 @@ describe('a camada de analytics nao interfere no site', () => {
         w.eval(fs.readFileSync(path.join(ROOT, 'assets', 'js', 'core.js'), 'utf8'));
         w.eval(VISUAL_SRC);
         w.eval(NAV_SRC);
+        w.eval(CERT_VIEWER_SRC);
         w.eval(SCRIPT_SRC);
         w.document.dispatchEvent(new w.Event('DOMContentLoaded', { bubbles: true }));
 

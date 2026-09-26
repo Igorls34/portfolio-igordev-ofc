@@ -3,14 +3,14 @@
 Portfolio profissional de **Igor Laurindo (IgorDev)**, desenvolvedor freelancer
 focado em sites responsivos, chatbots e automações.
 
-Site estático, sem framework e sem build. O que você edita é o que vai para
-produção.
+Site estático com Bootstrap via CDN e CSS/JavaScript próprios, sem etapa de
+build ou bundler. O que você edita é o que vai para produção.
 
 **Produção:** <https://igordev-portfolio-ofc.netlify.app>
 
 ## Stack
 
-- HTML5, CSS3 e JavaScript (vanilla, ES6+)
+- HTML5, Bootstrap 5.3 (CDN), CSS de tema e JavaScript vanilla (ES6+)
 - [Font Awesome 6](https://fontawesome.com) e [Inter](https://fonts.google.com/specimen/Inter) via CDN
 - Netlify para hosting, GitHub Actions para deploy
 - Node apenas para os testes e o lint (nada disso vai para o navegador)
@@ -33,10 +33,13 @@ tests/core.test.js      testes unitários do core.js
 netlify.toml            headers de cache e config de publicação
 ```
 
+Bootstrap fornece o reset, containers, grid responsivo e o componente Modal. O
+CSS próprio complementa a base com o tema e as interações visuais do portfólio.
 As páginas carregam os módulos CSS na ordem `base`, `navigation`, `hero`,
 `sections`, `contact`, `pages` e `responsive`, mantendo a cascata previsível.
-Na home, o JavaScript carrega `core.js` antes dos efeitos visuais, navegação e
-formulário; a camada de analytics permanece no fim e isolada.
+Na home, o Bootstrap Bundle vem antes dos módulos próprios; o `core.js` carrega
+antes dos efeitos visuais, navegação e formulário. Analytics permanece no fim
+e isolado.
 
 `core.js` concentra a lógica pura que pode ser testada sem DOM. Os módulos da
 interface ficam separados por responsabilidade e usam essa camada quando

@@ -39,7 +39,7 @@ function revealClass(indice) {
 
 function renderSkill(skill, indice) {
     return [
-        `                    <div class="skill-item ${revealClass(indice)}">`,
+        `                    <div class="skill-item col-6 col-lg-3 ${revealClass(indice)}">`,
         `                        <i class="${escapeHtml(skill.icon)}"></i>`,
         `                        <h3>${escapeHtml(skill.title)}</h3>`,
         `                        <p>${escapeHtml(skill.description)}</p>`,
@@ -68,8 +68,10 @@ function renderCert(cert, indice) {
         ? `Certificado de ${cert.issuer}: ${cert.name}`
         : `Certificado: ${cert.name}`;
     const linhas = [
-        `                    <figure class="cert-card ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
-        `                        <img class="cert-img" src="${escapeHtml(cert.image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">`
+        `                    <figure class="cert-card col-6 col-lg-4 ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
+        `                        <button class="cert-preview" type="button" aria-label="Ampliar ${escapeHtml(alt)}">`,
+        `                            <img class="cert-img" src="${escapeHtml(cert.image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">`,
+        '                        </button>'
     ];
 
     if (cert.url) {
@@ -84,7 +86,7 @@ function renderCert(cert, indice) {
 }
 
 function renderProject(project, indice) {    const linhas = [
-        `                    <div class="project-card ${revealClass(indice)}" data-track="card_${escapeHtml(project.id)}" data-track-kind="project">`,
+    `                    <div class="project-card col-6 col-lg-4 ${revealClass(indice)}" data-track="card_${escapeHtml(project.id)}" data-track-kind="project">`,
         `                        <div class="project-icon"><i class="${escapeHtml(project.icon)}"></i></div>`,
         `                        <h3>${escapeHtml(project.title)}</h3>`,
         `                        <p>${escapeHtml(project.description)}</p>`

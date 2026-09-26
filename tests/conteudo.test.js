@@ -138,14 +138,36 @@ describe('HTML gerado a partir do JSON', () => {
         });
     });
 
+    it('Bootstrap CSS carrega antes dos estilos próprios em todas as páginas', () => {
+        [
+            html,
+            fs.readFileSync(path.join(ROOT, '404.html'), 'utf8'),
+            fs.readFileSync(path.join(ROOT, 'privacidade.html'), 'utf8')
+        ].forEach(pagina => {
+            const bootstrapCss = pagina.indexOf('bootstrap@5.3.3/dist/css/bootstrap.min.css');
+            const baseCss = pagina.indexOf('/assets/css/base.css');
+            assert.ok(bootstrapCss >= 0, 'página sem Bootstrap CSS');
+            assert.ok(baseCss > bootstrapCss, 'CSS próprio deve vir depois do Bootstrap');
+        });
+    });
+
+    it('recorta overflow horizontal temporário das animações em mobile', () => {
+        const baseCss = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'base.css'), 'utf8');
+        assert.match(baseCss, /html\s*\{[^}]*overflow-x:\s*clip/s);
+    });
+
     it('a home carrega os modulos JS na ordem de dependencia', () => {
         const carregados = [...html.matchAll(
             /<script src="\.\/assets\/js\/([^\"]+)"/g
         )].map(match => match[1]);
         assert.deepStrictEqual(carregados, [
-            'core.js', 'visual-effects.js', 'navigation.js', 'script.js',
+            'core.js', 'visual-effects.js', 'navigation.js', 'certificate-viewer.js',
+            'script.js',
             'analytics-core.js', 'analytics.js'
         ]);
+        assert.ok(html.indexOf('bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js')
+            < html.indexOf('./assets/js/certificate-viewer.js'),
+        'Bootstrap Bundle precisa carregar antes do modal de certificados');
     });
 
     it('o index.html tem um card por habilidade do JSON', () => {
@@ -248,6 +270,24 @@ describe('HTML gerado a partir do JSON', () => {
         imgs.forEach(tag => {
             assert.ok(/loading="lazy"/.test(tag), 'imagem sem loading lazy: ' + tag);
         });
+    });
+
+    it('cada certificado tem um gatilho de ampliação acessível', () => {
+        const previews = html.match(/<button class="cert-preview"[^>]*>/g) || [];
+        assert.strictEqual(previews.length, certificadosWebp.length);
+        previews.forEach(tag => {
+            assert.match(tag, /type="button"/);
+            assert.match(tag, /aria-label="Ampliar /);
+        });
+    });
+
+    it('usa o grid responsivo do Bootstrap nas três seções', () => {
+        assert.match(html, /class="skills-grid row g-3"/);
+        assert.match(html, /class="projects-grid row g-3"/);
+        assert.match(html, /class="certs-grid row g-2 g-md-3"/);
+        assert.match(html, /class="skill-item col-6 col-lg-3/);
+        assert.match(html, /class="project-card col-6 col-lg-4/);
+        assert.match(html, /class="cert-card col-6 col-lg-4/);
     });
 
     it('esconde a secao e o item do menu quando nao ha certificacao', () => {

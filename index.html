@@ -43,6 +43,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="./assets/css/base.css">
     <link rel="stylesheet" href="./assets/css/navigation.css">
@@ -161,7 +165,7 @@
 
         <!-- About Section -->
         <section class="about-section" id="about" aria-label="Sobre">
-            <div class="section-container">
+            <div class="section-container container">
                 <div class="about-grid">
                     <div class="about-img reveal-left">
                         <img src="assets/img/trabalho.svg" alt="Ilustração digital de trabalho">
@@ -185,26 +189,26 @@
 
         <!-- Skills Section -->
         <section class="skills-section" id="skills" aria-label="Habilidades">
-            <div class="section-container">
+            <div class="section-container container">
                 <h2 class="section-title">Habilidades <em class="hl">Estratégicas</em></h2>
-                <div class="skills-grid">
+                <div class="skills-grid row g-3">
                     <!-- skills:inicio (gerado de data/portfolio.json) -->
-                    <div class="skill-item reveal reveal-d1">
+                    <div class="skill-item col-6 col-lg-3 reveal reveal-d1">
                         <i class="fa-brands fa-html5"></i>
                         <h3>Web Dev</h3>
                         <p>Sites dinâmicos, responsivos e otimizados para SEO.</p>
                     </div>
-                    <div class="skill-item reveal reveal-d2">
+                    <div class="skill-item col-6 col-lg-3 reveal reveal-d2">
                         <i class="fa-brands fa-python"></i>
                         <h3>Automação</h3>
                         <p>Scripts inteligentes e integração de sistemas.</p>
                     </div>
-                    <div class="skill-item reveal reveal-d3">
+                    <div class="skill-item col-6 col-lg-3 reveal reveal-d3">
                         <i class="fa-brands fa-whatsapp"></i>
                         <h3>Chatbots</h3>
                         <p>Fluxos automáticos para atendimento via WhatsApp.</p>
                     </div>
-                    <div class="skill-item reveal reveal-d4">
+                    <div class="skill-item col-6 col-lg-3 reveal reveal-d4">
                         <i class="fa-solid fa-cloud"></i>
                         <h3>APIs &amp; Cloud</h3>
                         <p>Integração com Google Cloud, Gemini e mais.</p>
@@ -216,12 +220,12 @@
 
         <!-- Projects Section -->
         <section class="projects-section" id="projects" aria-label="Projetos">
-            <div class="section-container">
+            <div class="section-container container">
                 <h2 class="section-title">Projetos <em class="hl">em Destaque</em></h2>
 
-                <div class="projects-grid">
+                <div class="projects-grid row g-3">
                     <!-- projects:inicio (gerado de data/portfolio.json) -->
-                    <div class="project-card reveal reveal-d1" data-track="card_rapido_seguro" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d1" data-track="card_rapido_seguro" data-track-kind="project">
                         <div class="project-icon"><i class="fa-brands fa-wordpress"></i></div>
                         <h3>Rápido &amp; Seguro</h3>
                         <p>Landing Page otimizada para logística, focada em performance e conversão direta.</p>
@@ -235,7 +239,7 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-                    <div class="project-card reveal reveal-d2" data-track="card_waha_calendar" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d2" data-track="card_waha_calendar" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
                         <h3>WhatsApp Auto-Bot</h3>
                         <p>Automação de agendamentos com integração direta ao Google Calendar.</p>
@@ -249,7 +253,7 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-                    <div class="project-card reveal reveal-d3" data-track="card_backup_extensao" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d3" data-track="card_backup_extensao" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-folder-tree"></i></div>
                         <h3>Navegação Otimizada</h3>
                         <p>Extensão que acelera o acesso a servidores de rede em ambientes escolares.</p>
@@ -262,7 +266,7 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-                    <div class="project-card reveal reveal-d4" data-track="card_ecommerce_platform" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d4" data-track="card_ecommerce_platform" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-cart-shopping"></i></div>
                         <h3>E-commerce White Label</h3>
                         <p>Plataforma completa de e-commerce com loja online, painel administrativo e API para catálogo, pedidos e pagamentos.</p>
@@ -280,7 +284,7 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-                    <div class="project-card reveal reveal-d4" data-track="card_churn_prediction" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d4" data-track="card_churn_prediction" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-chart-line"></i></div>
                         <h3>Previsão de Churn</h3>
                         <p>Modelo de machine learning identifica clientes de telecom com risco de cancelamento e gera ações de retenção para marketing.</p>
@@ -297,7 +301,7 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-                    <div class="project-card reveal reveal-d4" data-track="card_whatsapp_ai_agent" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d4" data-track="card_whatsapp_ai_agent" data-track-kind="project">
                         <div class="project-icon"><i class="fa-brands fa-whatsapp"></i></div>
                         <h3>WhatsApp AI Agent</h3>
                         <p>Assistente virtual com IA local que atende clientes, agenda reuniões e mantém memória entre conversas, com painel admin e chat web.</p>
@@ -313,7 +317,7 @@
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </div>
                     </div>
-                    <div class="project-card reveal reveal-d4" data-track="card_calistenia_notebooklm" data-track-kind="project">
+                    <div class="project-card col-6 col-lg-4 reveal reveal-d4" data-track="card_calistenia_notebooklm" data-track-kind="project">
                         <div class="project-icon"><i class="fa-solid fa-dumbbell"></i></div>
                         <h3>Guia de Calistenia com IA</h3>
                         <p>Base de conhecimento especializada para consultar e relacionar referências de calistenia, força, periodização e nutrição usando o NotebookLM.</p>
@@ -338,180 +342,314 @@
         <!-- Sem "certificacoes" no portfolio.json a secao inteira fica oculta: um
              quadro vazio no meio da home passa ideia de conteudo faltando. -->
         <section class="certs-section" id="certifications" aria-label="Certificações" data-cert-section>
-            <div class="section-container">
+            <div class="section-container container">
                 <h2 class="section-title">Certificações <em class="hl">e credenciais</em></h2>
 
-                <div class="certs-grid">
+                <div class="certs-grid row g-2 g-md-3">
                     <!-- certs:inicio (gerado de data/portfolio.json) -->
-                    <figure class="cert-card reveal reveal-d1" data-track="cert_0h2ll5ge_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/0H2LL5GE_pagina_001.webp" alt="Certificado de DIO: Fundamentos de Dados: Excel, SQL e Business Intelligence" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d1" data-track="cert_0h2ll5ge_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Fundamentos de Dados: Excel, SQL e Business Intelligence">
+                            <img class="cert-img" src="certificados_webp/0H2LL5GE_pagina_001.webp" alt="Certificado de DIO: Fundamentos de Dados: Excel, SQL e Business Intelligence" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d2" data-track="cert_0qildvep_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/0QILDVEP_pagina_001.webp" alt="Certificado de DIO: Tópicos em Engenharia Social ?" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d2" data-track="cert_0qildvep_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Tópicos em Engenharia Social ?">
+                            <img class="cert-img" src="certificados_webp/0QILDVEP_pagina_001.webp" alt="Certificado de DIO: Tópicos em Engenharia Social ?" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d3" data-track="cert_1wk6wmo4_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/1WK6WMO4_pagina_001.webp" alt="Certificado de DIO: Tendências em IA e Cibersegurança Aplicadas ao ? - Projeto Final" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d3" data-track="cert_1wk6wmo4_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Tendências em IA e Cibersegurança Aplicadas ao ? - Projeto Final">
+                            <img class="cert-img" src="certificados_webp/1WK6WMO4_pagina_001.webp" alt="Certificado de DIO: Tendências em IA e Cibersegurança Aplicadas ao ? - Projeto Final" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_2zvsrxao_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/2ZVSRXAO_pagina_001.webp" alt="Certificado de DIO: Manipulando Strings com Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_2zvsrxao_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Manipulando Strings com Python">
+                            <img class="cert-img" src="certificados_webp/2ZVSRXAO_pagina_001.webp" alt="Certificado de DIO: Manipulando Strings com Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_5feenhcf_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/5FEENHCF_pagina_001.webp" alt="Certificado de DIO: Bibliotecas Essenciais de Python para Análise de Dados" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_5feenhcf_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Bibliotecas Essenciais de Python para Análise de Dados">
+                            <img class="cert-img" src="certificados_webp/5FEENHCF_pagina_001.webp" alt="Certificado de DIO: Bibliotecas Essenciais de Python para Análise de Dados" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_89v7s6yy_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/89V7S6YY_pagina_001.webp" alt="Certificado de DIO: Introdução ao Python: Primeiros Passos e Fundamentos" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_89v7s6yy_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Introdução ao Python: Primeiros Passos e Fundamentos">
+                            <img class="cert-img" src="certificados_webp/89V7S6YY_pagina_001.webp" alt="Certificado de DIO: Introdução ao Python: Primeiros Passos e Fundamentos" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_8xcqxuap_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/8XCQXUAP_pagina_001.webp" alt="Certificado de DIO: Trabalhando com Microsoft Copilot" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_8xcqxuap_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Trabalhando com Microsoft Copilot">
+                            <img class="cert-img" src="certificados_webp/8XCQXUAP_pagina_001.webp" alt="Certificado de DIO: Trabalhando com Microsoft Copilot" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_am7mwb76_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/AM7MWB76_pagina_001.webp" alt="Certificado de DIO: Ambiente de Desenvolvimento e Primeiros Passos com Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_am7mwb76_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Ambiente de Desenvolvimento e Primeiros Passos com Python">
+                            <img class="cert-img" src="certificados_webp/AM7MWB76_pagina_001.webp" alt="Certificado de DIO: Ambiente de Desenvolvimento e Primeiros Passos com Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_arwbxmxs_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/ARWBXMXS_pagina_001.webp" alt="Certificado de DIO: Automação de Processos e Análises com Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_arwbxmxs_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Automação de Processos e Análises com Python">
+                            <img class="cert-img" src="certificados_webp/ARWBXMXS_pagina_001.webp" alt="Certificado de DIO: Automação de Processos e Análises com Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_augusto_certificate_1_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/augusto-certificate (1)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (1)" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_augusto_certificate_1_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado: Certificado augusto-certificate (1)">
+                            <img class="cert-img" src="certificados_webp/augusto-certificate (1)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (1)" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_augusto_certificate_2_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/augusto-certificate (2)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (2)" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_augusto_certificate_2_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado: Certificado augusto-certificate (2)">
+                            <img class="cert-img" src="certificados_webp/augusto-certificate (2)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (2)" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_augusto_certificate_3_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/augusto-certificate (3)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (3)" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_augusto_certificate_3_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado: Certificado augusto-certificate (3)">
+                            <img class="cert-img" src="certificados_webp/augusto-certificate (3)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (3)" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_augusto_certificate_4_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/augusto-certificate (4)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (4)" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_augusto_certificate_4_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado: Certificado augusto-certificate (4)">
+                            <img class="cert-img" src="certificados_webp/augusto-certificate (4)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (4)" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_augusto_certificate_5_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/augusto-certificate (5)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (5)" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_augusto_certificate_5_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado: Certificado augusto-certificate (5)">
+                            <img class="cert-img" src="certificados_webp/augusto-certificate (5)_pagina_001.webp" alt="Certificado: Certificado augusto-certificate (5)" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_augusto_certificate_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/augusto-certificate_pagina_001.webp" alt="Certificado: Certificado augusto-certificate" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_augusto_certificate_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado: Certificado augusto-certificate">
+                            <img class="cert-img" src="certificados_webp/augusto-certificate_pagina_001.webp" alt="Certificado: Certificado augusto-certificate" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_ayccw8nf_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/AYCCW8NF_pagina_001.webp" alt="Certificado de DIO: Desafios de Projetos: Crie um Portfólio Vencedor" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_ayccw8nf_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Desafios de Projetos: Crie um Portfólio Vencedor">
+                            <img class="cert-img" src="certificados_webp/AYCCW8NF_pagina_001.webp" alt="Certificado de DIO: Desafios de Projetos: Crie um Portfólio Vencedor" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_bxyr8dic_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/BXYR8DIC_pagina_001.webp" alt="Certificado de DIO: Boas Práticas, Testes e Otimização de Código em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_bxyr8dic_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Boas Práticas, Testes e Otimização de Código em Python">
+                            <img class="cert-img" src="certificados_webp/BXYR8DIC_pagina_001.webp" alt="Certificado de DIO: Boas Práticas, Testes e Otimização de Código em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_ccvsgnsb_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/CCVSGNSB_pagina_001.webp" alt="Certificado de DIO: Trabalhando com Arquivos e Dados Externos em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_ccvsgnsb_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Trabalhando com Arquivos e Dados Externos em Python">
+                            <img class="cert-img" src="certificados_webp/CCVSGNSB_pagina_001.webp" alt="Certificado de DIO: Trabalhando com Arquivos e Dados Externos em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_cjc9vneo_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/CJC9VNEO_pagina_001.webp" alt="Certificado de DIO: Introdução ao Excel 365" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_cjc9vneo_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Introdução ao Excel 365">
+                            <img class="cert-img" src="certificados_webp/CJC9VNEO_pagina_001.webp" alt="Certificado de DIO: Introdução ao Excel 365" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_dbb8i7k8_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/DBB8I7K8_pagina_001.webp" alt="Certificado de DIO: Detecção de Anomalias em Transações em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_dbb8i7k8_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Detecção de Anomalias em Transações em Python">
+                            <img class="cert-img" src="certificados_webp/DBB8I7K8_pagina_001.webp" alt="Certificado de DIO: Detecção de Anomalias em Transações em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_deqijhn0_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/DEQIJHN0_pagina_001.webp" alt="Certificado de DIO: Trabalhando com Listas em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_deqijhn0_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Trabalhando com Listas em Python">
+                            <img class="cert-img" src="certificados_webp/DEQIJHN0_pagina_001.webp" alt="Certificado de DIO: Trabalhando com Listas em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_dqxszkye_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/DQXSZKYE_pagina_001.webp" alt="Certificado de DIO: Conhecendo a Linguagem de Programacao em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_dqxszkye_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Conhecendo a Linguagem de Programacao em Python">
+                            <img class="cert-img" src="certificados_webp/DQXSZKYE_pagina_001.webp" alt="Certificado de DIO: Conhecendo a Linguagem de Programacao em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_faqb4v4k_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/FAQB4V4K_pagina_001.webp" alt="Certificado de DIO: Análise de Dados com Python: Da Preparação a Aplicação com Segurança" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_faqb4v4k_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Análise de Dados com Python: Da Preparação a Aplicação com Segurança">
+                            <img class="cert-img" src="certificados_webp/FAQB4V4K_pagina_001.webp" alt="Certificado de DIO: Análise de Dados com Python: Da Preparação a Aplicação com Segurança" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_fhm4tybf_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/FHM4TYBF_pagina_001.webp" alt="Certificado de DIO: Estruturas em Python: Dados, Coleções e Funções" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_fhm4tybf_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Estruturas em Python: Dados, Coleções e Funções">
+                            <img class="cert-img" src="certificados_webp/FHM4TYBF_pagina_001.webp" alt="Certificado de DIO: Estruturas em Python: Dados, Coleções e Funções" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_fn9dsjd6_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/FN9DSJD6_pagina_001.webp" alt="Certificado de DIO: Técnicas de Engenharia de Prompt" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_fn9dsjd6_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Técnicas de Engenharia de Prompt">
+                            <img class="cert-img" src="certificados_webp/FN9DSJD6_pagina_001.webp" alt="Certificado de DIO: Técnicas de Engenharia de Prompt" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_frr8dm1i_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/FRR8DM1I_pagina_001.webp" alt="Certificado de DIO: Construa seu Assistente Virtual com Inteligência Artificial" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_frr8dm1i_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Construa seu Assistente Virtual com Inteligência Artificial">
+                            <img class="cert-img" src="certificados_webp/FRR8DM1I_pagina_001.webp" alt="Certificado de DIO: Construa seu Assistente Virtual com Inteligência Artificial" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_g36ek2tk_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/G36EK2TK_pagina_001.webp" alt="Certificado de Bradesco / DIO: Boas-vindas ao Bootcamp Bradesco - GenAI, Dados &amp; Cyber" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_g36ek2tk_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de Bradesco / DIO: Boas-vindas ao Bootcamp Bradesco - GenAI, Dados &amp; Cyber">
+                            <img class="cert-img" src="certificados_webp/G36EK2TK_pagina_001.webp" alt="Certificado de Bradesco / DIO: Boas-vindas ao Bootcamp Bradesco - GenAI, Dados &amp; Cyber" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_gnral2xm_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/GNRAL2XM_pagina_001.webp" alt="Certificado de DIO: Conceitos e Práticas de Sistemas Operacionais e Máquinas Virtuais" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_gnral2xm_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Conceitos e Práticas de Sistemas Operacionais e Máquinas Virtuais">
+                            <img class="cert-img" src="certificados_webp/GNRAL2XM_pagina_001.webp" alt="Certificado de DIO: Conceitos e Práticas de Sistemas Operacionais e Máquinas Virtuais" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_h8qyuxkl_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/H8QYUXKL_pagina_001.webp" alt="Certificado de DIO: Conhecendo Tuplas em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_h8qyuxkl_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Conhecendo Tuplas em Python">
+                            <img class="cert-img" src="certificados_webp/H8QYUXKL_pagina_001.webp" alt="Certificado de DIO: Conhecendo Tuplas em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_hhj5cmjn_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/HHJ5CMJN_pagina_001.webp" alt="Certificado de DIO: Processamento e Limpeza de Dados em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_hhj5cmjn_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Processamento e Limpeza de Dados em Python">
+                            <img class="cert-img" src="certificados_webp/HHJ5CMJN_pagina_001.webp" alt="Certificado de DIO: Processamento e Limpeza de Dados em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_iegbio5i_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/IEGBIO5I_pagina_001.webp" alt="Certificado de DIO: IA Generativa: Fundamentos, Prompting e Aplicações" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_iegbio5i_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: IA Generativa: Fundamentos, Prompting e Aplicações">
+                            <img class="cert-img" src="certificados_webp/IEGBIO5I_pagina_001.webp" alt="Certificado de DIO: IA Generativa: Fundamentos, Prompting e Aplicações" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_k4v5es2x_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/K4V5ES2X_pagina_001.webp" alt="Certificado de DIO: IA Generativa: Fundamentos, Prompting e Aplicações" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_k4v5es2x_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: IA Generativa: Fundamentos, Prompting e Aplicações">
+                            <img class="cert-img" src="certificados_webp/K4V5ES2X_pagina_001.webp" alt="Certificado de DIO: IA Generativa: Fundamentos, Prompting e Aplicações" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_lyh09aoh_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/LYH09AOH_pagina_001.webp" alt="Certificado de DIO: Extraindo Insights do Feedback de Clientes Bancários" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_lyh09aoh_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Extraindo Insights do Feedback de Clientes Bancários">
+                            <img class="cert-img" src="certificados_webp/LYH09AOH_pagina_001.webp" alt="Certificado de DIO: Extraindo Insights do Feedback de Clientes Bancários" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_m5n4mzgn_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/M5N4MZGN_pagina_001.webp" alt="Certificado de DIO: Dominando Funções Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_m5n4mzgn_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Dominando Funções Python">
+                            <img class="cert-img" src="certificados_webp/M5N4MZGN_pagina_001.webp" alt="Certificado de DIO: Dominando Funções Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_nbdmyahk_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/NBDMYAHK_pagina_001.webp" alt="Certificado de DIO: Desafios de Código: Aperfeiçoe Sua Lógica e Pensamento Computacional" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_nbdmyahk_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Desafios de Código: Aperfeiçoe Sua Lógica e Pensamento Computacional">
+                            <img class="cert-img" src="certificados_webp/NBDMYAHK_pagina_001.webp" alt="Certificado de DIO: Desafios de Código: Aperfeiçoe Sua Lógica e Pensamento Computacional" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_ngrjkeqy_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/NGRJKEQY_pagina_001.webp" alt="Certificado de DIO: Projeto Final: IA e Cibersegurança para Assistentes Virtuais no Mercado Financeiro" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_ngrjkeqy_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Projeto Final: IA e Cibersegurança para Assistentes Virtuais no Mercado Financeiro">
+                            <img class="cert-img" src="certificados_webp/NGRJKEQY_pagina_001.webp" alt="Certificado de DIO: Projeto Final: IA e Cibersegurança para Assistentes Virtuais no Mercado Financeiro" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_qdwgonnn_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/QDWGONNN_pagina_001.webp" alt="Certificado de DIO: Cibersegurança Essencial: Bases para Seus Projetos com Dados e IA" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_qdwgonnn_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Cibersegurança Essencial: Bases para Seus Projetos com Dados e IA">
+                            <img class="cert-img" src="certificados_webp/QDWGONNN_pagina_001.webp" alt="Certificado de DIO: Cibersegurança Essencial: Bases para Seus Projetos com Dados e IA" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_qkzw7xst_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/QKZW7XST_pagina_001.webp" alt="Certificado de DIO: Tipos de Operadores com Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_qkzw7xst_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Tipos de Operadores com Python">
+                            <img class="cert-img" src="certificados_webp/QKZW7XST_pagina_001.webp" alt="Certificado de DIO: Tipos de Operadores com Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_rqurpjaj_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/RQURPJAJ_pagina_001.webp" alt="Certificado de DIO: Criando um Processo de ETL com Excel e Power Query" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_rqurpjaj_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Criando um Processo de ETL com Excel e Power Query">
+                            <img class="cert-img" src="certificados_webp/RQURPJAJ_pagina_001.webp" alt="Certificado de DIO: Criando um Processo de ETL com Excel e Power Query" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_rwr9jrkt_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/RWR9JRKT_pagina_001.webp" alt="Certificado de DIO: Fundamentos de Modelos de Linguagem de Grande Escala" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_rwr9jrkt_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Fundamentos de Modelos de Linguagem de Grande Escala">
+                            <img class="cert-img" src="certificados_webp/RWR9JRKT_pagina_001.webp" alt="Certificado de DIO: Fundamentos de Modelos de Linguagem de Grande Escala" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_shbleixq_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/SHBLEIXQ_pagina_001.webp" alt="Certificado de DIO: Introdução a Coleta e Análise de Segurança Cibernética" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_shbleixq_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Introdução a Coleta e Análise de Segurança Cibernética">
+                            <img class="cert-img" src="certificados_webp/SHBLEIXQ_pagina_001.webp" alt="Certificado de DIO: Introdução a Coleta e Análise de Segurança Cibernética" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_suff4tiw_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/SUFF4TIW_pagina_001.webp" alt="Certificado de DIO: Tratamento de Exceções e Depuração de Código em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_suff4tiw_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Tratamento de Exceções e Depuração de Código em Python">
+                            <img class="cert-img" src="certificados_webp/SUFF4TIW_pagina_001.webp" alt="Certificado de DIO: Tratamento de Exceções e Depuração de Código em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_tqsojb5v_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/TQSOJB5V_pagina_001.webp" alt="Certificado de DIO: Introdução a Banco de Dados Relacionais" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_tqsojb5v_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Introdução a Banco de Dados Relacionais">
+                            <img class="cert-img" src="certificados_webp/TQSOJB5V_pagina_001.webp" alt="Certificado de DIO: Introdução a Banco de Dados Relacionais" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_uq2frq6b_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/UQ2FRQ6B_pagina_001.webp" alt="Certificado de Bradesco / DIO: Bootcamp Bradesco - GenAI, Dados &amp; Cyber" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_uq2frq6b_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de Bradesco / DIO: Bootcamp Bradesco - GenAI, Dados &amp; Cyber">
+                            <img class="cert-img" src="certificados_webp/UQ2FRQ6B_pagina_001.webp" alt="Certificado de Bradesco / DIO: Bootcamp Bradesco - GenAI, Dados &amp; Cyber" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_v7nhaxze_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/V7NHAXZE_pagina_001.webp" alt="Certificado de DIO: Introdução ao DevSecOps" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_v7nhaxze_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Introdução ao DevSecOps">
+                            <img class="cert-img" src="certificados_webp/V7NHAXZE_pagina_001.webp" alt="Certificado de DIO: Introdução ao DevSecOps" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_vvymdvr9_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/VVYMDVR9_pagina_001.webp" alt="Certificado de DIO: Estruturas Condicionais e de Repetição em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_vvymdvr9_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Estruturas Condicionais e de Repetição em Python">
+                            <img class="cert-img" src="certificados_webp/VVYMDVR9_pagina_001.webp" alt="Certificado de DIO: Estruturas Condicionais e de Repetição em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_vzwjryhw_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/VZWJRYHW_pagina_001.webp" alt="Certificado de DIO: Utilizando Microsoft Copilot para escrever consultas SQL" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_vzwjryhw_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Utilizando Microsoft Copilot para escrever consultas SQL">
+                            <img class="cert-img" src="certificados_webp/VZWJRYHW_pagina_001.webp" alt="Certificado de DIO: Utilizando Microsoft Copilot para escrever consultas SQL" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_w5lfvyo8_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/W5LFVYO8_pagina_001.webp" alt="Certificado de DIO: Aprendendo a Utilizar Dicionários em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_w5lfvyo8_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Aprendendo a Utilizar Dicionários em Python">
+                            <img class="cert-img" src="certificados_webp/W5LFVYO8_pagina_001.webp" alt="Certificado de DIO: Aprendendo a Utilizar Dicionários em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_wxx4nrjl_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/WXX4NRJL_pagina_001.webp" alt="Certificado de DIO: Extraindo Insights do Feedback de Clientes Bancários" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_wxx4nrjl_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Extraindo Insights do Feedback de Clientes Bancários">
+                            <img class="cert-img" src="certificados_webp/WXX4NRJL_pagina_001.webp" alt="Certificado de DIO: Extraindo Insights do Feedback de Clientes Bancários" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_x2a7s2xs_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/X2A7S2XS_pagina_001.webp" alt="Certificado de DIO: Explorando Conjuntos em Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_x2a7s2xs_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Explorando Conjuntos em Python">
+                            <img class="cert-img" src="certificados_webp/X2A7S2XS_pagina_001.webp" alt="Certificado de DIO: Explorando Conjuntos em Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_ylmqikde_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/YLMQIKDE_pagina_001.webp" alt="Certificado de DIO: Visualização Avançada de Dados com Python" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_ylmqikde_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Visualização Avançada de Dados com Python">
+                            <img class="cert-img" src="certificados_webp/YLMQIKDE_pagina_001.webp" alt="Certificado de DIO: Visualização Avançada de Dados com Python" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_ymvfvaic_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/YMVFVAIC_pagina_001.webp" alt="Certificado de DIO: Fundamentos da IA Moderna: Machine Learning, LLMs, IA Generativa e Agentes" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_ymvfvaic_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Fundamentos da IA Moderna: Machine Learning, LLMs, IA Generativa e Agentes">
+                            <img class="cert-img" src="certificados_webp/YMVFVAIC_pagina_001.webp" alt="Certificado de DIO: Fundamentos da IA Moderna: Machine Learning, LLMs, IA Generativa e Agentes" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_z21r5z2g_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/Z21R5Z2G_pagina_001.webp" alt="Certificado de DIO: Treinando uma IA de Aprendizagem: Explore o Poder do NotebookLM ?" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_z21r5z2g_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Treinando uma IA de Aprendizagem: Explore o Poder do NotebookLM ?">
+                            <img class="cert-img" src="certificados_webp/Z21R5Z2G_pagina_001.webp" alt="Certificado de DIO: Treinando uma IA de Aprendizagem: Explore o Poder do NotebookLM ?" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_zeoyxabm_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/ZEOYXABM_pagina_001.webp" alt="Certificado de DIO: Princípios da Cibersegurança" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_zeoyxabm_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Princípios da Cibersegurança">
+                            <img class="cert-img" src="certificados_webp/ZEOYXABM_pagina_001.webp" alt="Certificado de DIO: Princípios da Cibersegurança" loading="lazy" decoding="async">
+                        </button>
                     </figure>
-                    <figure class="cert-card reveal reveal-d4" data-track="cert_zjw06bgt_pagina_001" data-track-kind="certification">
-                        <img class="cert-img" src="certificados_webp/ZJW06BGT_pagina_001.webp" alt="Certificado de DIO: Introdução a Engenharia de Prompts" loading="lazy" decoding="async">
+                    <figure class="cert-card col-6 col-lg-4 reveal reveal-d4" data-track="cert_zjw06bgt_pagina_001" data-track-kind="certification">
+                        <button class="cert-preview" type="button" aria-label="Ampliar Certificado de DIO: Introdução a Engenharia de Prompts">
+                            <img class="cert-img" src="certificados_webp/ZJW06BGT_pagina_001.webp" alt="Certificado de DIO: Introdução a Engenharia de Prompts" loading="lazy" decoding="async">
+                        </button>
                     </figure>
                     <!-- certs:fim -->
                 </div>
             </div>
         </section>
+
+        <div class="modal fade cert-viewer" id="certificateViewer" tabindex="-1"
+            aria-labelledby="certificateViewerTitle" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen cert-viewer__dialog">
+                <div class="modal-content">
+                    <div class="modal-header cert-viewer__toolbar">
+                        <h2 class="modal-title cert-viewer__title" id="certificateViewerTitle"></h2>
+                        <div class="cert-viewer__controls" role="group" aria-label="Controles do certificado">
+                            <button class="btn btn-outline-light cert-viewer__button" type="button"
+                                data-cert-zoom="out" aria-label="Reduzir zoom" title="Reduzir zoom">−</button>
+                            <button class="btn btn-outline-light cert-viewer__button" type="button"
+                                data-cert-zoom="reset" aria-label="Restaurar tamanho" title="Restaurar tamanho">Ajustar</button>
+                            <button class="btn btn-outline-light cert-viewer__button" type="button"
+                                data-cert-zoom="in" aria-label="Ampliar zoom" title="Ampliar zoom">+</button>
+                            <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal"
+                                aria-label="Fechar visualizador"></button>
+                        </div>
+                    </div>
+                    <div class="modal-body cert-viewer__stage">
+                        <img class="cert-viewer__image" alt="" draggable="false">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Contact Section -->
         <section id="contact" aria-label="Contato">
@@ -588,7 +726,7 @@
     </main>
 
     <footer>
-        <div class="section-container" style="padding: 40px 20px;">
+        <div class="section-container container" style="padding-top: 40px; padding-bottom: 40px;">
             <p>&copy; 2026 IgorDev – Desenvolvido com foco em performance.</p>
             <p class="footer-legal">
                 <a href="./privacidade.html">Política de Privacidade</a>
@@ -596,9 +734,13 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="./assets/js/core.js"></script>
     <script src="./assets/js/visual-effects.js"></script>
     <script src="./assets/js/navigation.js"></script>
+    <script src="./assets/js/certificate-viewer.js"></script>
     <script src="./assets/js/script.js"></script>
 
     <!-- Camada de analytics, isolada do site. Os dois arquivos sao removiveis:
