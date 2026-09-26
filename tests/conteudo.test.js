@@ -1,4 +1,5 @@
 const fs = require('node:fs');
+const { existsSync } = require('node:fs');
 const path = require('node:path');
 const url = require('node:url');
 const { describe, it, before } = require('node:test');
@@ -139,25 +140,57 @@ describe('HTML gerado a partir do JSON', () => {
     });
 
     it('cada certificacao do JSON vira um card no HTML', () => {
-        const cards = html.match(/<div class="cert-card[^"]*"/g) || [];
+        const cards = html.match(/<figure class="cert-card[^"]*"/g) || [];
         assert.strictEqual(cards.length, dados.certifications.length,
             'JSON tem ' + dados.certifications.length + ' e o HTML tem ' + cards.length);
     });
 
-    it('nome, emissor, ano e id da credencial aparecem no HTML', () => {
+    it('o card da certificacao e so a imagem, sem texto repetido', () => {
+        /* Titulo, emissor e sigla ja estao impressos no certificado. Se o card
+         * volta a ter <h3> ou <p>, o mesmo texto aparece duas vezes na tela. */
+        const cards = html.split('<figure class="cert-card').slice(1);
+        assert.strictEqual(cards.length, dados.certifications.length);
+        cards.forEach(card => {
+            const corpo = card.split('</figure>')[0];
+            assert.ok(!/<h[1-6]/.test(corpo), 'card de certificacao com titulo visivel');
+            assert.ok(!/<p[\s>]/.test(corpo), 'card de certificacao com paragrafo visivel');
+            assert.strictEqual((corpo.match(/<img /g) || []).length, 1,
+                'card de certificacao sem exatamente uma imagem');
+        });
+    });
+
+    it('cada imagem de certificacao aponta para o arquivo do projeto', () => {
         dados.certifications.forEach(c => {
-            assert.ok(html.includes('>' + c.name.replace(/&/g, '&amp;') + '<'),
-                'nome ausente: ' + c.name);
-            if (c.issuer) {
-                assert.ok(html.includes(c.issuer), 'emissor ausente: ' + c.issuer);
-            }
-            if (c.year) {
-                assert.ok(html.includes(c.year), 'ano ausente: ' + c.name);
-            }
-            if (c.credential_id) {
-                assert.ok(html.includes('ID ' + c.credential_id),
-                    'id da credencial ausente: ' + c.name);
-            }
+            assert.ok(c.image, 'certificacao sem image: ' + c.id);
+            assert.ok(!/^([a-z]+:)?\/\//i.test(c.image) && !c.image.startsWith('/'),
+                c.id + ' com image fora do site: ' + c.image);
+            const existe = existsSync(path.join(ROOT, c.image));
+            assert.ok(existe, 'imagem inexistente: ' + c.image);
+        });
+    });
+
+    it('toda imagem tem alt, que e o texto que sobra do certificado', () => {
+        /* A imagem e o card inteiro, entao o alt nao e enfeite: e o unico texto
+         * que um leitor de tela anuncia e o que o Google le. */
+        const semAlt = dados.certifications.filter(c => !c.name);
+        assert.strictEqual(semAlt.length, 0,
+            'certificacao sem nome para montar o alt: ' + semAlt.map(c => c.id).join(', '));
+        const alts = html.match(/<img [^>]*class="cert-img"[^>]*>/g) || [];
+        assert.strictEqual(alts.length, dados.certifications.length,
+            'JSON tem ' + dados.certifications.length + ' e o HTML tem ' + alts.length);
+        alts.forEach(tag => {
+            const alt = /alt="([^"]*)"/.exec(tag);
+            assert.ok(alt, 'img de certificacao sem alt: ' + tag);
+            assert.ok(alt[1].trim().length > 0, 'alt vazio: ' + tag);
+        });
+    });
+
+    it('as 49 imagens nao sao carregadas de uma vez', () => {
+        /* Sem loading="lazy" o navegador abre as 49 conexoes assim que a pagina
+         * carrega, mesmo com a secao bem abaixo da dobra. */
+        const imgs = html.match(/<img [^>]*cert[^>]*>/g) || [];
+        imgs.forEach(tag => {
+            assert.ok(/loading="lazy"/.test(tag), 'imagem sem loading lazy: ' + tag);
         });
     });
 
@@ -211,7 +244,7 @@ describe('HTML gerado a partir do JSON', () => {
         const comAmp = {
             skills: [{ icon: 'i', title: 't', description: 'd' }],
             projects: [{ id: 'p', icon: 'i', title: 'T', description: 'd', links: [] }],
-            certifications: [{ id: 'bradesco', name: 'GenAI, Dados & Cyber' }]
+            certifications: [{ id: 'bradesco', name: 'GenAI, Dados & Cyber', image: 'assets/certs/b.webp' }]
         };
         const saida = gerarHtml(comAmp);
         assert.ok(saida.certifications.includes('GenAI, Dados &amp; Cyber'),
@@ -251,8 +284,8 @@ describe('HTML gerado a partir do JSON', () => {
             skills: [{ icon: 'i', title: 't', description: 'd' }],
             projects: [{ id: 'p', icon: 'i', title: 't', description: 'd', links: [] }],
             certifications: [
-                { id: 'aws', name: 'A' },
-                { id: 'aws', name: 'B' }
+                { id: 'aws', name: 'A', image: 'assets/certs/a.webp' },
+                { id: 'aws', name: 'B', image: 'assets/certs/b.webp' }
             ]
         }), /repetido/i);
     });
@@ -261,10 +294,43 @@ describe('HTML gerado a partir do JSON', () => {
         const saida = gerarHtml({
             skills: [{ icon: 'i', title: 't', description: 'd' }],
             projects: [{ id: 'p', icon: 'i', title: 't', description: 'd', links: [] }],
-            certifications: [{ name: 'Sem link' }]
+            certifications: [{ id: 's', name: 'Sem link', image: 'assets/certs/s.webp' }]
         });
         assert.ok(!/cert-link/.test(saida.certifications),
             'gerou link para uma certificacao que nao tem url');
-        assert.ok(saida.certifications.includes('Sem link'));
+        assert.ok(!/cert-overlay/.test(saida.certifications),
+            'gerou overlay de link para uma certificacao que nao tem url');
+        /* O nome nao aparece mais como texto, mas precisa continuar no alt. */
+        assert.ok(saida.certifications.includes('alt="Certificado: Sem link"'),
+            'perdeu o alt: ' + saida.certifications);
+    });
+
+    it('rejeita certificacao sem imagem, que viraria card vazio', () => {
+        /* Sem imagem o card sai com altura zero e a secao fica com um buraco.
+         * Um src quebrado tambem nao quebraria o build: a imagem sobroken so
+         * apareceria em producao. */
+        const base = {
+            skills: [{ icon: 'i', title: 't', description: 'd' }],
+            projects: [{ id: 'p', icon: 'i', title: 't', description: 'd', links: [] }]
+        };
+        assert.throws(() => gerarHtml({
+            ...base, certifications: [{ id: 'a', name: 'Sem imagem' }]
+        }), /image/i);
+        assert.throws(() => gerarHtml({
+            ...base, certifications: [{ id: 'a', image: 'assets/certs/a.webp' }]
+        }), /name|alt/i);
+    });
+
+    it('rejeita imagem de certificacao que venha de fora do site', () => {
+        const base = {
+            skills: [{ icon: 'i', title: 't', description: 'd' }],
+            projects: [{ id: 'p', icon: 'i', title: 't', description: 'd', links: [] }]
+        };
+        ['https://exemplo.test/c.webp', '//exemplo.test/c.webp', '/assets/certs/c.webp']
+            .forEach(image => {
+                assert.throws(() => gerarHtml({
+                    ...base, certifications: [{ id: 'a', name: 'A', image }]
+                }), /image fora do site/i, 'aceitou image externo: ' + image);
+            });
     });
 });

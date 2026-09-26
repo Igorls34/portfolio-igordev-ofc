@@ -2,6 +2,7 @@
   "certifications": [
     {
       "id": "0h2ll5ge",
+      "image": "assets/certs/0h2ll5ge.webp",
       "name": "Fundamentos de Dados: Excel, SQL e Business Intelligence",
       "issuer": "DIO",
       "year": "2026",
@@ -9,6 +10,7 @@
     },
     {
       "id": "0qildvep",
+      "image": "assets/certs/0qildvep.webp",
       "name": "Tópicos em Engenharia Social ?",
       "issuer": "DIO",
       "year": "2026",
@@ -16,6 +18,7 @@
     },
     {
       "id": "1wk6wmo4",
+      "image": "assets/certs/1wk6wmo4.webp",
       "name": "Tendências em IA e Cibersegurança Aplicadas ao ? - Projeto Final",
       "issuer": "DIO",
       "year": "2026",
@@ -23,6 +26,7 @@
     },
     {
       "id": "2zvsrxao",
+      "image": "assets/certs/2zvsrxao.webp",
       "name": "Manipulando Strings com Python",
       "issuer": "DIO",
       "year": "2026",
@@ -30,6 +34,7 @@
     },
     {
       "id": "5feenhcf",
+      "image": "assets/certs/5feenhcf.webp",
       "name": "Bibliotecas Essenciais de Python para Análise de Dados",
       "issuer": "DIO",
       "year": "2026",
@@ -37,6 +42,7 @@
     },
     {
       "id": "89v7s6yy",
+      "image": "assets/certs/89v7s6yy.webp",
       "name": "Introdução ao Python: Primeiros Passos e Fundamentos",
       "issuer": "DIO",
       "year": "2026",
@@ -44,6 +50,7 @@
     },
     {
       "id": "8xcqxuap",
+      "image": "assets/certs/8xcqxuap.webp",
       "name": "Trabalhando com Microsoft Copilot",
       "issuer": "DIO",
       "year": "2026",
@@ -51,6 +58,7 @@
     },
     {
       "id": "am7mwb76",
+      "image": "assets/certs/am7mwb76.webp",
       "name": "Ambiente de Desenvolvimento e Primeiros Passos com Python",
       "issuer": "DIO",
       "year": "2026",
@@ -58,6 +66,7 @@
     },
     {
       "id": "arwbxmxs",
+      "image": "assets/certs/arwbxmxs.webp",
       "name": "Automação de Processos e Análises com Python",
       "issuer": "DIO",
       "year": "2026",
@@ -65,6 +74,7 @@
     },
     {
       "id": "ayccw8nf",
+      "image": "assets/certs/ayccw8nf.webp",
       "name": "Desafios de Projetos: Crie um Portfólio Vencedor",
       "issuer": "DIO",
       "year": "2026",
@@ -72,6 +82,7 @@
     },
     {
       "id": "bxyr8dic",
+      "image": "assets/certs/bxyr8dic.webp",
       "name": "Boas Práticas, Testes e Otimização de Código em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -79,6 +90,7 @@
     },
     {
       "id": "ccvsgnsb",
+      "image": "assets/certs/ccvsgnsb.webp",
       "name": "Trabalhando com Arquivos e Dados Externos em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -86,6 +98,7 @@
     },
     {
       "id": "cjc9vneo",
+      "image": "assets/certs/cjc9vneo.webp",
       "name": "Introdução ao Excel 365",
       "issuer": "DIO",
       "year": "2026",
@@ -93,6 +106,7 @@
     },
     {
       "id": "dbb8i7k8",
+      "image": "assets/certs/dbb8i7k8.webp",
       "name": "Detecção de Anomalias em Transações em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -100,6 +114,7 @@
     },
     {
       "id": "deqijhn0",
+      "image": "assets/certs/deqijhn0.webp",
       "name": "Trabalhando com Listas em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -107,6 +122,7 @@
     },
     {
       "id": "dqxszkye",
+      "image": "assets/certs/dqxszkye.webp",
       "name": "Conhecendo a Linguagem de Programacao em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -114,6 +130,7 @@
     },
     {
       "id": "faqb4v4k",
+      "image": "assets/certs/faqb4v4k.webp",
       "name": "Análise de Dados com Python: Da Preparação a Aplicação com Segurança",
       "issuer": "DIO",
       "year": "2026",
@@ -121,6 +138,7 @@
     },
     {
       "id": "fhm4tybf",
+      "image": "assets/certs/fhm4tybf.webp",
       "name": "Estruturas em Python: Dados, Coleções e Funções",
       "issuer": "DIO",
       "year": "2026",
@@ -128,6 +146,7 @@
     },
     {
       "id": "fn9dsjd6",
+      "image": "assets/certs/fn9dsjd6.webp",
       "name": "Técnicas de Engenharia de Prompt",
       "issuer": "DIO",
       "year": "2026",
@@ -135,6 +154,7 @@
     },
     {
       "id": "frr8dm1i",
+      "image": "assets/certs/frr8dm1i.webp",
       "name": "Construa seu Assistente Virtual com Inteligência Artificial",
       "issuer": "DIO",
       "year": "2026",
@@ -142,6 +162,7 @@
     },
     {
       "id": "g36ek2tk",
+      "image": "assets/certs/g36ek2tk.webp",
       "name": "Boas-vindas ao Bootcamp Bradesco - GenAI, Dados & Cyber",
       "issuer": "Bradesco / DIO",
       "year": "2026",
@@ -149,6 +170,7 @@
     },
     {
       "id": "gnral2xm",
+      "image": "assets/certs/gnral2xm.webp",
       "name": "Conceitos e Práticas de Sistemas Operacionais e Máquinas Virtuais",
       "issuer": "DIO",
       "year": "2026",
@@ -156,6 +178,7 @@
     },
     {
       "id": "h8qyuxkl",
+      "image": "assets/certs/h8qyuxkl.webp",
       "name": "Conhecendo Tuplas em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -163,6 +186,7 @@
     },
     {
       "id": "hhj5cmjn",
+      "image": "assets/certs/hhj5cmjn.webp",
       "name": "Processamento e Limpeza de Dados em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -170,6 +194,7 @@
     },
     {
       "id": "iegbio5i",
+      "image": "assets/certs/iegbio5i.webp",
       "name": "IA Generativa: Fundamentos, Prompting e Aplicações",
       "issuer": "DIO",
       "year": "2026",
@@ -177,6 +202,7 @@
     },
     {
       "id": "k4v5es2x",
+      "image": "assets/certs/k4v5es2x.webp",
       "name": "IA Generativa: Fundamentos, Prompting e Aplicações",
       "issuer": "DIO",
       "year": "2026",
@@ -184,6 +210,7 @@
     },
     {
       "id": "lyh09aoh",
+      "image": "assets/certs/lyh09aoh.webp",
       "name": "Extraindo Insights do Feedback de Clientes Bancários",
       "issuer": "DIO",
       "year": "2026",
@@ -191,6 +218,7 @@
     },
     {
       "id": "m5n4mzgn",
+      "image": "assets/certs/m5n4mzgn.webp",
       "name": "Dominando Funções Python",
       "issuer": "DIO",
       "year": "2026",
@@ -198,6 +226,7 @@
     },
     {
       "id": "nbdmyahk",
+      "image": "assets/certs/nbdmyahk.webp",
       "name": "Desafios de Código: Aperfeiçoe Sua Lógica e Pensamento Computacional",
       "issuer": "DIO",
       "year": "2026",
@@ -205,6 +234,7 @@
     },
     {
       "id": "ngrjkeqy",
+      "image": "assets/certs/ngrjkeqy.webp",
       "name": "Projeto Final: IA e Cibersegurança para Assistentes Virtuais no Mercado Financeiro",
       "issuer": "DIO",
       "year": "2026",
@@ -212,6 +242,7 @@
     },
     {
       "id": "qdwgonnn",
+      "image": "assets/certs/qdwgonnn.webp",
       "name": "Cibersegurança Essencial: Bases para Seus Projetos com Dados e IA",
       "issuer": "DIO",
       "year": "2026",
@@ -219,6 +250,7 @@
     },
     {
       "id": "qkzw7xst",
+      "image": "assets/certs/qkzw7xst.webp",
       "name": "Tipos de Operadores com Python",
       "issuer": "DIO",
       "year": "2026",
@@ -226,6 +258,7 @@
     },
     {
       "id": "rqurpjaj",
+      "image": "assets/certs/rqurpjaj.webp",
       "name": "Criando um Processo de ETL com Excel e Power Query",
       "issuer": "DIO",
       "year": "2026",
@@ -233,6 +266,7 @@
     },
     {
       "id": "rwr9jrkt",
+      "image": "assets/certs/rwr9jrkt.webp",
       "name": "Fundamentos de Modelos de Linguagem de Grande Escala",
       "issuer": "DIO",
       "year": "2026",
@@ -240,6 +274,7 @@
     },
     {
       "id": "shbleixq",
+      "image": "assets/certs/shbleixq.webp",
       "name": "Introdução a Coleta e Análise de Segurança Cibernética",
       "issuer": "DIO",
       "year": "2026",
@@ -247,6 +282,7 @@
     },
     {
       "id": "suff4tiw",
+      "image": "assets/certs/suff4tiw.webp",
       "name": "Tratamento de Exceções e Depuração de Código em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -254,6 +290,7 @@
     },
     {
       "id": "tqsojb5v",
+      "image": "assets/certs/tqsojb5v.webp",
       "name": "Introdução a Banco de Dados Relacionais",
       "issuer": "DIO",
       "year": "2026",
@@ -261,6 +298,7 @@
     },
     {
       "id": "uq2frq6b",
+      "image": "assets/certs/uq2frq6b.webp",
       "name": "Bootcamp Bradesco - GenAI, Dados & Cyber",
       "issuer": "Bradesco / DIO",
       "year": "2026",
@@ -268,6 +306,7 @@
     },
     {
       "id": "v7nhaxze",
+      "image": "assets/certs/v7nhaxze.webp",
       "name": "Introdução ao DevSecOps",
       "issuer": "DIO",
       "year": "2026",
@@ -275,6 +314,7 @@
     },
     {
       "id": "vvymdvr9",
+      "image": "assets/certs/vvymdvr9.webp",
       "name": "Estruturas Condicionais e de Repetição em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -282,6 +322,7 @@
     },
     {
       "id": "vzwjryhw",
+      "image": "assets/certs/vzwjryhw.webp",
       "name": "Utilizando Microsoft Copilot para escrever consultas SQL",
       "issuer": "DIO",
       "year": "2026",
@@ -289,6 +330,7 @@
     },
     {
       "id": "w5lfvyo8",
+      "image": "assets/certs/w5lfvyo8.webp",
       "name": "Aprendendo a Utilizar Dicionários em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -296,6 +338,7 @@
     },
     {
       "id": "wxx4nrjl",
+      "image": "assets/certs/wxx4nrjl.webp",
       "name": "Extraindo Insights do Feedback de Clientes Bancários",
       "issuer": "DIO",
       "year": "2026",
@@ -303,6 +346,7 @@
     },
     {
       "id": "x2a7s2xs",
+      "image": "assets/certs/x2a7s2xs.webp",
       "name": "Explorando Conjuntos em Python",
       "issuer": "DIO",
       "year": "2026",
@@ -310,6 +354,7 @@
     },
     {
       "id": "ylmqikde",
+      "image": "assets/certs/ylmqikde.webp",
       "name": "Visualização Avançada de Dados com Python",
       "issuer": "DIO",
       "year": "2026",
@@ -317,6 +362,7 @@
     },
     {
       "id": "ymvfvaic",
+      "image": "assets/certs/ymvfvaic.webp",
       "name": "Fundamentos da IA Moderna: Machine Learning, LLMs, IA Generativa e Agentes",
       "issuer": "DIO",
       "year": "2026",
@@ -324,6 +370,7 @@
     },
     {
       "id": "z21r5z2g",
+      "image": "assets/certs/z21r5z2g.webp",
       "name": "Treinando uma IA de Aprendizagem: Explore o Poder do NotebookLM ?",
       "issuer": "DIO",
       "year": "2026",
@@ -331,6 +378,7 @@
     },
     {
       "id": "zeoyxabm",
+      "image": "assets/certs/zeoyxabm.webp",
       "name": "Princípios da Cibersegurança",
       "issuer": "DIO",
       "year": "2026",
@@ -338,6 +386,7 @@
     },
     {
       "id": "zjw06bgt",
+      "image": "assets/certs/zjw06bgt.webp",
       "name": "Introdução a Engenharia de Prompts",
       "issuer": "DIO",
       "year": "2026",

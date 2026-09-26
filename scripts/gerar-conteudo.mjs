@@ -50,33 +50,35 @@ function renderProjectLink(link) {
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`;
 }
 
-/* Certificacao. O link de credencial e opcional de proposito: nem toda
- * certificado tem URL publica, e um link quebrado no meio de uma home de
- * venda passa mais profissionalismo do que a informacao que promete. */
+/* Certificacao. O card e so a imagem do certificado: o titulo, o emissor e a
+ * sigla ja estao impressos no proprio certificado, e repetir os tres ao lado
+ * da imagem so duplicava o que a pessoa ja le na imagem.
+ *
+ * O texto continua no portfolio.json e volta no atributo alt. Nao e enfeite:
+ * e o que um leitor de tela anuncia e o que o Google le. Um <img> sem alt
+ * some da busca e fica mudo para quem nao ve.
+ *
+ * O link de credencial e opcional de proposito: nem toda certificado tem URL
+ * publica, e um link quebrado no meio de uma home de venda passa mais
+ * profissionalismo do que a informacao que promete. */
 function renderCert(cert, indice) {
+    const alt = cert.issuer
+        ? `Certificado de ${cert.issuer}: ${cert.name}`
+        : `Certificado: ${cert.name}`;
+
     const linhas = [
-        `                    <div class="cert-card ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
-        `                        <div class="cert-icon"><i class="${escapeHtml(cert.icon || 'fa-solid fa-certificate')}"></i></div>`,
-        '                        <div class="cert-body">',
-        `                            <h3>${escapeHtml(cert.name)}</h3>`
+        `                    <figure class="cert-card ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
+        `                        <img class="cert-img" src="${escapeHtml(cert.image)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async">`
     ];
 
-    const origem = [cert.issuer, cert.year].filter(Boolean).join(' • ');
-    if (origem) {
-        linhas.push(`                            <p class="cert-issuer">${escapeHtml(origem)}</p>`);
-    }
-    if (cert.credential_id) {
-        linhas.push(`                            <p class="cert-id">ID ${escapeHtml(cert.credential_id)}</p>`);
-    }
-
-    linhas.push('                        </div>');
-
     if (cert.url) {
-        linhas.push(`                        <a href="${escapeHtml(cert.url)}" class="cert-link" data-track="cert_link_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification_link" target="_blank" rel="noopener" aria-label="Ver credencial de ${escapeHtml(cert.name)}">
+        linhas.push('                        <figcaption class="cert-overlay">');
+        linhas.push(`                            <a href="${escapeHtml(cert.url)}" class="cert-link" data-track="cert_link_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification_link" target="_blank" rel="noopener" aria-label="Ver credencial de ${escapeHtml(cert.name)}">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>`);
+        linhas.push('                        </figcaption>');
     }
 
-    linhas.push('                    </div>');
+    linhas.push('                    </figure>');
     return linhas.join('\n');
 }
 
@@ -128,6 +130,27 @@ function conferirUnicos(itens, rotulo) {
     }
 }
 
+/* A imagem e o card inteiro agora. Sem ela o card sai vazio, e um src
+ * quebrado nao da erro nenhum no build -- a imagem sobroken fica em
+ * producao ate alguem clicar nela.
+ *
+ * O caminho tem que ser relativo e interno. Um "https://..." aqui colocaria
+ * a imagem de fora no site, o que e o oposto do que a secao promete. */
+function conferirCertificacoes(certificacoes) {
+    certificacoes.forEach(cert => {
+        const rotulo = cert.id || cert.name || '(sem id)';
+        if (!cert.name) {
+            throw new Error(`certificacao "${rotulo}" sem "name": o alt da imagem depende dele`);
+        }
+        if (!cert.image) {
+            throw new Error(`certificacao "${rotulo}" sem "image": o card e so a imagem`);
+        }
+        if (/^([a-z]+:)?\/\//i.test(cert.image) || cert.image.startsWith('/')) {
+            throw new Error(`certificacao "${rotulo}" com image fora do site: ${cert.image}`);
+        }
+    });
+}
+
 export function gerarHtml(dados) {
     const skills = Array.isArray(dados.skills) ? dados.skills : [];
     const projetos = Array.isArray(dados.projects) ? dados.projects : [];
@@ -141,6 +164,7 @@ export function gerarHtml(dados) {
 
     conferirUnicos(projetos, 'projetos');
     conferirUnicos(certificacoes, 'certificacoes');
+    conferirCertificacoes(certificacoes);
 
     return {
         skills: skills.map(renderSkill).join('\n'),
