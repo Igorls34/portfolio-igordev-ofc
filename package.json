@@ -9,7 +9,7 @@
     "lint:css": "npx stylelint \"assets/css/**/*.css\"",
     "lint:js": "npx eslint \"assets/js/**/*.js\"",
     "lint": "npm run lint:css && npm run lint:js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test \"tests/**/*.test.js\""
   },
   "keywords": ["portfolio", "freelancer", "web-development"],
   "author": "Igor Laurindo",

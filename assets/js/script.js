@@ -2,13 +2,14 @@ const BOT_WHATSAPP = "https://api.thessarasemijoias.com.br/wpp";
 const BOT_EMAIL = "https://api.thessarasemijoias.com.br/email";
 const SITE_URL = "https://igordev.netlify.app";
 
-/* Normaliza um telefone digitado para o formato aceito pelo WhatsApp.
-   Retorna null quando o numero nao tem comprimento viavel. */
-function toWhatsAppNumber(phone) {
-    const digits = String(phone).replace(/\D/g, '');
-    if (digits.length < 10 || digits.length > 13) return null;
-    return digits.length <= 11 ? '55' + digits : digits;
-}
+const {
+    escapeHtml,
+    toWhatsAppNumber,
+    validateContact,
+    summarizeDeliveries,
+    parseHighlightTitle,
+    buildRevealWords
+} = PortfolioCore;
 
 (function () {
     'use strict';
@@ -255,151 +256,43 @@ function toWhatsAppNumber(phone) {
         });
     }
 
-    /* ========== TEXT WORD-BY-WORD REVEAL ========== */
-    function initTextReveal() {
-        const titles = document.querySelectorAll('.text-reveal');
+    /* ========== REVEAL DE TITULOS (palavra a palavra) ==========
+     * Substitui as tres implementacoes duplicadas que existiam antes
+     * (initTextReveal, initSectionTitleReveal, initHeroTitle). Cada uma
+     * reimplementava o parse do HTML do titulo a mao, e a versao do
+     * .text-reveal usava marcadores de asterisco no texto em vez de tag.
+     * Agora o parse mora em core.js e e testado de verdade. */
+
+    function initRevealTitles() {
+        const titles = document.querySelectorAll('.hero-title, .section-title, .text-reveal');
+        if (!titles.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.3 });
 
         titles.forEach(title => {
-            const text = title.textContent.trim();
+            const parts = parseHighlightTitle(title.innerHTML);
+            const words = buildRevealWords(parts, 0.07);
+
             title.textContent = '';
-            const words = text.split(' ');
-
-            words.forEach((word, i) => {
-                const wordSpan = document.createElement('span');
-                wordSpan.className = 'word';
-                if (word.startsWith('*') && word.endsWith('*')) {
-                    const cleanWord = word.slice(1, -1);
-                    wordSpan.className = 'word highlight';
-                    wordSpan.innerHTML = `<span class="word-inner" style="transition-delay:${i * 0.07}s">${cleanWord}&nbsp;</span>`;
-                } else {
-                    wordSpan.innerHTML = `<span class="word-inner" style="transition-delay:${i * 0.07}s">${word}&nbsp;</span>`;
-                }
-                title.appendChild(wordSpan);
+            words.forEach(w => {
+                const word = document.createElement('span');
+                word.className = w.highlight ? 'word highlight' : 'word';
+                const inner = document.createElement('span');
+                inner.className = 'word-inner';
+                inner.style.setProperty('--word-delay', w.delay + 's');
+                inner.textContent = w.word;
+                word.appendChild(inner);
+                title.appendChild(word);
             });
+
+            observer.observe(title);
         });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                }
-            });
-        }, { threshold: 0.3 });
-
-        document.querySelectorAll('.text-reveal').forEach(el => observer.observe(el));
-    }
-
-    /* ========== SECTION TITLES - WORD REVEAL ========== */
-    function initSectionTitleReveal() {
-        const titles = document.querySelectorAll('.section-title');
-
-        titles.forEach(title => {
-            const html = title.innerHTML;
-            const hasSpan = html.includes('<span>');
-
-            if (hasSpan) {
-                const match = html.match(/^(.*)<span>(.*)<\/span>(.*)$/);
-                if (match) {
-                    const before = match[1].trim();
-                    const highlighted = match[2].trim();
-                    const after = match[3].trim();
-
-                    title.textContent = '';
-                    const beforeWords = before.split(' ');
-                    beforeWords.forEach((w, i) => {
-                        const span = document.createElement('span');
-                        span.className = 'word';
-                        span.innerHTML = `<span class="word-inner" style="transition-delay:${i * 0.06}s">${w}&nbsp;</span>`;
-                        title.appendChild(span);
-                    });
-
-                    if (highlighted) {
-                        const hWords = highlighted.split(' ');
-                        hWords.forEach((w, i) => {
-                            const span = document.createElement('span');
-                            span.className = 'word highlight';
-                            span.innerHTML = `<span class="word-inner" style="transition-delay:${(beforeWords.length + i) * 0.06}s">${w}&nbsp;</span>`;
-                            title.appendChild(span);
-                        });
-                    }
-
-                    const afterWords = after.split(' ').filter(w => w.length > 0);
-                    afterWords.forEach((w, i) => {
-                        const span = document.createElement('span');
-                        span.className = 'word';
-                        span.innerHTML = `<span class="word-inner" style="transition-delay:${(beforeWords.length + (highlighted ? highlighted.split(' ').length : 0) + i) * 0.06}s">${w}&nbsp;</span>`;
-                        title.appendChild(span);
-                    });
-                }
-            } else {
-                const words = html.trim().split(' ');
-                title.textContent = '';
-                words.forEach((w, i) => {
-                    const span = document.createElement('span');
-                    span.className = 'word';
-                    span.innerHTML = `<span class="word-inner" style="transition-delay:${i * 0.06}s">${w}&nbsp;</span>`;
-                    title.appendChild(span);
-                });
-            }
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                }
-            });
-        }, { threshold: 0.3 });
-
-        document.querySelectorAll('.section-title').forEach(el => observer.observe(el));
-    }
-
-    /* ========== HERO TITLE INITIAL ANIMATION ========== */
-    function initHeroTitle() {
-        const heroTitle = document.querySelector('.hero-title');
-        if (!heroTitle) return;
-
-        const html = heroTitle.innerHTML;
-        const match = html.match(/^(.*)<span>(.*)<\/span>(.*)$/);
-
-        if (match) {
-            const before = match[1].trim();
-            const highlighted = match[2].trim();
-            const after = match[3].trim();
-
-            heroTitle.textContent = '';
-
-            const beforeWords = before.split(' ');
-            beforeWords.forEach((w, i) => {
-                const span = document.createElement('span');
-                span.className = 'word';
-                span.innerHTML = `<span class="word-inner" style="--delay:${i * 0.12}s">${w}&nbsp;</span>`;
-                heroTitle.appendChild(span);
-            });
-
-            if (highlighted) {
-                const hWords = highlighted.split(' ');
-                hWords.forEach((w, i) => {
-                    const span = document.createElement('span');
-                    span.className = 'word highlight';
-                    span.innerHTML = `<span class="word-inner" style="--delay:${(beforeWords.length + i) * 0.12}s">${w}&nbsp;</span>`;
-                    heroTitle.appendChild(span);
-                });
-            }
-
-            const afterWords = after.split(' ').filter(w => w.length > 0);
-            afterWords.forEach((w, i) => {
-                const span = document.createElement('span');
-                span.className = 'word';
-                span.innerHTML = `<span class="word-inner" style="--delay:${(beforeWords.length + (highlighted ? highlighted.split(' ').length : 0) + i) * 0.12}s">${w}&nbsp;</span>`;
-                heroTitle.appendChild(span);
-            });
-        }
-
-        // Trigger animation after short delay
-        setTimeout(() => {
-            heroTitle.classList.add('revealed');
-        }, 200);
     }
 
     /* ========== 3D TILT ON CARDS ========== */
@@ -580,6 +473,25 @@ function toWhatsAppNumber(phone) {
             const phone = document.getElementById('phone').value.trim();
             const message = document.getElementById('message').value.trim();
 
+            // O HTML exige os campos, mas um numero de celular invalido
+            // passa pelo required do navegador e so quebrava na hora de
+            // montar o envio. Valida aqui para poder avisar antes.
+            const check = validateContact({ name, email, phone, message });
+            if (!check.valid) {
+                button.textContent = 'Enviar Proposta';
+                button.disabled = false;
+                messageDiv.style.display = 'block';
+                const labels = {
+                    email: 'E-mail invalido.',
+                    emailInvalid: 'E-mail invalido.',
+                    phone: 'Informe seu WhatsApp.',
+                    phoneInvalid: 'Numero de WhatsApp invalido. Use DDD + numero.'
+                };
+                const first = check.errors.find(e => labels[e]);
+                setFormMessage(messageDiv, 'error', first ? labels[first] : 'Confira os campos.');
+                return;
+            }
+
             const whatsappNumber = toWhatsAppNumber(phone);
 
             const whatsappMsg = `Olá *${name}*! Tudo bem?\n\nRecebi sua mensagem aqui no meu portfolio e ja te retorno em breve.\n\n*Mensagem enviada pelo site:*\n${message}\n\n— Igor Laurindo | IgorDev`;
@@ -635,36 +547,13 @@ function toWhatsAppNumber(phone) {
             button.disabled = false;
             messageDiv.style.display = 'block';
 
-            const succeeded = results.filter(r => r.ok);
-            const failed = results.filter(r => !r.ok);
+            const summary = summarizeDeliveries(results);
+            setFormMessage(messageDiv, summary.tone, summary.text);
 
-            if (succeeded.length === 0) {
-                setFormMessage(messageDiv, 'error',
-                    'Nao consegui enviar sua mensagem agora. Por favor, use o WhatsApp como alternativa.');
-                return;
+            if (summary.success) {
+                contactForm.reset();
             }
-
-            const sent = succeeded.map(r => r.label).join(' e ');
-            let tone = 'ok';
-            let text = 'Mensagem enviada! ' + sent + ' enviado com sucesso. Em breve entro em contato.';
-
-            if (failed.length > 0) {
-                tone = 'warn';
-                const notSent = failed.map(r => r.label).join(' e ');
-                text = 'Mensagem enviada via ' + sent
-                    + '. Nao consegui entregar via ' + notSent
-                    + ', mas ja recebi seu contato e respondo em breve.';
-            }
-
-            setFormMessage(messageDiv, tone, text);
-            contactForm.reset();
         });
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
     }
 
     /* ========== INIT ALL ========== */
@@ -673,9 +562,7 @@ function toWhatsAppNumber(phone) {
         initScrollProgress();
         initHeaderScroll();
         initParticles();
-        initHeroTitle();
-        initSectionTitleReveal();
-        initTextReveal();
+        initRevealTitles();
         initScrollReveal();
         initTiltCards();
         initParallax();
