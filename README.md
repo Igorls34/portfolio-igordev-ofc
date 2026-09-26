@@ -59,13 +59,13 @@ servidas por proxy HTTPS atrás do Nginx:
 
 | Canal | URL | Rota |
 | --- | --- | --- |
-| WhatsApp | `https://api.thessarasemijoias.com.br/wpp` | `/api/enviar-mensagem` |
-| E-mail | `https://api.thessarasemijoias.com.br/email` | `/api/enviar-email` |
+| WhatsApp | `https://api.exemplo.com/wpp` | `/api/enviar-mensagem` |
+| E-mail | `https://api.exemplo.com/email` | `/api/enviar-email` |
 
-As URLs ficam no topo de `assets/js/script.js`, e não em variáveis de ambiente:
-o projeto não tem build nem injeção de env na Netlify, então um `.env` não faria
-nada. Os testes de `tests/core.test.js` travam esses hosts para avisar se um
-deles mudar sem o resto do projeto acompanhar.
+Esses endereços são placeholders e precisam ser substituídos pelos endpoints
+reais antes de publicar. As URLs ficam no topo de `assets/js/script.js`; o
+projeto não injeta variáveis de ambiente na Netlify. Os testes de
+`tests/core.test.js` verificam o formato e o host configurado.
 
 Cada canal é independente: se o WhatsApp cair e o e-mail responder, o visitante
 vê um aviso honesto em vez de um "enviado" falso. As duas chamadas têm timeout

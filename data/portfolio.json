@@ -468,6 +468,69 @@
           "track": "repo_backup_extensao"
         }
       ]
+    },
+    {
+      "id": "ecommerce_platform",
+      "icon": "fa-solid fa-cart-shopping",
+      "title": "E-commerce White Label",
+      "description": "Plataforma completa de e-commerce com loja online, painel administrativo e API para catálogo, pedidos e pagamentos.",
+      "techs": [
+        "React",
+        "Vite",
+        "TypeScript",
+        "Express",
+        "Prisma",
+        "MySQL",
+        "PIX"
+      ],
+      "links": [
+        {
+          "label": "Ver Projeto",
+          "href": "https://github.com/Igorls34/ecommerce-platform",
+          "track": "repo_ecommerce_platform"
+        }
+      ]
+    },
+    {
+      "id": "churn_prediction",
+      "icon": "fa-solid fa-chart-line",
+      "title": "Previsão de Churn",
+      "description": "Modelo de machine learning identifica clientes de telecom com risco de cancelamento e gera ações de retenção para marketing.",
+      "techs": [
+        "Python",
+        "Pandas",
+        "Scikit-learn",
+        "XGBoost",
+        "FastAPI",
+        "OpenPyXL"
+      ],
+      "links": [
+        {
+          "label": "Ver Projeto",
+          "href": "https://github.com/Igorls34/churn-prediction",
+          "track": "repo_churn_prediction"
+        }
+      ]
+    },
+    {
+      "id": "whatsapp_ai_agent",
+      "icon": "fa-brands fa-whatsapp",
+      "title": "WhatsApp AI Agent",
+      "description": "Assistente virtual com IA local que atende clientes, agenda reuniões e mantém memória entre conversas, com painel admin e chat web.",
+      "techs": [
+        "Node.js",
+        "JavaScript",
+        "Baileys",
+        "SQLite",
+        "IA local"
+      ],
+      "links": [
+        {
+          "label": "Ver Projeto",
+          "href": "https://github.com/Igorls34/whatsapp-ai-agent",
+          "track": "repo_whatsapp_ai_agent"
+        }
+      ]
     }
   ]
 }

@@ -7,6 +7,7 @@ const { JSDOM } = require('jsdom');
 
 const ROOT = path.join(__dirname, '..');
 const INDEX = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+const PORTFOLIO = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'portfolio.json'), 'utf8'));
 const CORE_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'core.js'), 'utf8');
 const VISUAL_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'visual-effects.js'), 'utf8');
 const NAV_SRC = fs.readFileSync(path.join(ROOT, 'assets', 'js', 'navigation.js'), 'utf8');
@@ -558,11 +559,10 @@ describe('cliques', () => {
         t.fechar();
     });
 
-    it('registra os tres cards de projeto', () => {
+    it('registra todos os cards definidos no portfolio', () => {
         const cards = [...INDEX.matchAll(/data-track="(card_[a-z_]+)"/g)].map(m => m[1]);
-        assert.deepStrictEqual(cards.sort(),
-            ['card_backup_extensao', 'card_rapido_seguro', 'card_waha_calendar'],
-            'os cards de projeto mudaram; ajuste o teste e o painel');
+        const esperados = PORTFOLIO.projects.map(project => 'card_' + project.id);
+        assert.deepStrictEqual(cards.sort(), esperados.sort());
     });
 
     it('registra um link externo pelo host, sem query', () => {

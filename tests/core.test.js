@@ -270,10 +270,9 @@ describe('buildRevealWords', () => {
 });
 
 describe('configuracao dos bots', () => {
-    // Estas URLs sao o unico ponto de falha do formulario. Se mudarem de
-    // dominio, o teste avisa para o README e a .env.example acompanharem.
-    const WHATSAPP = 'https://api.thessarasemijoias.com.br/wpp';
-    const EMAIL = 'https://api.thessarasemijoias.com.br/email';
+    // Estes placeholders precisam ser trocados pelos endpoints reais antes do deploy.
+    const WHATSAPP = 'https://api.exemplo.com/wpp';
+    const EMAIL = 'https://api.exemplo.com/email';
 
     it('usa HTTPS, senao o navegador bloqueia por mixed content', () => {
         [WHATSAPP, EMAIL].forEach(url => {
@@ -281,9 +280,9 @@ describe('configuracao dos bots', () => {
         });
     });
 
-    it('mantem os hosts que estao em producao', () => {
+    it('mantem o host placeholder configurado', () => {
         [WHATSAPP, EMAIL].forEach(url => {
-            assert.ok(url.includes('api.thessarasemijoias.com.br'), url + ' mudou de host');
+            assert.ok(url.includes('api.exemplo.com'), url + ' mudou de host');
         });
     });
 
@@ -291,7 +290,7 @@ describe('configuracao dos bots', () => {
         // postToBot faz baseUrl + path, entao a base nao pode terminar em '/'
         // nem o path comecar com '/' ao mesmo tempo.
         const joined = WHATSAPP + '/api/enviar-mensagem';
-        assert.strictEqual(joined, 'https://api.thessarasemijoias.com.br/wpp/api/enviar-mensagem');
+        assert.strictEqual(joined, 'https://api.exemplo.com/wpp/api/enviar-mensagem');
         assert.ok(!joined.includes('.br//'));
     });
 });
