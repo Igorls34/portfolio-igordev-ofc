@@ -50,23 +50,27 @@ npm install
 npm run check
 ```
 
-`npm run check` roda o lint e os 53 testes. Vale rodar sempre: a branch de
+`npm run check` roda o lint e a suíte de testes. Vale rodar sempre: a branch de
 correções que consolidou o formulário foi montada com essa verificação.
 
 ---
 
 ## Deploy manual (quando o Actions falhar)
 
+O que vai para o ar é o `dist`, nunca a raiz do repositório. Gere o `dist`
+antes, senão o deploy sobe o build anterior:
+
 ```bash
 npm install -g netlify-cli
-netlify deploy --prod --dir .
+npm run build
+netlify deploy --prod --dir dist
 ```
 
 ---
 
 ## O que a Netlify serve
 
-- `netlify.toml` publica a raiz do repositório
+- `netlify.toml` publica o `dist/`, que o CI monta a cada push
 - `404.html` é a página de erro para URL inexistente
 - `assets/img/*` fica em cache por 7 dias
 - `assets/css/*`, `assets/js/*` e `index.html` revalidam sempre, porque não
