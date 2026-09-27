@@ -1,5 +1,7 @@
 node_modules/
 dist/
+.venv/
+.netlify/
 .env
 .DS_Store
 Thumbs.db
