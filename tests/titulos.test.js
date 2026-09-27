@@ -12,7 +12,7 @@ const html = fs.readFileSync(INDEX, 'utf8');
  * tem hoje. Reproduzidos a mao, mas conferidos contra o arquivo pelos testes
  * do fim deste bloco. */
 const TITULOS = [
-    { sel: 'hero-title', partes: 'Inova\u00e7\u00e3o em cada <em class="hl">Pixel.</em>', texto: 'Inova\u00e7\u00e3o em cada Pixel.', destaque: ['Pixel.'] },
+    { sel: 'hero-title', partes: 'Igor Laurindo, Desenvolvedor Web e Automa\u00e7\u00f5es', texto: 'Igor Laurindo, Desenvolvedor Web e Automa\u00e7\u00f5es', destaque: [] },
     { sel: 'text-reveal', partes: 'Focado em <em class="hl">Resultados</em> <em class="hl">Reais</em>', texto: 'Focado em Resultados Reais', destaque: ['Resultados', 'Reais'] },
     { sel: 'section-title', partes: 'Habilidades <em class="hl">Estrat\u00e9gicas</em>', texto: 'Habilidades Estrat\u00e9gicas', destaque: ['Estrat\u00e9gicas'] },
     // Destaque com varias palavras vira varias palavras marcadas, uma por
@@ -25,7 +25,7 @@ const TITULOS = [
 /* Regressao do bug que foi para producao: o parser casava /<em>/ exato,
  * e o site usa <em class="hl">. Nao casando, o innerHTML inteiro virava
  * palavra e o titulo aparecia na tela escrito
- * "Inova\u00e7\u00e3o em cada <em class=""hl"">Pixel.</em>". Os testes passavam
+ * "Focado em <em class=""hl"">Resultados</em>". Os testes passavam
  * porque usavam <em> sem atributo, ou seja, testavam um HTML que o site nao
  * tem. Aqui o input e o do site. */
 describe('parseHighlightTitle com o HTML real do site', () => {

@@ -480,6 +480,61 @@ describe('dominio de producao', () => {
         });
     });
 
+    /* A og:image precisa ser JPEG 1200x630. O Facebook, o WhatsApp, o
+     * LinkedIn e o X nao rasparam WebP de forma confiavel, entao um .webp
+     * resulta em preview sem imagem justamente onde o portfolio e mais
+     * compartilhado. E 380x380, que era o retrato cru, aparece pequeno
+     * demais dentro do card. */
+    it('a og:image e JPEG 1200x630 e o arquivo existe mesmo', () => {
+        const html = read('index.html');
+        const url = html.match(/<meta property="og:image" content="([^"]+)"/)[1];
+        assert.ok(url.endsWith('.jpg'), 'og:image nao termina em .jpg: ' + url);
+
+        ['og:image:type', 'og:image:width', 'og:image:height'].forEach(prop => {
+            const m = html.match(new RegExp(`<meta property="${prop}" content="([^"]+)"`));
+            assert.ok(m, 'index.html sem ' + prop);
+        });
+        assert.strictEqual(html.match(/<meta property="og:image:type" content="([^"]+)"/)[1],
+            'image/jpeg');
+        assert.strictEqual(html.match(/<meta property="og:image:width" content="([^"]+)"/)[1],
+            '1200');
+        assert.strictEqual(html.match(/<meta property="og:image:height" content="([^"]+)"/)[1],
+            '630');
+
+        const local = path.join(ROOT, new URL(url).pathname.replace(/^\//, ''));
+        assert.ok(fs.existsSync(local), 'a og:image aponta para ' + local + ', que nao existe');
+    });
+
+    it('o JSON-LD descreve a pessoa e amarra os perfis do rodape', () => {
+        const html = read('index.html');
+        const bloco = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+        assert.ok(bloco, 'index.html sem JSON-LD');
+        const grafo = JSON.parse(bloco[1])['@graph'];
+        const pessoa = grafo.find(n => n['@type'] === 'Person');
+        assert.ok(pessoa, 'JSON-LD sem Person');
+        assert.strictEqual(pessoa.name, 'Igor Laurindo');
+        assert.ok(pessoa.jobTitle, 'Person sem jobTitle');
+        assert.ok(pessoa.sameAs.length >= 3, 'sameAs com menos de 3 perfis');
+
+        /* O mesmoAs precisa apontar para redes que o site realmente linka: um
+         * perfil que so existe no JSON-LD nao liga nada. */
+        ['github.com/Igorls34', 'linkedin.com/in/igor-laurindo', 'instagram.com/igor_devofc']
+            .forEach(perfil => {
+                assert.ok(pessoa.sameAs.some(u => u.includes(perfil)),
+                    'sameAs sem ' + perfil);
+                assert.ok(html.includes(perfil), 'a home nao linka ' + perfil);
+            });
+    });
+
+    it('o H1 diz quem e a pessoa, nao so um slogao', () => {
+        const h1 = read('index.html').match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+        assert.ok(h1, 'index.html sem H1');
+        assert.ok(/Igor Laurindo/.test(h1[1]),
+            'o H1 precisa conter o nome: "' + h1[1].trim() + '"');
+        assert.ok(/Desenvolvedor/i.test(h1[1]),
+            'o H1 precisa conter a profession: "' + h1[1].trim() + '"');
+    });
+
     it('o canonical da pagina de privacidade fica sob o mesmo host', () => {
         const html = read('privacidade.html');
         const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);

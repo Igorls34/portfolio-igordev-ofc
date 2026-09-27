@@ -64,9 +64,13 @@ function renderProjectLink(link) {
  * publica, e um link quebrado no meio de uma home de venda passa mais
  * profissionalismo do que a informacao que promete. */
 function renderCert(cert, indice) {
+    /* O prefixo "Certificado" ja vem do nome sintetizado de um arquivo sem
+     * ficha no portfolio.json (ver descobrirCertificacoes). Repetir aqui daria
+     * "Certificado: Certificado augusto-certificate (1)" no alt. */
+    const nome = cert.name.replace(/^Certificado\s+/i, '');
     const alt = cert.issuer
-        ? `Certificado de ${cert.issuer}: ${cert.name}`
-        : `Certificado: ${cert.name}`;
+        ? `Certificado de ${cert.issuer}: ${nome}`
+        : `Certificado: ${nome}`;
     const linhas = [
         `                    <figure class="cert-card col-6 col-lg-4 ${revealClass(indice)}" data-track="cert_${escapeHtml(cert.id || cert.name)}" data-track-kind="certification">`,
         `                        <button class="cert-preview" type="button" aria-label="Ampliar ${escapeHtml(alt)}">`,
