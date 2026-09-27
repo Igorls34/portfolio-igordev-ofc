@@ -413,6 +413,26 @@
       "icon": "fa-solid fa-cloud",
       "title": "APIs & Cloud",
       "description": "Integração com Google Cloud, Gemini e mais."
+    },
+    {
+      "icon": "fa-solid fa-brain",
+      "title": "Inteligência Artificial",
+      "description": "Modelos e prompts aplicados a produto, conteúdo e automação."
+    },
+    {
+      "icon": "fa-solid fa-chart-line",
+      "title": "Análise de Dados",
+      "description": "Dados viram decisão: leitura, métricas e visualização."
+    },
+    {
+      "icon": "fa-solid fa-robot",
+      "title": "IA Agêntica",
+      "description": "Agentes que executam tarefas de ponta a ponta, com supervisão."
+    },
+    {
+      "icon": "fa-solid fa-layer-group",
+      "title": "Front & Back End",
+      "description": "Entendimento completo e amplo do sistema, da interface ao servidor."
     }
   ],
   "projects": [

@@ -139,6 +139,57 @@ HTML ou o JSON. Cada imagem mantém a proporção original do WebP.
 - Se o JavaScript falhar, o site continua visível: as animações de entrada só
   ocultam elementos quando existe JS para reativá-los
 
+### Análise e correção do visualizador de certificado
+
+Uma revisão cuidadosa do `assets/js/certificate-viewer.js` e das regras
+`.cert-viewer__*` do `assets/css/sections.css` levantou sete pontos. Nenhum
+quebrou o site hoje, e a ordem abaixo é por impacto sobre quem usa.
+
+**1. A imagem pode ser arrastada para fora e não voltar** — o mais grave, e é
+bug funcional. `offsetX` e `offsetY` são escritos no `pointermove` e nas setas
+do teclado sem nenhum limite; só o `scale` é limitado. Como o palco tem
+`overflow: hidden`, o certificado sai inteiro da área visível e o visitante vê
+um retângulo escuro vazio. A única saída é "Ajustar" ou `Home`, e nada na tela
+sugere isso. Correção: limitar o offset ao que ainda sobra da imagem fora do
+palco.
+
+**2. `transform` escrito fora de `requestAnimationFrame`** — `render()` é
+chamada do `pointermove`, que dispara na frequência do mouse, então o recálculo
+de estilo acontece na frequência do input em vez da do paint. O resto do
+projeto já faz certo: o cursor e o canvas de partículas em `visual-effects.js`
+usam rAF com saída antecipada quando o movimento assenta.
+
+**3. O zoom não tem transição nenhuma** — os botões `+`/`-`, as teclas e a roda
+dão saltos secos de 1x para 1.5x. Atenção à correção: um
+`transition: transform 0.2s` ingênuo **atrasa o arraste** e piora a sensação.
+A transição tem que valer só no estado sem arraste, com uma classe que a
+desliga — o mesmo cuidado que `initTiltCards` e `initMagneticButtons` já fazem
+para não sobrescrever o `transform` do `:hover` do CSS.
+
+**4. O modal abre sem nada e os certificados são grandes** — o `src` é setado e
+o modal é mostrado na sequência, sem `load` nem `error`. A mediana dos WebP é
+de 138 KB e o maior tem 155 KB, então em 3G o visitante olha um retângulo vazio
+por mais de um segundo sem indicação de carregamento.
+
+**5. Os 6,84 MB de certificados são servidos sem cache** — o `netlify.toml`
+define `Cache-Control` para `/assets/img/*`, `/assets/css/*`, `/assets/js/*`,
+`/index.html`, `/api/*` e `/relatorio/*`, mas `/certificados_webp/*` ficou de
+fora. O que o navegador recebe hoje é `public,max-age=0,must-revalidate`, ou
+seja, revalidação a cada visualização. A CDN da Netlify amortece, mas no 4G do
+celular é ida e volta de rede para descobrir que nada mudou. É uma linha no
+`netlify.toml` e é a correção de melhor relação entre esforço e impacto da
+lista. Vale notar que `/assets/img/*`, que tem 7 dias de cache, serve só o
+favicon, a foto de perfil e a ilustração — arquivo leve.
+
+**6. O Escape é tratado duas vezes** — o handler da linha 82 intercepta a tecla,
+dá `preventDefault()` e chama `hide()`, mas o modal foi criado com
+`keyboard: true` e o Bootstrap já faz isso. O código redundante ainda pode
+brigar com o handler do Bootstrap pelo foco no fechamento.
+
+**7. `.cert-viewer__dialog` não existe no CSS** — a classe está no HTML e não
+tem regra em lugar nenhum, sinalizando uma intenção de dimensionar o palco que
+nunca foi concluída.
+
 ## Melhorias futuras
 
 Ideias anotadas para quando houver tempo, não é promessa de roadmap.
