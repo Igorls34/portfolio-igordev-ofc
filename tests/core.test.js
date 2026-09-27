@@ -269,29 +269,40 @@ describe('buildRevealWords', () => {
     });
 });
 
-describe('configuracao dos bots', () => {
-    // Estes placeholders precisam ser trocados pelos endpoints reais antes do deploy.
-    const WHATSAPP = 'https://api.exemplo.com/wpp';
-    const EMAIL = 'https://api.exemplo.com/email';
+describe('configuracao do envio', () => {
+    /* O formulario nao tem back-end. Ele monta a conversa no WhatsApp e abre
+     * o app. O numero e o mesmo dos links wa.me do site. */
+    const CONTATO = '5524998574876';
 
-    it('usa HTTPS, senao o navegador bloqueia por mixed content', () => {
-        [WHATSAPP, EMAIL].forEach(url => {
-            assert.ok(url.startsWith('https://'), url + ' nao e https');
-        });
+    it('o numero do contato so tem digitos, no formato internacional', () => {
+        assert.match(CONTATO, /^55\d{10,11}$/, 'numero fora do formato E.164 sem +');
     });
 
-    it('mantem o host placeholder configurado', () => {
-        [WHATSAPP, EMAIL].forEach(url => {
-            assert.ok(url.includes('api.exemplo.com'), url + ' mudou de host');
-        });
+    it('monta o link no wa.me, em https', () => {
+        const link = 'https://wa.me/' + CONTATO + '?text='
+            + encodeURIComponent('Ola, quero um orcamento');
+        assert.ok(link.startsWith('https://wa.me/'), link + ' nao e um link do wa.me');
+        assert.ok(link.includes(CONTATO), 'o numero do contato sumiu do link');
     });
 
-    it('nao gera barra dupla ao juntar base com path', () => {
-        // postToBot faz baseUrl + path, entao a base nao pode terminar em '/'
-        // nem o path comecar com '/' ao mesmo tempo.
-        const joined = WHATSAPP + '/api/enviar-mensagem';
-        assert.strictEqual(joined, 'https://api.exemplo.com/wpp/api/enviar-mensagem');
-        assert.ok(!joined.includes('.br//'));
+    it('nao deixa o texto da proposta vazar em caracteres soltos', () => {
+        // Sem encode, um "?" ou um "&" no texto do visitante cortaria a query
+        // e o Igor receberia a mensagem truncada.
+        const texto = 'Preciso de um site? Valor & prazo: 5.000 & 3 dias';
+        const link = 'https://wa.me/' + CONTATO + '?text=' + encodeURIComponent(texto);
+        const query = new URL(link).searchParams.get('text');
+        assert.strictEqual(query, texto);
+    });
+
+    it('nao usa mais os hosts de exemplo que nao resolvem', () => {
+        const src = require('node:fs').readFileSync(
+            require('node:path').join(__dirname, '..', 'assets', 'js', 'script.js'),
+            'utf8'
+        );
+        assert.ok(!/api\.exemplo\.com/.test(src),
+            'o placeholder do bot voltou para o script do formulario');
+        assert.ok(!/BOT_WHATSAPP|BOT_EMAIL|postToBot/.test(src),
+            'o codigo do envio por bot ficou no script');
     });
 });
 
@@ -477,12 +488,21 @@ describe('dominio de producao', () => {
             'canonical da politica fora do site de producao: ' + canonical[1]);
     });
 
-    it('o SITE_URL do rodape do e-mail e o site de producao', () => {
-        // O e-mail que o visitante recebe tem o link do portfolio no rodape.
+    it('o numero do formulario e o mesmo dos links wa.me do site', () => {
+        // Antes isto checava o SITE_URL do rodape do e-mail que o formulario
+        // mandava. Esse e-mail nao existe mais: o numero e o que precisa
+        // bater, senao a proposta vai para outra pessoa.
         const js = read('assets/js/script.js');
-        const site = js.match(/const SITE_URL = "([^"]+)"/);
-        assert.ok(site, 'SITE_URL nao encontrado em script.js');
-        assert.strictEqual(site[1], SITE_ORIGIN);
+        const site = js.match(/const WHATSAPP_CONTACT = "([^"]+)"/);
+        assert.ok(site, 'WHATSAPP_CONTACT nao encontrado em script.js');
+
+        const html = read('index.html');
+        const links = [...html.matchAll(/wa\.me\/(\d+)/g)].map(m => m[1]);
+        assert.ok(links.length, 'nenhum link wa.me no index.html');
+        links.forEach(numero => {
+            assert.strictEqual(numero, site[1],
+                'o formulario manda para ' + site[1] + ' e o site mostra ' + numero);
+        });
     });
 
     it('o robots.txt aponta o sitemap para o site de producao', () => {

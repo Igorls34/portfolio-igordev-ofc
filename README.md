@@ -57,27 +57,33 @@ npm run check     # lint + teste, o que roda antes de commit
 
 ## Formulário de contato
 
-O formulário **não tem back-end próprio**. Ele chama duas APIs de terceiro,
-servidas por proxy HTTPS atrás do Nginx:
+O formulário **não tem back-end**. Ele monta a conversa no WhatsApp com o texto
+do visitante já escrito e abre o aplicativo, em `https://wa.me/5524998574876`.
+Quem decide se a mensagem sai é o visitante, tocando em enviar lá dentro — e o
+site diz exatamente isso, em vez de mostrar um "Mensagem enviada!" que seria
+mentira.
 
-| Canal | URL | Rota |
-| --- | --- | --- |
-| WhatsApp | `https://api.exemplo.com/wpp` | `/api/enviar-mensagem` |
-| E-mail | `https://api.exemplo.com/email` | `/api/enviar-email` |
+O número fica em `WHATSAPP_CONTACT`, no topo de `assets/js/script.js`, e um
+teste em `tests/core.test.js` falha se ele destoar dos links `wa.me` do
+`index.html` — proposta não pode parar no número de outra pessoa.
 
-Esses endereços são placeholders e precisam ser substituídos pelos endpoints
-reais antes de publicar. As URLs ficam no topo de `assets/js/script.js`; o
-projeto não injeta variáveis de ambiente na Netlify. Os testes de
-`tests/core.test.js` verificam o formato e o host configurado.
+Três decisões que valem saber antes de mexer:
 
-Cada canal é independente: se o WhatsApp cair e o e-mail responder, o visitante
-vê um aviso honesto em vez de um "enviado" falso. As duas chamadas têm timeout
-de 12s e há um campo honeypot contra spam.
+- **Não há mais troca de e-mail.** Só existe o WhatsApp. Para voltar a ter
+  e-mail, é preciso um serviço de automação de verdade (n8n, Make, uma Netlify
+  Function) — e aí o caminho é este que estava no código: um `POST` para cada
+  canal, com timeout, e `summarizeDeliveries` no `core.js` já pronta para
+  combinar os resultados. Esse caminho foi removido porque as URLs eram
+  `api.exemplo.com`, que não resolve: quem preenchesse recebia erro de rede e a
+  proposta nunca chegava.
+- **A validação continua antes de abrir o WhatsApp**, para não abrir uma
+  conversa à toa com número inválido.
+- **Se o navegador bloquear o popup**, o texto não se perde: a mensagem vira um
+  link para tocar.
 
-> Essas duas URLs são o único ponto de falha do formulário e ficam num domínio
-> sem relação com a marca. Se um dia der para hospedar o envio no mesmo
-> domínio, o ideal é trocar por Netlify Functions (tem exemplo no histórico
-> dessa branch).
+O campo honeypot contra spam segue no lugar. Se algum dia o formulário voltar a
+enviar por servidor, vale o mesmo aviso do `README`: domínio de terceiro é ponto
+único de falha, e o mesmo domínio do site resolveria.
 
 ## Analytics e LGPD
 

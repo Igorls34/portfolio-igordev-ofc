@@ -1,33 +1,41 @@
-const BOT_WHATSAPP = "https://api.exemplo.com/wpp";
-const BOT_EMAIL = "https://api.exemplo.com/email";
-const SITE_URL = "https://igordev-portfolio-ofc.netlify.app";
+/* Numero que recebe as propostas, em formato internacional, sem + e sem
+   pontuacao. E o mesmo que ja aparece nos links wa.me do site. */
+const WHATSAPP_CONTACT = "5524998574876";
 
-const { escapeHtml, toWhatsAppNumber, validateContact, summarizeDeliveries } = PortfolioCore;
+const { validateContact } = PortfolioCore;
 
 (function () {
     'use strict';
 
-    /* ========== FORM HANDLER ========== */
-    const REQUEST_TIMEOUT_MS = 12000;
+    /* ========== FORM HANDLER ==========
+     *
+     * O formulario nao tem back-end e nunca teve um que funcionasse: as duas
+     * URLs de bot eram placeholders de exemplo.com, que nao resolve. Quem
+     * preenchesse o formulario recebia erro de rede e a proposta nunca
+     * chegava.
+     *
+     * Agora o site nao tenta enviar nada. Ele monta a conversa no WhatsApp
+     * ja com o texto do visitante e abre o app. Quem decide se a mensagem
+     * sai e o visitante, tocando em enviar -- e o site diz isso, em vez de
+     * mostrar um "Mensagem enviada!" que seria mentira.
+     *
+     * Em troca: funciona sem custo de hospedagem, sem dominio de terceiro e
+     * sem depender de servico de automacao que possa cair sem ninguem avisar. */
 
-    /* POST com timeout. Antes, se a API travasse o botao ficava preso em
-       "Enviando..." para sempre, sem nenhuma forma de o usuario sair. */
-    async function postToBot(baseUrl, path, payload) {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-        try {
-            const res = await fetch(baseUrl + path, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-                signal: controller.signal
-            });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const data = await res.json();
-            return Boolean(data && data.success);
-        } finally {
-            clearTimeout(timer);
-        }
+    function montarMensagem({ name, email, phone, message }) {
+        return [
+            `Olá Igor! Meu nome é ${name}, tudo bem?`,
+            '',
+            message,
+            '',
+            '— Enviado pelo seu portfólio',
+            `E-mail: ${email}`,
+            `WhatsApp: ${phone}`
+        ].join('\n');
+    }
+
+    function linkDoWhatsApp(texto) {
+        return `https://wa.me/${WHATSAPP_CONTACT}?text=${encodeURIComponent(texto)}`;
     }
 
     function setFormMessage(el, tone, html) {
@@ -46,21 +54,18 @@ const { escapeHtml, toWhatsAppNumber, validateContact, summarizeDeliveries } = P
         const contactForm = document.getElementById('contact-form');
         if (!contactForm) return;
 
-        const button = document.getElementById('submit-btn');
         const messageDiv = document.getElementById('form-message');
         const honeypot = document.getElementById('website');
 
-        contactForm.addEventListener('submit', async function (e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Bot preencheu o campo isento: finge sucesso sem chamar a API.
+            // Bot preencheu o campo isento: finge sucesso sem abrir nada.
             if (honeypot && honeypot.value) {
                 contactForm.reset();
                 return;
             }
 
-            button.textContent = 'Enviando...';
-            button.disabled = true;
             messageDiv.style.display = 'none';
             messageDiv.innerHTML = '';
 
@@ -74,8 +79,6 @@ const { escapeHtml, toWhatsAppNumber, validateContact, summarizeDeliveries } = P
             // montar o envio. Valida aqui para poder avisar antes.
             const check = validateContact({ name, email, phone, message });
             if (!check.valid) {
-                button.textContent = 'Enviar Proposta';
-                button.disabled = false;
                 messageDiv.style.display = 'block';
                 const labels = {
                     email: 'E-mail invalido.',
@@ -88,86 +91,38 @@ const { escapeHtml, toWhatsAppNumber, validateContact, summarizeDeliveries } = P
                 return;
             }
 
-            const whatsappNumber = toWhatsAppNumber(phone);
-
-            const whatsappMsg = `Olá *${name}*! Tudo bem?\n\nRecebi sua mensagem aqui no meu portfolio e ja te retorno em breve.\n\n*Mensagem enviada pelo site:*\n${message}\n\n— Igor Laurindo | IgorDev`;
-
-            const emailHtml = `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #f9fafb; border-radius: 16px; overflow: hidden; border: 1px solid #1f1f1f;">
-                    <div style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 40px 30px; text-align: center;">
-                        <h1 style="margin: 0; font-size: 24px; font-weight: 800;">Olá, ${escapeHtml(name)}!</h1>
-                    </div>
-                    <div style="padding: 30px;">
-                        <p style="font-size: 16px; line-height: 1.7; color: #9ca3af; margin: 0 0 24px;">Recebi sua mensagem aqui no meu portfolio e vou analisar seu projeto com calma. Assim que possível te retorno pelo WhatsApp ou por aqui mesmo, beleza?</p>
-                        <div style="background: #0d0d0d; border: 1px solid #1f1f1f; border-left: 3px solid #3b82f6; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-                            <p style="margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #6b7280;">Mensagem enviada pelo site</p>
-                            <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #f9fafb; white-space: pre-wrap; word-break: break-word;">${escapeHtml(message)}</p>
-                        </div>
-                        <p style="font-size: 16px; line-height: 1.7; color: #9ca3af; margin: 0 0 16px;">Obrigado pela confiança!</p>
-                        <p style="font-size: 14px; color: #6b7280; margin: 24px 0 0;">Abraço,<br><strong style="color: #3b82f6;">Igor Laurindo</strong><br>IgorDev</p>
-                        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #1f1f1f; text-align: center;">
-                            <a href="${SITE_URL}" style="color: #3b82f6; text-decoration: none; font-weight: 600;">${SITE_URL.replace(/^https?:\/\//, '')}</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // 'ok' = sucesso real. Falha NAO entra em 'ok', senao a falha
-            // total caia no ramo de sucesso e o usuario via "enviado".
-            const results = [];
-
-            if (whatsappNumber) {
-                try {
-                    const ok = await postToBot(BOT_WHATSAPP, '/api/enviar-mensagem', {
-                        numero: whatsappNumber,
-                        mensagem: whatsappMsg
-                    });
-                    results.push({ label: 'WhatsApp', ok });
-                } catch (err) {
-                    results.push({ label: 'WhatsApp', ok: false });
-                }
-            }
-
-            try {
-                const ok = await postToBot(BOT_EMAIL, '/api/enviar-email', {
-                    para: email,
-                    assunto: 'Recebi sua mensagem! - IgorDev',
-                    html: emailHtml
-                });
-                results.push({ label: 'E-mail', ok });
-            } catch (err) {
-                results.push({ label: 'E-mail', ok: false });
-            }
-
-            button.textContent = 'Enviar Proposta';
-            button.disabled = false;
+            const link = linkDoWhatsApp(montarMensagem({ name, email, phone, message }));
             messageDiv.style.display = 'block';
 
-            const summary = summarizeDeliveries(results);
-            setFormMessage(messageDiv, summary.tone, summary.text);
+            /* O popup so abre por causa do clique, o que e o que a maioria dos
+             * navegadores exige. Quando mesmo assim volta null -- bloqueio de
+             * popup, ou aviso do navegador -- o texto nao pode se perder:
+             * nesse caso mostramos o link para a pessoa tocar. */
+            const aberto = window.open(link, '_blank', 'noopener');
 
-            if (summary.success) {
-                contactForm.reset();
+            if (aberto) {
+                setFormMessage(messageDiv, 'ok',
+                    'Abri o WhatsApp com a sua mensagem pronta. '
+                    + 'É só tocar em <strong>enviar</strong> que ela chega até mim. '
+                    + 'Se a aba não abriu, <a href="' + link + '" target="_blank" '
+                    + 'rel="noopener">clique aqui</a>.');
+            } else {
+                setFormMessage(messageDiv, 'warn',
+                    'Seu navegador bloqueou a abertura automática. '
+                    + '<a href="' + link + '" target="_blank" rel="noopener">'
+                    + 'Toque aqui para enviar sua mensagem pelo WhatsApp</a>.');
             }
 
-            /* Avisa a camada de analytics que o envio terminou. E uma
-             * dependencia opcional e de mao unica: se o arquivo de analytics
-             * nao existir, ou falhar, o formulario ja foi resolvido e a
-             * mensagem ja foi mostrada. Perder a telemetria e aceitavel;
-             * perder o envio nao. */
+            contactForm.reset();
+
+            /* Para o funil, o que interessa e o formulario ter sido valido e a
+             * conversa ter sido aberta. O site nao tem como saber se a pessoa
+             * tocou em enviar la dentro, entao o canal vai como
+             * "whatsapp-aberto" e nao como "enviado". */
             if (window.IgorAnalytics && typeof window.IgorAnalytics.reportFormResult === 'function') {
-                window.IgorAnalytics.reportFormResult(summary.success, channelsSent(results));
+                window.IgorAnalytics.reportFormResult(true, 'whatsapp-aberto');
             }
         });
-
-        /* Rotulo curto do que de fato chegou, para o funil. "email" sozinho
-         * nao diz se foi WhatsApp, e-mail ou os dois. */
-        function channelsSent(results) {
-            return results
-                .filter(r => r.ok)
-                .map(r => r.label.toLowerCase().replace(/\s+/g, '-'))
-                .join('+') || 'nenhum';
-        }
     }
 
 
