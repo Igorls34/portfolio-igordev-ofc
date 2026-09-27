@@ -439,10 +439,19 @@
 }
 
 .cert-viewer__stage {
-    display: grid;
+    /* Flex, nao grid: a imagem depende de "max-height: 100%", e esse
+       percentual so resolve contra uma altura definitiva. Numa grid a linha
+       implicita e dimensionada pelo conteudo, entao o percentual fica
+       indeterminado, o max-height e ignorado e a imagem vaza -- e como o
+       palco tem overflow:hidden, o excesso some sem rolagem. Como o palco
+       tambem e o .modal-body (flex:1 1 auto dentro do .modal-content em
+       coluna, com height:100%), a altura dele e definitiva e o limite
+       funciona. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 0;
     min-height: 0;
-    place-items: center;
     overflow: hidden;
     touch-action: none;
 }

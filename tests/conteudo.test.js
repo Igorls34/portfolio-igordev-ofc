@@ -156,6 +156,26 @@ describe('HTML gerado a partir do JSON', () => {
         assert.match(baseCss, /html\s*\{[^}]*overflow-x:\s*clip/s);
     });
 
+    it('o palco do certificado é flex, senão o certificado corta embaixo', () => {
+        const css = fs.readFileSync(path.join(ROOT, 'assets', 'css', 'sections.css'), 'utf8');
+        const palco = css.match(/\.cert-viewer__stage\s*\{([^}]*)\}/)[1];
+        const imagem = css.match(/\.cert-viewer__image\s*\{([^}]*)\}/)[1];
+
+        /* Numa grid a linha implícita é dimensionada pelo conteúdo, então o
+           "max-height: 100%" da imagem resolve contra um tamanho indeterminado
+           e não limita nada. A imagem cresce para a altura que a largura
+           permite (2334x1653, ratio 1,412) e o "overflow: hidden" do palco
+           descarta a parte de baixo, sem rolagem para alcançar. O palco precisa
+           ser flex: sendo o .modal-body dentro do .modal-content em coluna com
+           height:100%, a altura dele já é definitiva e o limite funciona. */
+        assert.match(palco, /display:\s*flex\b/,
+            'o palco precisa ser flex para o max-height da imagem valer');
+        assert.ok(!/display:\s*grid/.test(palco) && !palco.includes('place-items'),
+            'grid/place-items no palco desfazem o max-height da imagem');
+        assert.match(imagem, /max-height:\s*100%/,
+            'a imagem precisa limitar a altura ao palco para caber inteira');
+    });
+
     it('a home carrega os modulos JS na ordem de dependencia', () => {
         const carregados = [...html.matchAll(
             /<script src="\.\/assets\/js\/([^\"]+)"/g
