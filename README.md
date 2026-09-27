@@ -133,6 +133,52 @@ HTML ou o JSON. Cada imagem mantém a proporção original do WebP.
 - Se o JavaScript falhar, o site continua visível: as animações de entrada só
   ocultam elementos quando existe JS para reativá-los
 
+## Melhorias futuras
+
+Ideias anotadas para quando houver tempo, não é promessa de roadmap.
+
+### Animações Lottie
+
+Substituir ou complementar algumas animações por Lottie, que é o formato JSON
+do After Effects. Hoje o movimento do site é todo CSS, canvas e JavaScript
+próprio, sem nenhuma biblioteca de animação.
+
+Onde teria mais retorno:
+
+- **`404.html`** — hoje não tem uma única linha de JavaScript, então é a página
+  mais estática do site e também a que se abre por engano. Uma ilustração de
+  "página não encontrada" é o caso de uso clássico do Lottie, e o custo em
+  métricas é zero porque ninguém mede bounce ali
+- **estado de carregamento do botão de envio** e **confirmação de sucesso** do
+  formulário — são os momentos em que o visitante mais precisa de retorno, e
+  hoje o texto apenas aparece no `#form-message`
+- **estado vazio do painel** em `relatorio/index.html`, quando ainda não há
+  dados coletados
+
+O que já foi descartado: os efeitos que existem hoje (zoom do modal, cursor,
+partículas, reveal por palavra) **não** devem virar Lottie. São ajustes de
+poucos caracteres em CSS ou JavaScript, e trocá-los por Lottie custaria dezenas
+de KB para fazer o mesmo.
+
+Custos a considerar antes de adotar:
+
+- `lottie-web` tem cerca de 250 KB (70 KB gzip) no build completo, e 150 KB
+  (45 KB gzip) na versão light. O site hoje não tem nenhuma biblioteca JS
+  própria, e a página já serve 55 certificados
+- o `.json` sai do After Effects ou do Figma, ou se baixa pronto do LottieFiles.
+  Não dá para autorar um bom à mão
+- o banner de consentimento não precisa ser alterado: os testes de "somente
+  após o aceite" filtram por domínio (`clarity.ms`, `googletagmanager`) e
+  verificam **medição**, não biblioteca funcional. Bootstrap, Font Awesome e
+  Google Fonts já carregam antes do aceite hoje
+- servindo o `lottie-web` do mesmo `cdn.jsdelivr.net` que o Bootstrap já usa,
+  nenhum domínio novo entra na lista. Dá ainda para self-hospedar o `.json` em
+  `assets/`, e aí ele deixa de ser requisição externa
+
+Sempre com `prefers-reduced-motion` respeitado, `IntersectionObserver` para só
+rodar quando a animação entra na tela, e o site funcionando normalmente se o
+JSON não carregar.
+
 ## Licença
 
 MIT — ver [LICENSE](LICENSE).
